@@ -1,16 +1,98 @@
 body {
+  background-color: #292f3d;
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
 }
+
+body.dark,
+.dark .docs-toc-link,
+.dark .docs-sidebar .nav > li:not(.active) > a,
+.dark .modal button.close,
+.dark input,
+.dark .form-control,
+.dark .form-control:focus {
+  color: #ffffff;
+  background: #292f3d; }
+
+h1 {
+  font-family: Open Sans,Lucida Sans Unicode,Lucida Grande,sansSerif;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: .5rem;
+  line-height: 1.25;
+  color: #ffffff;
+  text-rendering: optimizeLegibility;
+  /* Ensure long words do not overflow into content. */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  /* Add a hyphen where the word breaks (use `&shy;` to insert a soft-hyphen in a word). */
+  -webkit-hyphens: manual;
+  -ms-hyphens: manual;
+  hyphens: manual; }
+
+h2, h3, h4, h5, h6 {
+  /*font-family: Open Sans,Lucida Sans Unicode,Lucida Grande,sansSerif;
+  text-transform: uppercase; */
+  font-weight: 400;
+  margin-top: 1rem;
+  margin-bottom: .5rem;
+  line-height: 1.25;
+  color: #69afff;
+  text-rendering: optimizeLegibility;
+  /* Ensure long words do not overflow into content. */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  /* Add a hyphen where the word breaks (use `&shy;` to insert a soft-hyphen in a word). */
+  -webkit-hyphens: manual;
+  -ms-hyphens: manual;
+  hyphens: manual; }
+
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: #69afff; }
+
+.dark h1 {
+  color: #ffffff; }
+
+/* posts */
+h3.article-title > a{
+  text-transform: none !important;
+  color: #69afff !important;
+  }
+
+.article-container {
+  max-width: 1000px;
+}
+
+.media-body > ul.network-icon > li > a:link, .media-body > ul.network-icon > li > a:visited {
+  color: #59aaff !important;
+}
+
+/* about section */
+
 #about {
   color: #1f2229;
   background-color: #59aaff;
-
 }
-ul.network-icon > a:link, a:visited, .institution {
+
+ul.network-icon > li > a:link, ul.network-icon > li > a:visited, .institution {
     color: #ffffff !important;
 }
+
+.card-title > a:link, .card-title > a:visited {
+  text-decoration: none !important;
+}
+
+.portrait-title > h3 > a {
+  color: #1f2229 !important;
+}
+
 #about h1 , #about h3 {
   color: #d9e5ff;
   font-weight: 400;
@@ -27,4 +109,60 @@ ul.network-icon > a:link, a:visited, .institution {
 ul.ul-edu li .description p.year {
   font-size: 0.75rem;
   color: rgba(0, 0, 0, 0.6); }
+
+
+/* everything code related */
+code {
+  color: #ffffff !important;
+  background: #4f586e !important; /*4f586e*/
+  font-family: Monaco, monospace;
+  font-size: 17px !important;
+}
+pre {
+  background: #292f3d !important;
+  margin-left: 5%;
+  padding: 1em;
+  overflow-x: auto;
+  border-width: 1px;
+  border-color: #59aaff !important;
+  border-style: dotted;
+}
+
+pre > code {
+  background: #292f3d !important;
+  font-size: 15px !important;
+}
+
+/* syntax highlighting */
+.hljs,.hljs-subst {
+  color: #ffffff !important;
+}
+
+.hljs-keyword {
+  color: #ff9d00 !important;
+  font-weight: 100 !important;
+}
+
+.hljs-built_in{
+  color: #ff9d00 !important;
+  font-weight: 100 !important;
+}
+
+.hljs-function{
+  color: #ff9d00 !important;
+}
+
+.hljs-comment {
+  color: #0088ff;
+  font-style: italic;
+}
+
+.hljs-string {
+  color: #3ad900;
+}
+
+.hljs-number,
+.hljs-literal {
+  color: #ff628c;
+}
 

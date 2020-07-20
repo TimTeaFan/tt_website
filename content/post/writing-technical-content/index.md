@@ -14,17 +14,24 @@ Academic is designed to give technical content creators a seamless experience. Y
 
 On this page, you'll find some examples of the types of technical content that can be rendered with Academic.
 
-## Examples
+## Examples H2
 
-### Code
+### Example H3 Code
 
 Academic supports a Markdown extension for highlighting code syntax. You can enable this feature by toggling the `highlight` option in your `config/_default/params.toml` file.
 
-    ```python
-    import pandas as pd
-    data = pd.read_csv("data.csv")
-    data.head()
-    ```
+```r
+test <- "this is a string"
+NULL # comment
+232 # a number
+library(dplyr)
+mtcars %>% 
+glimpse
+    
+if (1 > 0) {
+print("yes")
+}
+```
 
 renders as
 
