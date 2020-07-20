@@ -8,10 +8,10 @@
 #  url = "#hero"
 #  weight = 10
 
-# [[main]]
-#  name = "About"
-#  url = "/"
-#  weight = 10
+[[main]]
+  name = "About"
+  url = "/"
+  weight = 10
 
 [[main]]
   name = "Posts"
@@ -20,7 +20,7 @@
 
 [[main]]
   name = "Projects"
-  url = "/projects"
+  url = "myprojects/"
   weight = 30
 
 # [[main]]
