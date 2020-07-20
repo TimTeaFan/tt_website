@@ -1,0 +1,6 @@
+<link rel='stylesheet' href='{{ "css/highlight-light.css" | relURL }}' title='hl-light'>
+<link rel='stylesheet' href='{{ "css/highlight-dark.css" | relURL }}' title='hl-dark' disabled>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet" type="text/css">
+{{ range .Params.html_dependencies }}
+  {{ . | safeHTML }}
+{{ end }}

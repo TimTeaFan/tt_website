@@ -1,0 +1,29 @@
+body {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+#about {
+  color: #1f2229;
+  background-color: #59aaff;
+
+}
+ul.network-icon > a:link, a:visited, .institution {
+    color: #ffffff !important;
+}
+#about h1 , #about h3 {
+  color: #d9e5ff;
+  font-weight: 400;
+}
+
+#role {
+  color: #1f2229 !important;
+}
+
+.fa-graduation-cap, .fa-briefcase{
+  top: 0 !important;
+}
+
+ul.ul-edu li .description p.year {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6); }
