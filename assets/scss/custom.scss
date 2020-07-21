@@ -27,6 +27,9 @@ a.nav-link {
   font-weight: 100 !important;
 }
 
+
+/* headings */
+
 h1, h2, h3, h4, h5, h6, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
   font-family: Open Sans,Lucida Sans Unicode,Lucida Grande,sansSerif;
   margin-top: 1rem;
@@ -73,6 +76,18 @@ h3.article-title > a {
   color: #59aaff !important;
 }
 
+/* sharebox */
+
+ul.share > li > a {
+  color: #69afff !important;
+}
+
+.card-title > a {
+/*.card-title > a:link, .card-title > a:visited */
+  color: #69afff !important;
+  text-decoration: none !important;
+}
+
 /* about section */
 
 #about {
@@ -86,10 +101,6 @@ ul.network-icon > li > a, .institution, .institution > a {
     text-decoration: none !important;
 }
 
-.card-title > a:link, .card-title > a:visited {
-/*.card-title > a:link, .card-title > a:visited */
-text-decoration: none !important;
-}
 
 .portrait-title > h3 > a {
   color: #d9e5ff !important; /*1f2229*/
@@ -145,6 +156,7 @@ pre > code {
   background: #292f3d !important;
   font-size: 15px !important;
 }
+
 
 /* syntax highlighting */
 .hljs,.hljs-subst {
