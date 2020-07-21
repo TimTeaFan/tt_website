@@ -14,14 +14,14 @@ role: CX Data Scientist
 
 # Organizations/Affiliations
 organizations:
-- name: R+V Insurance Group
-  url: "https://www.ruv.de"
+- name: 
+  url: 
 
 # Short bio (displayed in user profile at end of posts)
-bio: Former happiness researcher turned Data Scientist.
+bio: I am a former Happiness Researcher turned Data Scientist.
 
 interests:
-  - Statistical models
+  - Statistical models 
   - Dataviz and dashboards
   - Mashine learning
   - Package development
