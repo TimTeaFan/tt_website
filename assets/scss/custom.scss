@@ -84,8 +84,16 @@ ul.share > li > a {
 
 .card-title > a {
 /*.card-title > a:link, .card-title > a:visited */
-  color: #69afff !important;
+  color: #ffffff !important;
   text-decoration: none !important;
+}
+
+.author-card .card-title {
+  margin-bottom: 3px
+}
+
+.media-body > ul.network-icon > li > a {
+  color: #ffffff !important;
 }
 
 /* about section */
@@ -157,8 +165,13 @@ pre > code {
   font-size: 15px !important;
 }
 
+code, a:link, code a:visited {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
 
 /* syntax highlighting */
+
 .hljs,.hljs-subst {
   color: #ffffff !important;
 }

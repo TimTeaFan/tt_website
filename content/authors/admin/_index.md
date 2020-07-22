@@ -18,7 +18,7 @@ organizations:
   url: 
 
 # Short bio (displayed in user profile at end of posts)
-bio: I am a former Happiness Researcher turned Data Scientist.
+bio: I am a former Happiness Researcher turned Data Scientist with a passion for programming.
 
 interests:
   - Statistical models 
