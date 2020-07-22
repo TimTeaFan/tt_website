@@ -44,7 +44,7 @@ local_business_type = ""
 org_name = ""
 
 # Description for social sharing and search engines. If undefined, superuser role is used in place.
-description = "A data science blog and portfolio by Tim Tiefenbach"
+description = "Personal website of Tim Tiefenbach"
 
 ############################
 ## Site Features

@@ -52,11 +52,11 @@ library(dplyr)
 if(1>0) {
   print("Hello")
 }
-
 NULL # a comment
 
 a_number <- 232
 
+Inf
 
 
 iris[,1:5] %>% 
