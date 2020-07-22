@@ -46,8 +46,11 @@ iris %>%
 
 
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 library(dplyr)
+UseMethod("plot")
+
+myfun <- function(x,y) x + y
 
 if(1>0) {
   print("Hello")

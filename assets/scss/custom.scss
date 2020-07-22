@@ -103,6 +103,10 @@ ul.share > li > a {
   background-color: #59aaff;
 }
 
+.home-section {
+  padding-bottom: 30px !important;
+}
+
 ul.network-icon > li > a, .institution, .institution > a {
 /*ul.network-icon > li > a:link, ul.network-icon > li > a:visited, .institution */
     color: #ffffff !important;
@@ -143,6 +147,11 @@ footer {
   background-color: #1f2229;
 }
 
+.powered-by > a {
+  color: #69afff !important;
+  text-decoration: none !important;
+}
+
 /* everything code related */
 code {
   color: #ffffff !important;
@@ -165,10 +174,12 @@ pre > code {
   font-size: 15px !important;
 }
 
-code, a:link, code a:visited {
+code a {
+/*code, a:link, code a:visited */
   color: #ffffff !important;
   text-decoration: none !important;
 }
+
 
 /* syntax highlighting */
 

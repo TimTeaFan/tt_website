@@ -75,4 +75,7 @@ user_groups:
 - Visitors
 ---
 
-I am a CX Data Scientist working in insurance. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+I am a data scientist working in insurance with a focus on customer satisfaction and customer experience data. 
+
+
+
