@@ -32,7 +32,7 @@
   {{ if eq $item.Type "talk" }}
   <div class="article-metadata">
     <span>
-      {{ partial "functions/get_event_dates" $item }}
+      {{ partial "functions/get_event_dates2" $item }}
     </span>
     {{ with $item.Params.location }}
     <span class="middot-divider"></span>
