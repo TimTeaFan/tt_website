@@ -1,9 +1,9 @@
 ---
-title: 'Measuring Domain Satisfaction: The Problem of Domain Importance'
+title: 'Work and Well-being in Japan: The Divergence between Importance of and Satisfaction with Work and its Impact on the Overall Happiness Level'
 event: []
 event_url: []
 
-location: "OECD Asia-Pacific Workshop on Subjective Well-being, Measurement and Policy Use @ Statistical Training Center, Daejon"
+location: 'IPPA 3rd World Congress on Positive Psychology @ Los Angeles'
 address:
   street: []
   city: []
@@ -15,7 +15,7 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2015-11-25"
+date: "2013-06-30"
 date_end: []
 all_day: true
 
@@ -35,10 +35,10 @@ image:
 #  focal_point: Right
 
 links:
-- icon: globe-americas
+- icon: university
   icon_pack: fas
-  name: OECD
-  url: http://www.oecd.org/statistics/Workshop%20on%20Subjective%20Well-Being%20November%202015%20agenda.pdf
+  name: Conference
+  url: https://www.ippanetwork.org
 url_code: ""
 url_pdf: ""
 url_slides: ""

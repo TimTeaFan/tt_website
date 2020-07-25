@@ -1,9 +1,9 @@
 ---
-title: 'Introduction to dplyr 1.0'
-event: []
+title: 'Reporting in R'
+event: Data Analytics Talk
 event_url: []
 
-location: Company internal presentation via Skype
+location: "Data Analytics Talk @ R+V Insurance Group"
 address:
   street: []
   city: []
@@ -15,12 +15,12 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2020-01-29"
+date: "2020-01-27T14:00:00Z"
 # date_end: "2020-08-27T15:00:00Z"
-all_day: true
+all_day: false
 
 # Schedule page publish date (NOT talk date).
-publishDate: "2017-01-01T00:00:00Z"
+publishDate: "2020-07-20T00:00:00Z"
 
 authors: [Tim Tiefenbach]
 categories:

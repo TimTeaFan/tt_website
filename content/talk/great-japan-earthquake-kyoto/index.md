@@ -1,9 +1,9 @@
 ---
-title: 'Measuring Domain Satisfaction: The Problem of Domain Importance'
+title: 'The Impact of the Great East Japan Earthquake on Happiness, Donations and Volunteer Activities'
 event: []
 event_url: []
 
-location: "OECD Asia-Pacific Workshop on Subjective Well-being, Measurement and Policy Use @ Statistical Training Center, Daejon"
+location: "Annual Conference of the Association of Behavioral Economics and Finance (Japan) 2013 @ Kyoto University"
 address:
   street: []
   city: []
@@ -15,7 +15,7 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2015-11-25"
+date: "2013-12-14"
 date_end: []
 all_day: true
 
@@ -35,10 +35,10 @@ image:
 #  focal_point: Right
 
 links:
-- icon: globe-americas
+- icon: university
   icon_pack: fas
-  name: OECD
-  url: http://www.oecd.org/statistics/Workshop%20on%20Subjective%20Well-Being%20November%202015%20agenda.pdf
+  name: Conference
+  url: http://www.abef.jp/archive/event/2013/index.html
 url_code: ""
 url_pdf: ""
 url_slides: ""

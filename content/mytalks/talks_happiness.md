@@ -7,8 +7,8 @@ headless = false  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 30  # Order that this section will appear.
 
-title = "Recent & Upcoming Talks"
-subtitle = ""
+title = "Happiness"
+subtitle = "Presentations from my time as a happiness researcher"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
@@ -26,12 +26,12 @@ subtitle = ""
   # Filter posts by a taxonomy term.
   [content.filters]
     tag = ""
-    category = "happiness"
+    category = ""
     publication_type = ""
     author = ""
-    exclude_featured = false
+    exclude_featured = true
     exclude_past = false
-    exclude_future = false
+    exclude_future = true
     
 [design]
   # Toggle between the various page layout types.
@@ -39,7 +39,7 @@ subtitle = ""
   #   2 = Compact
   #   3 = Card
   #   4 = Citation (publication only)
-  view = 1
+  view = 2
   
 [design.background]
   # Apply a background color, gradient, or image.

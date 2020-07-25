@@ -20,7 +20,7 @@
 
 [[main]]
   name = "Projects"
-  url = "myprojects/"
+  url = "/myprojects"
   weight = 30
 
 [[main]]

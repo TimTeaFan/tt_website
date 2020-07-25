@@ -7,15 +7,15 @@ headless = false  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 20  # Order that this section will appear.
 
-title = "Recent & Upcoming Talks"
-subtitle = ""
+title = "Data Science"
+subtitle = "Talks on data science and R"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
   page_type = "talk"
   
   # Choose how much pages you would like to display (0 = all pages)
-  count = 5
+  count = 2
   
   # Choose how many pages you would like to offset by
   offset = 0
@@ -26,7 +26,7 @@ subtitle = ""
   # Filter posts by a taxonomy term.
   [content.filters]
     tag = ""
-    category = "datascience"
+    category = ""
     publication_type = ""
     author = ""
     exclude_featured = false
@@ -39,7 +39,7 @@ subtitle = ""
   #   2 = Compact
   #   3 = Card
   #   4 = Citation (publication only)
-  view = 1
+  view = 2
   
 [design.background]
   # Apply a background color, gradient, or image.

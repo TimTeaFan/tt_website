@@ -1,9 +1,9 @@
 ---
-title: 'Measuring Domain Satisfaction: The Problem of Domain Importance'
-event: []
+title: 'R Shiny as BI tool'
+event: Data Analytics Talk
 event_url: []
 
-location: "OECD Asia-Pacific Workshop on Subjective Well-being, Measurement and Policy Use @ Statistical Training Center, Daejon"
+location: "Data Analytics Talk @ R+V Insurance Group"
 address:
   street: []
   city: []
@@ -15,17 +15,17 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2015-11-25"
-date_end: []
-all_day: true
+date: "2020-08-27T14:00:00Z"
+date_end: "2020-08-27T15:00:00Z"
+all_day: false
 
 # Schedule page publish date (NOT talk date).
-publishDate: "2017-01-01T00:00:00Z"
+publishDate: "2020-07-20T00:00:00Z"
 
 authors: [Tim Tiefenbach]
 categories:
-- happiness
-tags: [happiness]
+- datascience
+tags: [datascience]
 
 # Is this a featured talk? (true/false)
 featured: false
@@ -35,10 +35,14 @@ image:
 #  focal_point: Right
 
 links:
-- icon: globe-americas
+- icon: university
   icon_pack: fas
-  name: OECD
-  url: http://www.oecd.org/statistics/Workshop%20on%20Subjective%20Well-Being%20November%202015%20agenda.pdf
+  name: Conference
+  url:
+- icon: twitter
+  icon_pack: fab
+  name: Follow
+  url: "https://twitter.com/georgecushen"
 url_code: ""
 url_pdf: ""
 url_slides: ""
@@ -49,7 +53,7 @@ url_video: ""
 #   Simply enter your slide deck's filename without extension.
 #   E.g. `slides = "example-slides"` references `content/slides/example-slides.md`.
 #   Otherwise, set `slides = ""`.
-# slides: example
+slides: ""
 
 # Projects (optional).
 #   Associate this post with one or more of your projects.
@@ -62,14 +66,3 @@ projects: []
 # Enable math on this page?
 math: false
 ---
-
-<!--
-# Slides can be added in a few ways:
-
-# - **Create** slides using Academic's [*Slides*](https://sourcethemes.com/academic/docs/managing-content/#create-slides) feature # and link using `slides` parameter in the front matter of the talk file
-# - **Upload** an existing slide deck to `static/` and link using `url_slides` parameter in the front matter of the talk file
-# - **Embed** your slides (e.g. Google Slides) or presentation video on this page using 
-# [shortcodes](https://sourcethemes.com/academic/docs/writing-markdown-latex/).
-
-# Further talk details can easily be added to this page using *Markdown* and $\rm \LaTeX$ math code.
--->
