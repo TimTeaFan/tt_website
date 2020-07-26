@@ -1,9 +1,9 @@
 ---
-title: 'Measuring Domain Satisfaction: The Problem of Domain Importance'
+title: 'Happiness, Lifestyle and Preferences in Japan before and after March 11'
 event: []
 event_url: []
 
-location: "OECD Asia-Pacific Workshop on Subjective Well-being, Measurement and Policy Use @ Statistical Training Center, Daejon"
+location: 'XI Conference of the International Society for Quality-of-Life Studies (ISQOLS) @ Venice, Italy'
 address:
   street: []
   city: []
@@ -15,14 +15,14 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2015-11-25"
-date_end: []
+date: "2012-11-02"
+# date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
 publishDate: "2017-01-01T00:00:00Z"
 
-authors: [Tim Tiefenbach]
+authors: 
 categories:
 - happiness
 tags: [happiness]
@@ -35,10 +35,9 @@ image:
 #  focal_point: Right
 
 links:
-- icon: globe-americas
+- icon: university
   icon_pack: fas
-  name: OECD
-  url: http://www.oecd.org/statistics/Workshop%20on%20Subjective%20Well-Being%20November%202015%20agenda.pdf
+  name: Conference
 url_code: ""
 url_pdf: ""
 url_slides: ""

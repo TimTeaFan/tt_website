@@ -29,7 +29,7 @@ image:
 projects: []
 ---
 
-This is my first example post. Lets see how R code gets rendered.
+This is my first example post. Lets see how R code gets rendered. Here is some `inline code`.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(

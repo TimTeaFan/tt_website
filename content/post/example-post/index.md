@@ -27,11 +27,11 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: aa1247a29a5fcc99
+rmd_hash: e838480641229502
 
 ---
 
-This is my first example post. Lets see how R code gets rendered.
+This is my first example post. Lets see how R code gets rendered. Here is some `inline code`.
 
 <div class="highlight">
 
@@ -56,6 +56,7 @@ This is my first example post. Lets see how R code gets rendered.
 <span class='k'>a_number</span> <span class='o'>&lt;-</span> <span class='m'>232</span>
 
 <span class='m'>Inf</span>
+
 
 
 <span class='k'>iris</span>[,<span class='m'>1</span><span class='o'>:</span><span class='m'>5</span>] <span class='o'>%&gt;%</span> 

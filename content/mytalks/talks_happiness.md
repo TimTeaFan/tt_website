@@ -8,7 +8,7 @@ active = true  # Activate this widget? true/false
 weight = 30  # Order that this section will appear.
 
 title = "Happiness"
-subtitle = "Presentations from my time as a happiness researcher"
+subtitle = "Selected talks on happiness research"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
@@ -31,7 +31,7 @@ subtitle = "Presentations from my time as a happiness researcher"
     author = ""
     exclude_featured = true
     exclude_past = false
-    exclude_future = true
+    exclude_future = false
     
 [design]
   # Toggle between the various page layout types.

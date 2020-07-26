@@ -99,8 +99,10 @@ ul.share > li > a {
 /* about section */
 
 #about {
-  color: #1f2229;
-  background-color: #59aaff;
+  color: #1f2229; /*#ffffff*/
+  /*ackground-color: #59aaff; */
+  background: rgb(30,125,224);
+  background: linear-gradient(45deg, rgba(30,125,224,1) 0%, rgba(89,170,255,1) 43%, rgba(158,201,246,1) 100%);
 }
 
 .home-section {
@@ -109,9 +111,15 @@ ul.share > li > a {
 
 ul.network-icon > li > a, .institution, .institution > a {
 /*ul.network-icon > li > a:link, ul.network-icon > li > a:visited, .institution */
-    color: #ffffff !important;
+    color: #ffffff !important; /*#ffffff*/
     text-decoration: none !important;
 }
+
+/*
+.institution, .institution > a {
+    color: #fffffff !important; #1f2229
+    text-decoration: none !important;
+} */
 
 
 .portrait-title > h3 > a {
@@ -124,7 +132,7 @@ ul.network-icon > li > a, .institution, .institution > a {
 }
 
 #about h1 , #about h3 {
-  color: #d9e5ff;
+  color: #ffffff; /*#1f2229*/
   font-weight: 400;
 }
 
@@ -153,12 +161,19 @@ footer {
 }
 
 /* everything code related */
+@media screen and (min-width: 58em) {
+code {
+  font-size: 17px !important;
+  }
+pre > code {
+  font-size: 15px !important; }
+}
 code {
   color: #ffffff !important;
   background: #4f586e !important; /*4f586e*/
   font-family: Monaco, monospace;
-  font-size: 17px !important;
 }
+
 pre {
   background: #292f3d !important;
   margin-left: 5%;
@@ -171,7 +186,7 @@ pre {
 
 pre > code {
   background: #292f3d !important;
-  font-size: 15px !important;
+  /*font-size: 15px !important;*/
 }
 
 code a {
@@ -222,15 +237,42 @@ code a {
 
 
 /* talks widget */
+#talks_happiness.home-section, #talks_datascience.home-section {
+  padding-top: 0 !important;
+}
 
-
-#talks_datascience .article-title > a, #talks_happiness .article-title > a {
+#talks_datascience .article-title > a, #talks_happiness .article-title > a, .col-lg-10  h3.article-title > a {
   color: #ffffff !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  text-decoration: none !important;
+}
+
+a.nolink {
   cursor: default;
+  color: #b2b2b2;
   pointer-events: none;
   text-decoration: none;
+  /*border: none !important;*/
+  border-color: #b2b2b2;
 }
 
 #talks_datascience .see-all {
  display: none;
+}
+
+.media-body > h3  > a {
+  font-size: smaller !important;
+}
+
+.media.stream-item .stream-meta {
+  margin-top: 3px !important;
+}
+
+.media.stream-item {
+  margin-bottom: 25px !important;
+}
+
+#talk_list h3 {
+  color: #b2b2b2 !important;
 }

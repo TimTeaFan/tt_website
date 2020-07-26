@@ -1,9 +1,9 @@
 ---
-title: 'Disentangling the Happiness Effects of Natural Disasters: The Mitigating Effects of Charitable Donations'
+title: 'Analyzing the link between political participation  and happiness: A perspective from Japan'
 event: []
 event_url: []
 
-location: "Sustaining Quality of Life across the Globe, The XII. Quality of Life Conference @ Berlin"
+location: '”, DIJ Workshop Improving the people’s lot? Different conceptions of well-being between promises and reality Workshop @ DIJ, Tokyo'
 address:
   street: []
   city: []
@@ -15,14 +15,14 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2014-09-17"
-date_end: []
+date: "2014-07-29"
+# date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
 publishDate: "2017-01-01T00:00:00Z"
 
-authors: [Tim Tiefenbach]
+authors: 
 categories:
 - happiness
 tags: [happiness]
@@ -38,7 +38,6 @@ links:
 - icon: university
   icon_pack: fas
   name: Conference
-  url: https://isqols.org/page-18263
 url_code: ""
 url_pdf: ""
 url_slides: ""

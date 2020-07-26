@@ -1,9 +1,9 @@
 ---
-title: 'Panel discussant, “Does Work Make Us Happy?" (in Japanese)'
+title: 'Political Participation and Procedural Utility from a Gender Perspective:  Activities in Neighborhood Associations in Japan'
 event: []
 event_url: []
 
-location: 'World Wide Work: Global Debate @ Goethe Institut, Tokyo'
+location: 'XVIII ISA World Congress of Sociology: Facing an unequal world: Challenges for Global Sociology @ Yokohama'
 address:
   street: []
   city: []
@@ -15,14 +15,14 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2014-05-24"
-date_end: []
+date: "2014-07-17"
+# date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
 publishDate: "2017-01-01T00:00:00Z"
 
-authors: [Tim Tiefenbach]
+authors: 
 categories:
 - happiness
 tags: [happiness]
@@ -35,14 +35,9 @@ image:
 #  focal_point: Right
 
 links:
-- icon: comments
-  icon_pack: far
-  name: Panel Discussion
-  url: 
-- icon: comments
-  icon_pack: far
-  name: Panel Discussion
-  url: 
+- icon: university
+  icon_pack: fas
+  name: Conference
 url_code: ""
 url_pdf: ""
 url_slides: ""

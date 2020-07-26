@@ -1,9 +1,9 @@
 ---
-title: 'The Impact of the Great East Japan Earthquake on Happiness, Donations and Volunteer Activities'
+title: ''
 event: []
 event_url: []
 
-location: "Annual Conference of the Association of Behavioral Economics and Finance (Japan) 2013 @ Kyoto University"
+location: ''
 address:
   street: []
   city: []
@@ -15,14 +15,14 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2013-12-14"
-date_end: []
+date: ""
+# date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
 publishDate: "2017-01-01T00:00:00Z"
 
-authors: [Tim Tiefenbach]
+authors: 
 categories:
 - happiness
 tags: [happiness]
@@ -38,7 +38,6 @@ links:
 - icon: university
   icon_pack: fas
   name: Conference
-  url: http://www.abef.jp/archive/event/2013/index.html
 url_code: ""
 url_pdf: ""
 url_slides: ""

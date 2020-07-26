@@ -1,9 +1,9 @@
 ---
-title: 'Work and Well-being in Japan: The Divergence between Importance of and Satisfaction with Work and its Impact on the Overall Happiness Level'
+title: 'The triple disaster of March 11 and its effect on the Japanese people'
 event: []
 event_url: []
 
-location: 'IPPA 3rd World Congress on Positive Psychology @ Los Angeles'
+location: '1st EAJS Conferences in Japan @ Kyoto'
 address:
   street: []
   city: []
@@ -15,14 +15,14 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2013-06-30"
-date_end: []
+date: "2013-09-29"
+# date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
 publishDate: "2017-01-01T00:00:00Z"
 
-authors: [Tim Tiefenbach]
+authors: 
 categories:
 - happiness
 tags: [happiness]
@@ -38,7 +38,6 @@ links:
 - icon: university
   icon_pack: fas
   name: Conference
-  url: https://www.ippanetwork.org
 url_code: ""
 url_pdf: ""
 url_slides: ""

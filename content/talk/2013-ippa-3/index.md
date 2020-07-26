@@ -1,9 +1,9 @@
 ---
-title: 'Changes in Subjective Well-being and Attitudes in the Aftermath of Nuclear Disasters: A German-Japanese Comparison'
+title: 'Work and Well-being in Japan: The Divergence between Importance of and Satisfaction with Work and its Impact on the Overall Happiness Level'
 event: []
 event_url: []
 
-location: 'OECD-Universities Joint Conference “Economics for a Better World” @ OECD Paris.'
+location: 'IPPA 3rd World Congress on Positive Psychology @ Los Angeles'
 address:
   street: []
   city: []
@@ -15,14 +15,14 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2013-07-04"
+date: "2013-06-30"
 date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
 publishDate: "2017-01-01T00:00:00Z"
 
-authors: [Tim Tiefenbach]
+authors: 
 categories:
 - happiness
 tags: [happiness]
@@ -38,7 +38,6 @@ links:
 - icon: university
   icon_pack: fas
   name: Conference
-  url: http://www.open.ac.uk/socialsciences/welfareconomicstheory/
 url_code: ""
 url_pdf: ""
 url_slides: ""

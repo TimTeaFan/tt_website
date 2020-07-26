@@ -8,7 +8,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 10  # Order that this section will appear.
 
-title = "Presentations, Workshops and other talks"
+title = "Talks"
 subtitle = ""
 
 [design]
@@ -50,4 +50,4 @@ subtitle = ""
  css_class = ""
 +++
 
-On this website you will find ... .
+<p style="text-align: left;">On this website you will find ... .</p>
