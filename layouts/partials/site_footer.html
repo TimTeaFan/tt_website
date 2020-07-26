@@ -1,6 +1,6 @@
 <footer class="site-footer">
   {{ with site.GetPage "license.md" }}
-  <p class="powered-by">
+  <p class="powered-by license">
     {{ printf "<a href=\"%s\">%s <br> %s </a>" .RelPermalink .Title .LinkTitle  | safeHTML }}<br>
   </p>
   {{ end }}
