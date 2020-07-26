@@ -1,9 +1,9 @@
 ---
-title: 'Changes in Subjective Well-being and Attitudes in the Aftermath of Nuclear Disasters: A German-Japanese Comparison'
+title: 'Panel discussant, “Satt, aber unglücklich? Faktoren der Lebensqualität im Alter” [Satisfied, but unhappy? Determinants of Quality of Life in Old Age]'
 event: []
 event_url: []
 
-location: 'OECD-Universities Joint Conference “Economics for a Better World” @ OECD Paris.'
+location: 'Geisteswissenschaft im Dialog, Akademie der Wissenschaften und der Literatur @ Mainz, Germany.'
 address:
   street: []
   city: []
@@ -15,8 +15,8 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2013-07-04"
-date_end: []
+date: "2013-05-27"
+# date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
@@ -28,16 +28,16 @@ categories:
 tags: [happiness]
 
 # Is this a featured talk? (true/false)
-featured: false
+featured: true
 
 image:
 #  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/bzdhc5b3Bxs)'
 #  focal_point: Right
 
 links:
-- icon: university
-  icon_pack: fas
-  name: Conference
+- icon: comments
+  icon_pack: far
+  name: Panel Discussion
 url_code: ""
 url_pdf: ""
 url_slides: ""

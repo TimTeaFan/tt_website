@@ -1,9 +1,9 @@
 ---
-title: 'Loneliness among older people in Japan: A perspective from happiness economics'
+title: 'Bürgergesellschaft und Glück in Japan: Eine ökonometrische Betrachtung” [Civil Society and Happiness in Japan: The View from Happiness Economics]'
 event: []
 event_url: []
 
-location: 'Deciphering the Social DNA of Happiness: Life Course Perspectives from Japan @ University of Vienna'
+location: 'Colloquium @ University of Halle Germany'
 address:
   street: []
   city: []
@@ -15,7 +15,7 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2014-04-26"
+date: "2013-05-30"
 # date_end: []
 all_day: true
 
@@ -28,16 +28,16 @@ categories:
 tags: [happiness]
 
 # Is this a featured talk? (true/false)
-featured: true
+featured: false
 
 image:
 #  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/bzdhc5b3Bxs)'
 #  focal_point: Right
 
 links:
-- icon: university
+- icon: comment
   icon_pack: fas
-  name: Conference
+  name: Talk
 url_code: ""
 url_pdf: ""
 url_slides: ""

@@ -3,7 +3,7 @@ title: 'The triple disaster of March 11 and its effect on the Japanese people'
 event: []
 event_url: []
 
-location: '1st EAJS Conferences in Japan @ Kyoto'
+location: '1st EAJS Conference in Japan @ Kyoto'
 address:
   street: []
   city: []
@@ -28,7 +28,7 @@ categories:
 tags: [happiness]
 
 # Is this a featured talk? (true/false)
-featured: false
+featured: true
 
 image:
 #  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/bzdhc5b3Bxs)'

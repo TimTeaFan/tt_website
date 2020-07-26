@@ -1,9 +1,9 @@
 ---
-title: 'Loneliness among older people in Japan: A perspective from happiness economics'
+title: 'The Impact of the Great East Japan Earthquake on Happiness, Donations and Volunteer Activities'
 event: []
 event_url: []
 
-location: 'Deciphering the Social DNA of Happiness: Life Course Perspectives from Japan @ University of Vienna'
+location: "Annual Conference of the Association of Behavioral Economics and Finance (Japan) 2013 @ Kyoto University"
 address:
   street: []
   city: []
@@ -15,8 +15,8 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2014-04-26"
-# date_end: []
+date: "2013-12-14"
+date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).

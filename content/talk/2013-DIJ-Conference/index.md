@@ -35,9 +35,9 @@ image:
 #  focal_point: Right
 
 links:
-- icon: university
+- icon: user-graduate
   icon_pack: fas
-  name: Conference
+  name: Academic Workshop
 url_code: ""
 url_pdf: ""
 url_slides: ""

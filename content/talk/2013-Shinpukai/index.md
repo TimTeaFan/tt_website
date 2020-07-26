@@ -1,9 +1,9 @@
 ---
-title: 'Building a Data Analytics Community'
+title: 'A German Japanese Comparison of Peoples Happiness and Mental Well-being'
 event: []
 event_url: []
 
-location: Company internal presentation via Skype
+location: 'Shinpukai (OB meeting) under Prof. Okumura @ Tokyo.'
 address:
   street: []
   city: []
@@ -15,17 +15,17 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2018-10-06T"
-# date_end: "2020-08-27T15:00:00Z"
+date: "2013-10-09"
+# date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
 publishDate: "2017-01-01T00:00:00Z"
 
-authors: [Tim Tiefenbach]
+authors: 
 categories:
-- datascience
-tags: [datascience]
+- happiness
+tags: [happiness]
 
 # Is this a featured talk? (true/false)
 featured: true
@@ -35,10 +35,9 @@ image:
 #  focal_point: Right
 
 links:
-# - icon: twitter
-#  icon_pack: fab
-#  name: Follow
-#  url: https://twitter.com/georgecushen
+- icon: comment
+  icon_pack: fas
+  name: Talk
 url_code: ""
 url_pdf: ""
 url_slides: ""
@@ -49,7 +48,7 @@ url_video: ""
 #   Simply enter your slide deck's filename without extension.
 #   E.g. `slides = "example-slides"` references `content/slides/example-slides.md`.
 #   Otherwise, set `slides = ""`.
-slides: ""
+# slides: example
 
 # Projects (optional).
 #   Associate this post with one or more of your projects.
@@ -62,3 +61,14 @@ projects: []
 # Enable math on this page?
 math: false
 ---
+
+<!--
+# Slides can be added in a few ways:
+
+# - **Create** slides using Academic's [*Slides*](https://sourcethemes.com/academic/docs/managing-content/#create-slides) feature # and link using `slides` parameter in the front matter of the talk file
+# - **Upload** an existing slide deck to `static/` and link using `url_slides` parameter in the front matter of the talk file
+# - **Embed** your slides (e.g. Google Slides) or presentation video on this page using 
+# [shortcodes](https://sourcethemes.com/academic/docs/writing-markdown-latex/).
+
+# Further talk details can easily be added to this page using *Markdown* and $\rm \LaTeX$ math code.
+-->

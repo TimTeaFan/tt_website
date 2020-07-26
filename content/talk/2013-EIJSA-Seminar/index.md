@@ -1,9 +1,9 @@
 ---
-title: 'Measuring Domain Satisfaction: The Problem of Domain Importance'
+title: "A Commentary on: Effects of the Great East Japan Earthquake on Japanese People's Worldviews and Subjective Well-Being"
 event: []
 event_url: []
 
-location: "OECD Asia-Pacific Workshop on Subjective Well-being, Measurement and Policy Use @ Statistical Training Center, Daejon"
+location: 'European Institute of Japanese Studies Academy Seminar @ Embassy of Sweden, Tokyo'
 address:
   street: []
   city: []
@@ -15,8 +15,8 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2015-11-25"
-date_end: []
+date: "2013-05-13"
+# date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
@@ -35,12 +35,9 @@ image:
 #  focal_point: Right
 
 links:
-- icon: university
+- icon: comment
   icon_pack: fas
-  name: Conference
-- icon: globe-americas
-  icon_pack: fas
-  name: OECD
+  name: Talk
 url_code: ""
 url_pdf: ""
 url_slides: ""

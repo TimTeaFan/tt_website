@@ -1,5 +1,5 @@
 ---
-title: List of all talks
+title: Full List of Talks
 
 # View.
 #   1 = List
@@ -12,3 +12,5 @@ header:
   caption: ""
   image: ""
 ---
+
+<br>

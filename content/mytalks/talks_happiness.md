@@ -8,7 +8,7 @@ active = true  # Activate this widget? true/false
 weight = 30  # Order that this section will appear.
 
 title = "Happiness"
-subtitle = "Selected talks on happiness research"
+subtitle = "Talks on Happiness Research"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
@@ -26,7 +26,7 @@ subtitle = "Selected talks on happiness research"
   # Filter posts by a taxonomy term.
   [content.filters]
     tag = ""
-    category = ""
+    category = "happiness"
     publication_type = ""
     author = ""
     exclude_featured = true

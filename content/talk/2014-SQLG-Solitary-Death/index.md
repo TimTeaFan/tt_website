@@ -1,9 +1,9 @@
 ---
-title: 'The Influence of Trust on Worries about Solitary Death'
+title: 'Fear of Solitary Death in Japan: Impact Factors and Policy Implications'
 event: []
 event_url: []
 
-location: 'Trust and Risks in Changing Societies, 13th Meeting of the German-Japanese Society for Social Sciences @ DIJ, Tokio'
+location: "Sustaining Quality of Life across the Globe, The XII. Quality of Life Conference @ Berlin"
 address:
   street: []
   city: []
@@ -15,8 +15,8 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2015-10-09"
-# date_end: []
+date: "2014-09-15"
+date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).
@@ -28,7 +28,7 @@ categories:
 tags: [happiness]
 
 # Is this a featured talk? (true/false)
-featured: false
+featured: true
 
 image:
 #  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/bzdhc5b3Bxs)'

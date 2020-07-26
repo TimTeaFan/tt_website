@@ -1,9 +1,9 @@
 ---
-title: 'Loneliness among older people in Japan: A perspective from happiness economics'
+title: 'Changes in Subjective Well-being and Attitudes in the Aftermath of Nuclear Disasters: A German-Japanese Comparison'
 event: []
 event_url: []
 
-location: 'Deciphering the Social DNA of Happiness: Life Course Perspectives from Japan @ University of Vienna'
+location: 'OECD-Universities Joint Conference “Economics for a Better World” @ OECD Paris.'
 address:
   street: []
   city: []
@@ -15,8 +15,8 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2014-04-26"
-# date_end: []
+date: "2013-07-04"
+date_end: []
 all_day: true
 
 # Schedule page publish date (NOT talk date).

@@ -1,9 +1,9 @@
 ---
-title: 'Fear of Solitary Death in Japan: Impact Factors and Policy Implications'
+title: 'Measuring Domain Satisfaction: The Problem of Domain Importance'
 event: []
 event_url: []
 
-location: "Sustaining Quality of Life across the Globe, The XII. Quality of Life Conference @ Berlin"
+location: "OECD Asia-Pacific Workshop on Subjective Well-being, Measurement and Policy Use @ Statistical Training Center, Daejon"
 address:
   street: []
   city: []
@@ -15,7 +15,7 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2014-09-15"
+date: "2015-11-25"
 date_end: []
 all_day: true
 
@@ -35,9 +35,9 @@ image:
 #  focal_point: Right
 
 links:
-- icon: university
+- icon: globe-americas
   icon_pack: fas
-  name: Conference
+  name: OECD Workshop
 url_code: ""
 url_pdf: ""
 url_slides: ""

@@ -1,9 +1,9 @@
 ---
-title: 'Loneliness among older people in Japan: A perspective from happiness economics'
+title: 'Happiness in Japan from the Viewpoint of Economics'
 event: []
 event_url: []
 
-location: 'Deciphering the Social DNA of Happiness: Life Course Perspectives from Japan @ University of Vienna'
+location: 'Waseda Lunch Seminar @ Waseda University, Tokyo'
 address:
   street: []
   city: []
@@ -15,7 +15,7 @@ summary: []
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: "2014-04-26"
+date: "2013-11-19"
 # date_end: []
 all_day: true
 
@@ -35,9 +35,9 @@ image:
 #  focal_point: Right
 
 links:
-- icon: university
+- icon: comment
   icon_pack: fas
-  name: Conference
+  name: Talk
 url_code: ""
 url_pdf: ""
 url_slides: ""

@@ -6,13 +6,6 @@ body, body.dark, .dark .docs-toc-link, .dark .docs-sidebar .nav > li:not(.active
   -webkit-font-smoothing: antialiased;
 }
 
-/* footer */
-body#top > .container {
-  width: 100% !important;
-  max-width: none !important;
-  background: #1f2229 !important;
-}
-
 /*navbar*/
 
 a.navbar-brand {
@@ -160,6 +153,16 @@ footer {
   text-decoration: none !important;
 }
 
+body#top > .container {
+  width: 100% !important;
+  max-width: none !important;
+  background: #1f2229 !important;
+}
+
+.license > a {
+  font-size: smaller !important;
+}
+
 /* everything code related */
 @media screen and (min-width: 58em) {
 code {
@@ -276,3 +279,5 @@ a.nolink {
 #talk_list h3 {
   color: #b2b2b2 !important;
 }
+
+

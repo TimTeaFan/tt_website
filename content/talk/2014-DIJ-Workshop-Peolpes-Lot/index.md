@@ -1,9 +1,9 @@
 ---
-title: 'Analyzing the link between political participation  and happiness: A perspective from Japan'
+title: 'Analyzing the link between political participation and happiness: A perspective from Japan'
 event: []
 event_url: []
 
-location: '”, DIJ Workshop Improving the people’s lot? Different conceptions of well-being between promises and reality Workshop @ DIJ, Tokyo'
+location: 'DIJ Workshop Improving the people’s lot? Different conceptions of well-being between promises and reality Workshop @ DIJ, Tokyo'
 address:
   street: []
   city: []
@@ -28,16 +28,16 @@ categories:
 tags: [happiness]
 
 # Is this a featured talk? (true/false)
-featured: false
+featured: true
 
 image:
 #  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/bzdhc5b3Bxs)'
 #  focal_point: Right
 
 links:
-- icon: university
+- icon: user-graduate
   icon_pack: fas
-  name: Conference
+  name: Academic Workshop
 url_code: ""
 url_pdf: ""
 url_slides: ""
