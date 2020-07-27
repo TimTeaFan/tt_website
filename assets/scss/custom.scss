@@ -55,8 +55,8 @@ h3, .dark h3 {
 
 /* posts */
 h3.article-title > a {
-  text-transform: none !important;
-  color: #69afff !important;
+/*h  text-transform: none !important;
+  color: #69afff !important; */
   font-weight: 300;
   }
 
@@ -280,4 +280,8 @@ a.nolink {
   color: #b2b2b2 !important;
 }
 
+/**/
 
+#publications.home-section {
+  padding-top: 50px !important;
+}

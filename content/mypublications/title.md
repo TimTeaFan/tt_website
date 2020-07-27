@@ -8,7 +8,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 10  # Order that this section will appear.
 
-title = "Talks & Presentations"
+title = "Major Publications"
 subtitle = ""
 
 [design]
@@ -51,4 +51,4 @@ subtitle = ""
 +++
 
 <br>
-<p style="text-align: left;"> Below you find selected talks and presentations on two of my major topics: Data Science and Happiness. During my time as a happiness researcher I was very active speaker [see my full list of presentations] gave Below is a list of talks and presentations I gave over the years. I was especially active as a speaker during my time as a hapiness researcher. I welcome opportunities to speak about Data Science, Statistics and R.... .</p>
+<p style="text-align: left;"> Below is a list of my journal articles that I wrote as a happiness researcher. If you are interested in ... publications, have a look at my google scholar profile or look me up on research gate.</p>
