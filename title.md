@@ -8,8 +8,8 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 10  # Order that this section will appear.
 
-title = "Major Publications"
-subtitle = ""
+title = "Mostly Counting"
+subtitle = "A collection of posts on Data Science and R"
 
 [design]
   # Choose how many columns the section has. Valid values: 1 or 2.
@@ -51,4 +51,4 @@ subtitle = ""
 +++
 
 <br>
-<p class="intro" style="text-align: left;"> Below is a list of journal articles that I published during my time as a hapiness researcher. You can find more of my publications on <a href="https://scholar.google.com/citations?hl=de&user=SZvmiGgAAAAJ" target="_blank">Google Scholar</a> or <a href="https://www.researchgate.net/profile/Tim_Tiefenbach" target="_blank">Research Gate</a>. Alternatively you can download my <a href="publications.pdf" target="_blank">full list of publications</a> as PDF.</p>
+<p style="text-align: left;"> Below you find a selection of talks and presentations on two of my major topics: Data Science and Happiness. During my time as a happiness researcher I was a very active speaker [see my full list of presentations] gave Below is a list of talks and presentations I gave over the years. I was especially active as a speaker during my time as a hapiness researcher. I welcome opportunities to speak about Data Science, Statistics and R.... .</p>

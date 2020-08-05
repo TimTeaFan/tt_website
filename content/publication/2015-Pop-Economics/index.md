@@ -24,7 +24,7 @@ publication: In *Journal of Population Economics, vol. 28, pp. 1137–1180*
 abstract: "We study the impact of the Fukushima disaster on environmental concerns, well-being, risk aversion, and political preferences in Germany, Switzerland, and the UK. In these countries, overall life satisfaction did not significantly decrease, but the disaster significantly increased environmental concerns among Germans. One underlying mechanism likely operated through the perceived risk of a similar meltdown of domestic reactors. After Fukushima, more Germans considered themselves as “very risk averse.” However, drastic German policy action shut down the oldest reactors, implemented the phaseout of the remaining ones, and proclaimed the transition to renewables. This shift in energy policy contributed to the subsequent decrease in environmental concerns, particularly among women, Green party supporters, and people living in close distance to the oldest reactors. In Germany, political support for the Greens increased significantly, whereas in Switzerland and the UK, this increase was limited to people living close to reactors."
 
 # Summary. An optional shortened abstract.
-# summary: This study finds that in the case of the triple disaster of March 11 in Japan, donations mitigate the  negative effects on subjective well-being (SWB).
+summary: Journal of Population Economics (2015), vol. 28, pp. 1137–1180
 
 tags:
  - Happiness

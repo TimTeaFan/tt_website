@@ -15,7 +15,7 @@
 
 [[main]]
   name = "Posts"
-  url = "/post"
+  url = "/mostly_counting"
   weight = 20
 
 [[main]]

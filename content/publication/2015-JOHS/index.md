@@ -22,7 +22,7 @@ publication: In *Journal of Happiness Studies, vol. 16 (2), pp. 333-366*
 abstract: "Happiness economics has become an established field of research, and happiness and life satisfaction are increasingly considered important policy goals by governments around the globe. The Japanese government has recently started to follow this trend by regularly collecting data on personal happiness and its determinants through nationwide surveys since 2010. Analyzing data from the 2011 National Survey on Lifestyle Preferences, this paper has three aims: first, we use the Japanese happiness data to check for similarities and differences compared to well-known findings established in the international literature. Second, from a Japanese perspective we contribute to ongoing debates regarding inconclusive findings. Third, we analyze the happiness effects of the impact of the Great East Japan Earthquake of March 11. Overall, our results confirm the majority of determinants established by previous studies in the field of happiness economics, such as income, unemployment and marriage. But we find significant differences regarding the effects of entrepreneurship and political participation. Finally, we do not find a statistically significant nation-wide drop in happiness after the disaster of 11 March 2011, but we observe a spatial effect indicating that respondents living closer to the Fukushima prefecture are less happy after the disaster."
 
 # Summary. An optional shortened abstract.
-# summary: This study finds that in the case of the triple disaster of March 11 in Japan, donations mitigate the negative effects on subjective well-being (SWB).
+summary: Journal of Happiness Studies (2015), vol. 16 (2), pp. 333-366
 
 tags:
  - Happiness

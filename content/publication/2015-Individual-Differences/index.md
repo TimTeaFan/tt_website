@@ -22,7 +22,7 @@ publication: In *Journal of Personality and Individual Differences, vol. 86, pp.
 abstract: "Previous studies have shown that personality traits account for a substantial amount of variance in individual levels of subjective well-being (SWB). However, these studies are limited in their ability to explain the intra- and interindividual differences in the processes of SWB. To redress this shortcoming, researchers have focused on moderators of the relationship between domain satisfaction and global life satisfaction. However, those studies assume only one specific type of interaction pattern for all life domains. Based on a national probability sample from Japan this paper analyzes the role of domain importance in the relationship between domain satisfaction and the overall SWB level. Our study is the first to explore different kinds of interaction patterns in the importance satisfaction moderation of life domains. We identify four different types of domains: (i) domains in which satisfaction correlates with happiness only when the domain is considered as important; (ii) domains in which satisfaction correlates with happiness no matter whether it is considered as important or not; (iii) domains in which the slope of the correlation between satisfaction and happiness increases when it is considered as important and (iv) domains which show no correlation with happiness not matter whether it is considered as important or not."
 
 # Summary. An optional shortened abstract.
-summary: We show that domain importance moderates the relationship of domain satisfaction and happiness. Interaction patterns vary across domains.
+summary: Journal of Personality and Individual Differences (2015), vol. 86, pp. 82–87
 
 tags:
  - Happiness

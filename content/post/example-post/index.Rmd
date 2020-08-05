@@ -36,33 +36,32 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
 ```
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 library(dplyr)
 iris %>% 
   glimpse
+
 ```
 
-
-
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 library(dplyr)
-UseMethod("plot")
 
 myfun <- function(x,y) x + y
 
-if(1>0) {
+if (1 > 0) {
   print("Hello")
 }
 NULL # a comment
 
 a_number <- 232
 
-Inf
+x <- 123 #> fake output
 
 
-
+# real output
 iris[,1:5] %>% 
   glimpse
 ```

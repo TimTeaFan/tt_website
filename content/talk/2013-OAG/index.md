@@ -1,5 +1,5 @@
 ---
-title: 'Bürgergesellschaft und politische Partizipation in Japan: Eine glücksökonomische Betrachtung” [Civil Society and Political Participation in Japan: The View from Happiness Economics]'
+title: 'Bürgergesellschaft und politische Partizipation in Japan: Eine glücksökonomische Betrachtung [Civil Society and Political Participation in Japan: The View from Happiness Economics]'
 event: []
 event_url: []
 

@@ -1,5 +1,5 @@
 ---
-title: 'Glück in Japan vor und nach dem 11. März: Ergebnisse des National Survey on Lifestyle Preferences” [Happiness in Japan Before and After March 11: Results from the National Survey on Life Style Preferences]'
+title: 'Glück in Japan vor und nach dem 11. März: Ergebnisse des National Survey on Lifestyle Preferences [Happiness in Japan Before and After March 11: Results from the National Survey on Life Style Preferences]'
 event: []
 event_url: []
 
