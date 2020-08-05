@@ -164,6 +164,11 @@ body#top > .container {
   background: #1f2229 !important;
 }
 
+/*Contact*/
+
+#contact.home-section {
+  padding-top: 30px !important;
+}
 .license > a {
   font-size: smaller !important;
 }
@@ -321,6 +326,10 @@ blockquote#mostly > i {
     font-size: 30px !important; } }
 
 /*license page*/
+
+.container.license {
+  margin-bottom: 300px;
+}
 
 .legal > h1 {
   font-size: 22px !important;
