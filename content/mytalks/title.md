@@ -51,4 +51,6 @@ subtitle = ""
 +++
 
 <br>
-<p class="intro" style="text-align: left;"> Below you find selected talks and presentations on two of my major topics: Data Science and Happiness. During my time as a happiness researcher I was very active speaker (<a href="/talks">see my full list of presentations</a>). Below is a list of talks and presentations I gave over the years. I was especially active as a speaker during my time as a hapiness researcher. I welcome opportunities to speak about Data Science, Statistics and R.... .</p>
+<p class="intro" style="text-align: left;"> Below you find selected talks and presentations on two of my major topics: Data Science and Happiness. During my time as a happiness researcher I enjoyed being a <i>very</i> active speaker (<a href="/talks">see my full list of presentations</a>). After that a lot happened: I became a father (twice), I transitioned from academia to industry, moved from Japan to Germany, and from happiness research to customer experience and data science. Recently, I started giving talks again, mainly in a work environment, but I welcome any opportunities to speak about Data Science, Statistics and R. Just <a href="/#aboutcontact">reach out to me</a>.</p>
+
+
