@@ -9,7 +9,7 @@ active = true  # Activate this widget? true/false
 weight = 10  # Order that this section will appear.
 
 title = "Mostly Counting"
-subtitle = "A collection of posts on Data Science and R"
+subtitle = "A collection of posts on Data Science, Statistics and R"
 
 [design]
   # Choose how many columns the section has. Valid values: 1 or 2.

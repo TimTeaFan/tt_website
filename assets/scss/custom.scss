@@ -96,46 +96,66 @@ ul.share > li > a {
 /* about section */
 
 #about {
-  color: #1f2229; /*#ffffff*/
+  color: #ffffff; /*#ffffff*/
   /*ackground-color: #59aaff; */
+background: rgb(148,198,255);
+background: linear-gradient(126deg, rgba(148,198,255,1) 0%, rgba(105,175,255,1) 10%, rgba(23,122,236,1) 100%, rgba(31,34,41,1) 100%);
+/*
 background: rgb(65,158,255);
 background: linear-gradient(125deg, rgba(65,158,255,1) 0%, rgba(150,201,255,1) 100%);
+background: rgb(105,175,255);
+background: linear-gradient(125deg, rgba(105,175,255,1) 0%, rgba(145,199,255,1) 64%);
+background: rgb(41,47,61);
+background: linear-gradient(0deg, rgba(41,47,61,1) 0%, rgba(105,175,255,1) 6%, rgba(105,175,255,1) 100%, rgba(31,34,41,1) 100%);
+*/
 }
+
+/*
+#about-card {
+  color: #1f2229;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 10px;
+  padding-top: 20px;
+  padding-bottom: 0px;
+  padding-right: 35px !important;
+  padding-left: 35px !important;
+}
+*/
 
 .home-section {
   padding-bottom: 30px !important;
 }
 
-ul.network-icon > li > a, .institution, .institution > a {
+ul.network-icon > li > a {
 /*ul.network-icon > li > a:link, ul.network-icon > li > a:visited, .institution */
     color: #ffffff !important; /*#ffffff*/
     text-decoration: none !important;
 }
 
-/*
 .institution, .institution > a {
-    color: #fffffff !important; #1f2229
+    color: #1f2229 !important;
+    font-weight: 400 !important; /*1f2229*/
     text-decoration: none !important;
-} */
+}
 
 
 .portrait-title > h3 > a {
-  color: #d9e5ff !important; /*1f2229*/
+  color: #94c6ff !important; /*d9e5ff*/
 }
 
 .portrait-title > h2,  {
-  font-weight: 100 !important;
+  font-weight: 400;
 
 }
 
 #about h1 , #about h3 {
-  color: #ffffff; /*#1f2229*/
-  font-weight: 400;
+  color: #d4e8ff; /*#1f2229*/
+  font-weight: 600;
 }
 
 #role {
-  font-weight: 100 !important; /*1f2229*/
-  color: #1f2229 !important;
+  font-weight: 600 !important; /*1f2229*/
+  color: #d4e8ff !important;
 }
 
 .fa-graduation-cap, .fa-briefcase{
@@ -370,3 +390,10 @@ blockquote#mostly > i {
 @media screen and (min-width: 58em) {
   .legal > p {
       font-size: 16px !important; } }
+
+
+/**/
+
+.see-all {
+  text-transform: none;
+}

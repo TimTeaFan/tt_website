@@ -1,6 +1,6 @@
 ---
 title: Mostly Counting
-subtitle: A collection of posts on Data Science and R
+subtitle: A collection of posts on Data Science, Statistics and R
 
 # View.
 #   1 = List
@@ -12,7 +12,7 @@ view: 2
 header:
   caption: ""
   image: ""
-
+ 
 ---
 
 
