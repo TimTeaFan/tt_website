@@ -8,7 +8,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 20  # Order that this section will appear.
 
-title = "About this site ..."
+title = ""
 subtitle = ""
 
 [design]
@@ -50,8 +50,27 @@ subtitle = ""
  css_class = ""
 +++
 
-<h3 style="margin-top: 0; color: #98a6ad; font-weight: 100">... and how I made it</h3>
+<h1 style="text-align: center">About this site</h1>
+<h3 style="margin-top: 0; color: #98a6ad; font-weight: 100; text-align: center">and how I made it</h3>
+<br>
+<div class="row">
+<div class="col-12 col-lg-4 section-heading">
+      <h1>Content</h1>
+</div>
+    
+<div class="col-12 col-lg-8">
+<p>This </p>
+</div>
+</div>
 
-<p class="intro">
 
-</p>
+<div class="row">
+<div class="col-12 col-lg-4 section-heading">
+<h1>Content</h1>
+</div>
+    
+<div class="col-12 col-lg-8">
+<p>That </p>
+</div>
+</div>
+
