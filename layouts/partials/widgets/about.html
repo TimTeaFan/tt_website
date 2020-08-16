@@ -68,12 +68,13 @@
     </div>
   </div>
   <div class="col-12 col-lg-8">
+    <div class="row">
 
     {{/* Only display widget title in explicit instances of about widget, not in author pages. */}}
     {{ if and $page.Params.widget $page.Title }}<h1>{{ $page.Title | markdownify | emojify }}</h1>{{ end }}
 
     {{ $person_page.Content }}
-
+   </div>
     <div class="row">
 
       {{ with $person.interests }}
@@ -89,28 +90,17 @@
 
       {{ with $person.education }}
       <div class="col-md-7">
-        <h3>Work & Education</h3>
+        <h3>{{ i18n "education" | markdownify }}</h3>
         <ul class="ul-edu fa-ul">
-           <li>
-            <i class="fa-li fas fa-briefcase"></i>
-            <div class="description">
-              <p class="course">CX Data Scientist, 3 years</p>
-              <p class="institution"><a href="https://www.ruv.de">R+V Insurance Group</a></p>
-            </div>
-          </li>
-          <li>
-            <i class="fa-li fas fa-briefcase"></i>
-            <div class="description">
-              <p class="course">Post-doc Researcher, 5 years</p>
-              <p class="institution"><a href="https://www.dijtokyo.org">DIJ Tokyo</a></p>
-            </div>
-          </li>
           {{ range .courses }}
           <li>
-            <i class="fa-li fas fa-graduation-cap"></i>
+            {{ if .work }} <i class="fa-li fas fa-briefcase"></i>
+            {{ else }} <i class="fa-li fas fa-graduation-cap"></i>
+            {{ end }}
             <div class="description">
               <p class="course">{{ .course }}{{ with .year }}, {{ . }}{{ end }}</p>
-              <p class="institution">{{ .institution }}</p>
+              <p class="institution">{{ with .link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ end }} <span>{{ .institution }}</span> {{ if .link }}</a>{{ end }}
+                </p>
             </div>
           </li>
           {{ end }}

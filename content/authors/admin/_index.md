@@ -29,8 +29,19 @@ interests:
     
 education:
   courses:
+  - course: CX Data Scientist
+    institution: R+V Insurance Group
+    link: https://www.ruv.de
+    year: 3 years
+    work: true
+  - course: Post-doc Researcher
+    institution: DIJ Tokyo
+    link: https://www.dijtokyo.org
+    year: 5 years
+    work: true
   - course: Doctorate in Economics
     institution: University of Bayreuth, Germany
+    link: https://www.uni-bayreuth.de/en/
     year: 2011
 #  - course: M.A. Philosophy & Economics
 #    institution: University of Bayreuth, Germany
@@ -75,7 +86,9 @@ user_groups:
 - Visitors
 ---
 
-I am a data scientist working in insurance with a focus on customer satisfaction and customer experience data. 
+I am a data scientist working in insurance with a focus on customer satisfaction and customer experience. I enjoy working along the whole data science pipeline. From importing and cleaning data, to creating reports and visualizations using interactive dashboards, to building and training models. While R is my everyday work horse for most jobs, I am getting deeper into python for specific tasks such as NLP.
+
+Before becoming a Data Scientist, I was a post-doc researcher on happiness and life satisfaction in Japan. I have written numerous scientific publications at the intersection of psychology and economics and have presented my research at over 20 international conferences.
 
 
 
