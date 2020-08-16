@@ -18,10 +18,10 @@
   url = "/mostly_counting"
   weight = 20
 
-[[main]]
-  name = "Projects"
-  url = "/myprojects"
-  weight = 30
+# [[main]]
+#  name = "Projects"
+#  url = "/myprojects"
+#  weight = 30
 
 [[main]]
  name = "Publications"
