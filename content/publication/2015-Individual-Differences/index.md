@@ -4,7 +4,7 @@ authors:
 - admin
 - Florian Kohlbacher
 date: "2015-06-17"
-doi: "https://doi.org/10.1016/j.joep.2015.07.005"
+doi: "https://doi.org/10.1016/j.paid.2015.05.040"
 
 # Schedule page publish date (NOT publication's date).
 publishDate: "2017-01-01T00:00:00Z"

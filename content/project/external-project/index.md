@@ -1,14 +1,14 @@
 ---
-title: External Project
-summary: An example of linking directly to an external project website using `external_link`.
+title: dplyover
+summary: Create columns by applying functions to vectors and/or columns in 'dplyr'
 tags:
 - Demo
-date: "2016-04-27T00:00:00Z"
+date: "2021-04-27T00:00:00Z"
 
 # Optional external URL for project (replaces project detail page).
-external_link: http://example.org
+external_link: https://timteafan.github.io/dplyover/
 
 image:
-  caption: Photo by Toa Heftiba on Unsplash
+  caption: Logo by Tim Tiefenbach
   focal_point: Smart
 ---

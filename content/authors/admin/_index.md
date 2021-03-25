@@ -86,9 +86,11 @@ user_groups:
 - Visitors
 ---
 
-I am a data scientist working in insurance with a focus on customer satisfaction and customer experience. I enjoy working along the whole data science pipeline. From importing and cleaning data, to creating reports and visualizations using interactive dashboards, to building and training models. While R is my everyday work horse for most jobs, I am getting deeper into python for specific tasks such as NLP.
+<h1 id="hi-tim">Hi, I'm Tim!</h1>
+<p>I am a data scientist working in insurance with a focus on customer satisfaction and customer experience. I enjoy working along the whole data science pipeline. From importing and cleaning data, to creating reports and visualizations using interactive dashboards, to building and training models. While R is my everyday work horse for most jobs, I am getting deeper into python for specific tasks such as NLP.</p>
 
-Before becoming a Data Scientist, I was a post-doc researcher on happiness and life satisfaction in Japan. I have written numerous scientific publications at the intersection of psychology and economics and have presented my research at over 20 international conferences.
+<p>Before becoming a Data Scientist, I was a post-doc researcher on happiness and life satisfaction in Japan. I have written numerous scientific <a href="/mypublications">publications</a> at the intersection of psychology and economics and have presented my research at over 20 international <a href="/talk">conferences</a>.
+</p>
 
 
 

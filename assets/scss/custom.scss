@@ -1,7 +1,7 @@
 body, body.dark, .dark .docs-toc-link, .dark .docs-sidebar .nav > li:not(.active) > a, .dark .modal button.close, .dark input, .dark .form-control, .dark .form-control:focus {
 /*  background: #1f2229 !important;
   background-color: #1f2229 !important;; */
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lato', sans-serif; /* 'Source Serif Pro'*/
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
 }
@@ -85,6 +85,16 @@ ul.share > li > a {
   text-decoration: none !important;
 }
 
+/* project cards */
+.dark .card {
+  background-color: #1f2229 !important;
+}
+
+.card h4 {
+  text-transform: none !important;
+}
+
+
 .author-card .card-title {
   margin-bottom: 3px
 }
@@ -97,9 +107,13 @@ ul.share > li > a {
 
 #about {
   color: #ffffff; /*#ffffff*/
-  /*ackground-color: #59aaff; */
+  /*ackground-color: #59aaff;
 background: rgb(148,198,255);
 background: linear-gradient(126deg, rgba(148,198,255,1) 0%, rgba(105,175,255,1) 10%, rgba(23,122,236,1) 100%, rgba(31,34,41,1) 100%);
+*/
+
+background: rgb(97,173,252);
+background: linear-gradient(126deg, rgba(97,173,252,1) 0%, rgba(48,149,255,1) 37%, rgba(23,136,255,1) 100%);
 /*
 background: rgb(65,158,255);
 background: linear-gradient(125deg, rgba(65,158,255,1) 0%, rgba(150,201,255,1) 100%);
@@ -124,6 +138,54 @@ background: linear-gradient(0deg, rgba(41,47,61,1) 0%, rgba(105,175,255,1) 6%, r
 
 .home-section {
   padding-bottom: 30px !important;
+}
+
+#about-intro.row p a {
+
+    display: inline-block;
+    position: relative;
+    margin: 0 2px;
+    color: #fff;
+    font-weight: 400;
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+    letter-spacing: .02em;
+    cursor: pointer;
+    z-index:1
+}
+
+#about-intro.row p {
+    letter-spacing:.025em
+}
+
+#about-intro.row p a:after {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: -webkit-calc(100% + 4px);
+    width: calc(100% + 4px);
+    left: -2px;
+    bottom: 4px;
+    height: 5px;
+    background:#33c09b
+}
+
+#about-intro.row p a:hover {
+    color:#fff
+}
+
+#about-intro.row p a:hover:after {
+    height: -webkit-calc(100% - 9px);
+    height: calc(100% - 9px);
+    -webkit-transition: height, .15s;
+    -moz-transition: height, .15s;
+    transition: height, .1s
+}
+
+#hi-tim{
+  font-weight: 100 !important;
+  color: white !important;
 }
 
 ul.network-icon > li > a {
@@ -165,6 +227,51 @@ ul.network-icon > li > a {
 ul.ul-edu li .description p.year {
   font-size: 0.75rem;
   color: rgba(0, 0, 0, 0.6); }
+
+/*links in intro*/
+
+p.intro a {
+    color: #f8f8f2 !important;
+    display: inline-block;
+    position: relative;
+    margin: 0 2px;
+    font-weight: 400;
+    text-decoration-line: underline !important;
+    text-decoration-style: dotted !important;
+    letter-spacing: .02em;
+    cursor: pointer;
+    z-index:1
+}
+
+p.intro  {
+    letter-spacing:.025em
+}
+
+p.intro a:after {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: -webkit-calc(100% + 4px);
+    width: calc(100% + 4px);
+    left: -2px;
+    bottom: 4px;
+    height: 5px;
+    background: #489bfa
+}
+
+p.intro a:hover {
+    color:#fff
+}
+
+p.intro a:hover:after {
+    height: -webkit-calc(100% - 9px);
+    height: calc(100% - 9px);
+    -webkit-transition: height, .15s;
+    -moz-transition: height, .15s;
+    transition: height, .1s
+}
+
 
 /*footer*/
 
@@ -313,10 +420,12 @@ a.nolink {
   padding-top: 50px !important;
 }
 
+/*
 p.intro > a {
   color: #69afff !important;
   text-decoration: none !important;
 }
+*/
 
 /*quote mostly*/
 
