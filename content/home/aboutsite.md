@@ -55,22 +55,28 @@ subtitle = ""
 <br>
 <div class="row">
 <div class="col-12 col-lg-4 section-heading">
-      <h1>Content</h1>
+      <h3>Content</h3>
 </div>
     
 <div class="col-12 col-lg-8">
-<p>This </p>
+<p class="intro">On this website you'll find:</p>
+<ul>
+<li class="intro">a <a href="#about">short introduction and bio</a></li>
+<li class="intro">an overview of my programming <a href="/myprojects">projects</a></li>
+<li class="intro">my major  <a href="/mypublications">publications</a></li>
+<li class="intro">a list of <a href="/mytalks">talks</a></li>
+<li class="intro">my attempt to writing a <a href="/mostly_counting">blog</a></li>
 </div>
 </div>
 
 
 <div class="row">
 <div class="col-12 col-lg-4 section-heading">
-<h1>Content</h1>
+  <h3>Tech</h3>
 </div>
     
 <div class="col-12 col-lg-8">
-<p>That </p>
+<p class="intro">This website was created using several tools. The core is build on <a href="https://gohugo.io" target="_blank">Hugo</a> and an older version of the <a href="https://github.com/wowchemy/starter-hugo-academic" target="_blank">Academic Theme</a>. This basic setup renders markdown files as HTML. Further, the R package <a href="https://hugodown.r-lib.org" target="_blank">hugodown</a> is used to convert Rmarkdown to markdown files, which powers the blog posts. The web deployment is done via <a href="" target="_blank">Netlify</a>.</p> 
 </div>
 </div>
 

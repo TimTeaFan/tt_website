@@ -8,7 +8,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 10  # Order that this section will appear.
 
-title = "Talks & Presentations"
+title = "Portfolio"
 subtitle = ""
 
 [design]
@@ -49,8 +49,6 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
-
-<br>
-<p class="intro" style="text-align: left;"> Below you find selected talks and presentations on two of my major topics: Data Science and Happiness. During my time as a happiness researcher I enjoyed being a <i>very</i> active speaker (<a href="/talk">see my full list of presentations</a>). After that a lot happened: I became a father (twice), I transitioned from academia to industry, moved from Japan to Germany, and from happiness research to customer experience and data science. Recently, I started giving talks again, mainly in a work environment, but I welcome any opportunities to speak about Data Science, Statistics and R. Just <a href="/#aboutcontact">reach out to me</a>.</p>
+<p style="text-align: left;">My portfolio covers a variety of projects ranging from R packages and dashboards to Twitter bots and workflows as well as helpful repositories that I have created. Please refer to the linked github pages for details on licenses and terms of use.</p>
 
 

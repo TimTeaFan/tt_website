@@ -1,0 +1,262 @@
+---
+output: hugodown::md_document
+# Documentation: https://sourcethemes.com/academic/docs/managing-content/
+
+title: "Partially renaming columns using a lookup table"
+subtitle: ""
+summary: "This blog post shows how to partially rename columns with a lookup table using four different approaches: base R, data.table, dplyr, and pandas."
+authors: []
+tags: ["R", "Python"]
+categories: ["R", "Python"]
+date: 2022-12-23
+lastmod: 2022-12-23
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Focal points: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight.
+image:
+  caption: ""
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+use_python("/usr/local/Caskroom/miniconda/base/bin/python3.9")
+```
+
+## Intro
+
+Usually data sets come with short column names, which makes it easy to clean and manipulate the data. However, when presenting the data to stakeholders, in form of tables or plots, we often need longer, meaningful names. In many cases we have a lookup table which contains long and short versions of the column names so that we can "easily" replace the names when needed.
+
+Below we'll look at how to rename columns using different approaches in R. To make this a little bit more challenging, we'll add three conditions:
+
+1. The lookup table is not complete, that means lookup table only covers a subset of the columns in our data set.
+2. We are working with a subset of the original data, that means, the lookup table, although being not complete, holds actually *more* column name pairs than there are actually columns in the subset of our data.
+3. The sorting of the lookup table is different from the sorting of our actual column names.
+
+Without those three conditions partially renaming columns is actually not a big deal. In real world settings however, there are definitely cases where we have to rename columns under one or more of the above conditions. 
+
+It is interesting to see how the three large paradigms in R, base R, 'data.table' and 'dplyr' compare in handling this problem.
+
+This post concludes by looking at how we would tackle the same problem in Python's 'pandas' library.
+
+Let's start with the setup.
+
+## Setup
+
+We take the `mtcars` data set and create lookup `data.frame` called `recode_df` based on the information from the documentation `?mtcars`. Next, we apply the three conditions mentioned above (see code comments) and assign this new data to `mycars`.
+
+```{r}
+recode_df <- data.frame(
+  old = names(mtcars),
+  new = c("Miles per galon", "Number of cylinders", "Displacement (cu.in.)",
+          "Gross horsepower","Rear axle ratio", "Weight (1000 lbs)", 
+          "1/4 mile time", "Engine (0=automatic, 1=manual)",
+          "Number of forward gears", "Transmission (0=automatic, 1=manual)",
+          "Number of carbuertors")
+  )
+
+# condition 3: The lookup table has a different sorting than the actual column names
+# Here we choose a alphabetical ordering for the lookup table:
+recode_df <- recode_df[order(recode_df$old),]
+rownames(recode_df) <- NULL
+
+# condition 2: we are only working with a subset of the data
+# Here we only use every second column:
+every_2nd_col <- seq(from = 1, to = length(mtcars), by = 2)
+
+mycars <- mtcars[,every_2nd_col]
+
+# condition 1: the data has a column that is not part of the lookup table
+# Here we take the rownames and put them in a dedicated column `model` ...
+# ... which is no included in `recode_df`
+mycars <- cbind(model = rownames(mycars),
+                data.frame(mycars, row.names = NULL))
+
+str(mycars)
+```
+
+As as final step lets write both data.frame's `mycars` and `recode_df` from R to two separate csv files, so that we can load them easily into Python later on. (In RMarkdown we could of course access the objects created in R from Python via the `r` object, but lets stick to csv files to make this reproducible for all users.)
+
+```{r}
+write.csv(mycars, "mycars.csv")
+write.csv(recode_df, "recode_df.csv")
+```
+
+
+## base R
+
+Lets start with base R. If it weren't for the three conditions outlined above, renaming columns in base R would be really easy. It would basically boil down to a classic lookup using `match()` as index to extract `[` the new names: 
+
+```{r}
+recode_df$new[match(names(mycars), recode_df$old)]
+```
+
+But as we can see, this create an `NA` for the column name that is not included in the lookup table `model`.
+
+This leaves use with two options. Extract only those new column names `recode_df$new` for which we have recodes `recodes_nms`. We then replace only those names in our data.
+
+```{r}
+# create a new object so that we don't overwrite our original `mycars` data
+mycars_base <- mycars
+
+# get the column names of our data
+mycars_cols <- names(mycars_base)
+
+# find the column names for which we do have updated column names
+recode_nms <- mycars_cols[mycars_cols %in% recode_df$old]
+
+# get the new names by extracting `[` with `match()`
+new_nms <- recode_df$new[match(recode_nms, recode_df$old)]
+
+# Replace column names for which we have recodes with our new column names
+names(mycars_base)[mycars_cols %in% recode_nms] <- new_nms
+
+# use `str()` for better printing
+str(mycars_base)
+```
+
+The approach above is somewhat verbose, but it makes it easier to see each single step. It could be rewritten in one or two cryptic lines, but we wouldn't gain much from that.
+
+The other option to stick to the original `match()` extract `[` approach and `replace()` the `NA`s with the column names that don't change for which we need an index, below `idx_na`:
+
+```{r}
+# create a new object so that we don't overwrite our original `mycars` data
+mycars_base <- mycars
+
+# get the column names of our data
+mycars_cols <- names(mycars_base)
+
+# use original `match()` extract `[` approach 
+new_nms <- recode_df$new[match(mycars_cols, recode_df$old)]
+
+# Get index of `NA`s
+idx_na <- is.na(new_nms)
+
+# replace `NA`s in new_nms with original names in mycars
+new_nms_all <- replace(new_nms, # vector in which we want to replace values
+                       idx_na,  # index of values to replace
+                       mycars_cols[idx_na]) # values to fill in
+
+names(mycars_base) <- new_nms_all
+
+# use `str()` for better printing
+str(mycars_base)
+```
+
+Both cases are somewhat verbose and cumbersome, so lets have a look how we can tackle this problem using 'data.table' and 'dplyr'.
+
+
+## data.table
+
+The 'data.table' package sometimes has the reputation for offering a crypting, arcane syntax, but many users don't know that the package also contains many helpful functions which are pretty straight-forward to use. In our case we can apply `data.table::setnames()` out of the box. It takes a `data.table`, a vector of old and new column names and finally all we have to do is to set the `skip_absent` argument to `TRUE`, to prevent 'data.table' from raising an error, since not all of the names in our lookup table are present in the data. 
+
+Unlike base R, the names are changed "by reference", meaning that we don't need to assign the result to a new variable, since no copy is made. Instead the data is "modified in place".
+
+```{r message=FALSE}
+library(data.table)
+
+mycars_dt <- as.data.table(mycars)
+
+setnames(mycars_dt,
+         old = recode_df$old,
+         new = recode_df$new,
+         skip_absent = TRUE)
+
+str(mycars_dt)
+```
+
+
+## dplyr (tidyverse)
+
+Renaming columns in 'dplyr' is as easy as `df %>% rename("new_name" = "old_name")`. At least when we use  `dplyr::rename()` interactively and type in each old and new name manually. Usually when working programmatically with 'dplyr' we supply a named vector to functions that take the ellipsis `...` as argument, like `rename()`, and splice it in using the bang-bang-bang operator `!!!`.
+
+```{r error=TRUE, message=FALSE}
+library(dplyr)
+
+# create a named vector
+recode_vec <- setNames(recode_df$old, recode_df$new)
+
+# splice it in with `!!!`
+mycars %>% 
+  rename(!!! recode_vec)
+```
+
+However, this won't work in our case, since our lookup table, and the named vector that we constructed with it, contains column name pairs that don't exist in our data, which leads to the above error.
+
+Intuitively, one want's fall back to the base R approach where we extract only those names from our named vector that our data actually contains: 
+
+```{r message=FALSE}
+# extract column name pairs that are actually in our data and splice into `rename()`
+mycars %>% 
+  rename(!!! recode_vec[recode_vec %in% names(mycars)]) %>% 
+  glimpse() # for better printing
+```
+
+And although this works, it is not as easy and clean as we expect. However, there is an even easier way in 'dplyr' which doesn't come with the need of neither splicing nor extracting: `dplyr::any_of()`.
+
+Usually `any_of()` takes a character vector with column names and is used inside `dplyr::select()` to select "any of" the columns in the vector. It won't throw an error when any of the column names is not actually in our data.
+
+The cool, and undocumented feature is that we can use `any_of()` inside `rename()` and that we can supply it a named vector to do the renaming for us:
+
+```{r message=FALSE}
+# first lets create new object
+# ... so that we don't overwrite our original `mycars` data
+mycars_tidy <- mycars
+
+# here we construct the same named vector as above
+recode_vec <- setNames(recode_df$old, recode_df$new)
+
+mycars_tidy <- mycars_tidy %>% 
+  rename(any_of(recode_vec))
+
+# use `glimpse()` for better printing
+mycars_tidy %>%
+  glimpse()
+```
+
+The good thing about both approaches in 'data.table' and 'dplyr' is that we can deliberately ignore errors when not all of the column name pairs are present in our data. Either by setting `data.table::setnames()`'s `skip_absent` argument to `TRUE` or by using `tidyselect::any_of()`. Which means we can also raise errors if we need them: setting `skip_absent` to `FALSE` or using `tidyselect::all_of()` (which is the opposite of `any_of()` and requires all column names to be present in the data).
+
+Finally, lets have a look at how we would solve this problem in Python's 'pandas' library.
+
+## Python
+
+In Python we can use 'pandas's [`pd.DataFrame.rename`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html) function to rename columns of a `DataFrame`. The only thing we need to take care of is supplying the `columns` argument with a dictionary of column name pairs `{"old" : "new"}`. There are several ways to create a dictionary from our `recode_df`. Below we use a pandas approach with `set_index(...).to_dict()`, but we could also have used Pythons `dict(zip())` functions.
+
+```{python message=FALSE}
+import pandas as pd
+
+# setup
+mycars = pd.read_csv("mycars.csv", index_col = 0)
+recode_df = pd.read_csv("recode_df.csv",  index_col = 0)
+
+# Create dictionary from `recode_df`
+recode_dic = recode_df.set_index('old')['new'].to_dict()
+# Alternatively: dict(zip(recode_df['old'], recode_df['new']))
+
+# Rename columns
+(mycars
+  .rename(
+     columns=recode_dic,
+     inplace=True
+     )
+ )
+
+mycars.info()
+```
+
+When it comes to renaming columns, we can see that 'pandas' is pretty similar to 'dplyr', even more so when we write our Python code according to the ["Effective Pandas"](https://store.metasnake.com/effective-pandas-book) style. However, it also resembles 'data.table' in two aspects. First, when setting the `inplace` argument to `True` the `DataFrame` is modified in place, no copy is made, and we don't need to assign the result back to a variable. Second, `rename` has an argument `errors` which is set to `'ignore'` by default. If we want pandas to throw an error if not all columns are present in our data, we can set it to `'raise'`.
+
+That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know via Twitter, Mastadon or Github.
+

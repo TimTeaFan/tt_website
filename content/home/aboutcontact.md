@@ -56,7 +56,7 @@ subtitle = ""
 <h1 style="text-align: center">Contact me</h1>
 <br>
 
-<p class="intro">If you want to get in touch regarding Data Science, R or anything informal or private: just <a href="https://twitter.com/timteafan" target="_blank">DM me on Twitter <i class="fab fa-twitter"></i></a>. If it is job-related, <a href="https://www.linkedin.com/in/timtiefenbach" target="_blank">connect to me on LinkedIn <i class="fab fa-linkedin"></i></a>, there you will also find all work-related information which is missing from this website. For any other formal requests (e.g. invitation as a speaker), please use the contact form below:</p>
+<p class="intro">If you want to get in touch regarding Data Science, R or anything informal or private: just DM me <a href="https://twitter.com/timteafan" target="_blank">on Twitter <i class="fab fa-twitter"></i></a> or, alternatively, <a href="https://fosstodon.org/@TimTeaFan" target="_blank">on Mastodon <i class="fab fa-mastodon"></i></a>. If it is job-related, <a href="https://www.linkedin.com/in/timtiefenbach" target="_blank">connect with me on LinkedIn <i class="fab fa-linkedin"></i></a>, there you will also find all work-related information which is missing from this website. For any other formal requests (e.g. invitation as a speaker), please use the contact form below:</p>
 
 
 

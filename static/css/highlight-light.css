@@ -7,7 +7,7 @@
 /* LineNumbersTable */ .chroma .lnt { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
 /* LineNumbers */ .chroma .ln { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
 /* Keyword */ .chroma .k { color: #ffffff;}
-/* KeywordConstant */ .chroma .kc { color: #ff9d00;  }
+/* KeywordConstant */ .chroma .kc { color: #ff628c;  }
 /* KeywordDeclaration */ .chroma .kd { color: #ff9d00; }
 /* KeywordNamespace */ .chroma .kn { color: #ff9d00; }
 /* KeywordPseudo */ .chroma .kp { color: #ff9d00; }
@@ -57,7 +57,7 @@
 /* LiteralNumberInteger */ .chroma .mi { color: #ff628c }
 /* LiteralNumberIntegerLong */ .chroma .il { color: #ff628c }
 /* LiteralNumberOct */ .chroma .mo { color: #ff628c }
-/* Operator */ .chroma .o { color: #ffffff;  }
+/* Operator */ .chroma .o { color: #ed90a4;  }
 /* OperatorWord */ .chroma .ow { color: #ffffff;  }
 /* Punctuation */ .chroma .p {  }
 /* Comment */ .chroma .c { color: #0088ff; font-style: italic !important;}

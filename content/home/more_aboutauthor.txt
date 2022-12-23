@@ -1,0 +1,33 @@
+<div class="row">
+
+<div class="col-12 col-lg-4 section-heading">
+  <h3>Tools</h3>
+</div>
+
+<div class="col-12 col-lg-8">
+<p class="intro">Along my journey I have used many different tools for data analysis. From <a href="https://www.eviews.com/home.html" target="_blank">EViews</a> (during my Masters in Japan) to <a href="https://www.stata.com" target="_blank">Stata</a> (as an econ post-doc) and occasionally <a href="https://www.r-project.org" target="_blank">R</a> and <a href="https://www.ibm.com/spss" target="_blank">SPSS</a>. However, it was not until my transition to a data science position that I started using R on a daily basis. This is where I discovered my passion for programming. Now, in my free time, I answer questions on <a href="https://stackoverflow.com/users/9349302/timteafan" target"_blank">StackOverflow</a> or indulge in recreational programming (mainly R Packages or dashboards). While R is still my language of choice, I am getting deeper into <a href="https://www.python.org" target="_blank">python</a> for specific tasks such as Natural Language Processing.</p>
+</div>
+</div>
+
+<div class="row">
+
+<div class="col-12 col-lg-4 section-heading">
+  <h3>Japan</h3>
+</div>
+
+<div class="col-12 col-lg-8">
+<p class="intro">As a high-school student I grew fond of Japanese green tea. This led me to take Japanese lessons at university. After making only very limited progress I decided to spend a year abroad in Japan to learn the language "the hard way" - which worked out pretty well. After spending another one and a half years as research student in Japan I was able to pass the <a href="https://en.wikipedia.org/wiki/Japanese-Language_Proficiency_Test" target="_blank">JLPT level 1 exam</a> as well as the <a href="https://en.wikipedia.org/wiki/Kanji_Kentei" target="_blank"><i>Kanji Kentei</i> level 2</a>.</p>
+</div>
+</div>
+
+<div class="row">
+
+<div class="col-12 col-lg-4 section-heading">
+  <h3>Misc</h3>
+</div>
+
+<div class="col-12 col-lg-8">
+<p class="intro">I also have hobbies not related to computers such as making coffee as a home barista, indoor bouldering.
+</p>
+</div>
+</div>

@@ -54,33 +54,54 @@ subtitle = ""
 <br>
 <div class="row">
 <div class="col-12 col-lg-4 section-heading">
-      <h1>Bio</h1>
+  <h3></h3>
 </div>
     
 <div class="col-12 col-lg-8">
-<p>After college, I started out with a Bachelor’s and Master’s degree in „Philosophy and Economics“ at the University of Bayreuth (Germany). During my studies I have spent two and a half years in Japan as a research student. After coming back to Germany, I gained some work experience and then wrote my doctoral thesis (link) in economics. After that, I became a post-doc researcher on happiness economics in Japan.</p>
+<p class="intro">I was born and raised in <a href="https://www.wiesbaden.de/en/tourism/index.php" target="_blank">Wiesbaden</a>, a medium-sized town in proximity to Frankfurt (Germany).</p>
 </div>
 </div>
 
 <div class="row">
-  
 <div class="col-12 col-lg-4 section-heading">
-<h1>Tools</h1>
+  <h3>Studies</h3>
 </div>
-    
+
 <div class="col-12 col-lg-8">
-<p>Along my journey I have used many different tools for data analysis. From EViews (during my Masters in Japan) to Stata (as an econ post-doc) and occasionally R and SPSS.  However, it was not until my transition to a data science position that I started using R on a daily basis. This is where I discovered my passion for programming. Now, in my free time, I indulge in some recreational programming (mainly R Packages or dashboards) or answer questions on StackOverflow. I also have hobbies not related to computers such as making coffee as a home barista. I also used to go bouldering in the gym, but that was before Corona, and I am not sure when I will pick it up again.</p>
+<p class="intro">During my Bachelors and through part of my Masters I lived in the beautiful village of <a href="https://www.bayreuth-tourismus.de/en/" target="_blank">Bayreuth</a>, in northern Bavaria, where I studied <a href="https://www.uni-bayreuth.de/en/master/philosophy-economics" target="_blank">"Philosophy and Economics"</a>. During that time I also spent two and a half years as a research student at the <a href="https://www.gakushuin.ac.jp/houjin/kikaku/english/index.html" target="_blank">Gakushuin University</a> in Tokyo, where I significantly improved my Japanese language skills, in addition to studying applied economics and statistics.</p>
 </div>
 </div>
+
 
 <div class="row">
-  
 <div class="col-12 col-lg-4 section-heading">
-<h1>Japan</h1>
+  <h3>PhD</h3>
 </div>
     
 <div class="col-12 col-lg-8">
-<p>...</p>
+<p class="intro">Returning to Germany I decided to pursue my academic career a little further. I wrote my <a href="https://www.amazon.de/Beitrag-ökonomischen-Theorie-Schriften-Nationalökonomie/dp/3942492067/ref=sr_1_1?__mk_de_DE=ÅMÅŽÕÑ&crid=2YMYK9L42VOPI&keywords=tim+tiefenbach&qid=1671399020&sprefix=tim+tief%2Caps%2C485&sr=8-1" target="_blank">doctoral thesis</a> on the research program of economics and its most recent critiques (e.g. heterodox economics) and advancements (e.g. happiness economics).
 </div>
 </div>
 
+
+<div class="row">
+<div class="col-12 col-lg-4 section-heading">
+  <h3>Post-doc</h3>
+</div>
+    
+<div class="col-12 col-lg-8">
+<p class="intro">Upon completing my doctorate, I became a <a href="https://www.dijtokyo.org/people/?affiliation=senior_research_fellows&show_former=true#tim-tiefenbach" target="_blank">post-doc research follow</a> in Japan by a lucky twist of fate. This position allowed me to combine my passion for Japan with my background in statistics and happiness economics.</p>
+</div>
+</div>
+
+
+<div class="row">
+<div class="col-12 col-lg-4 section-heading">
+  <h3>Industry</h3>
+</div>
+    
+<div class="col-12 col-lg-8">
+<p class="intro">After becoming a father and with my term as researcher coming to an end, it was
+a good time to transition from academia to industry, and to relocate back to my hometown Wiesbaden. Here I'm working as a Senior CX Data Scientist in insurance, applying happiness economics to improve customer experience and satisfaction.</p>
+</div>
+</div>

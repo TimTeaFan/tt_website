@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Raleway&display=swap');
+
+
 body, body.dark, .dark .docs-toc-link, .dark .docs-sidebar .nav > li:not(.active) > a, .dark .modal button.close, .dark input, .dark .form-control, .dark .form-control:focus {
 /*  background: #1f2229 !important;
   background-color: #1f2229 !important;; */
@@ -94,7 +97,9 @@ ul.share > li > a {
   text-transform: none !important;
 }
 
-
+.author-card {
+  margin-bottom: 15px
+}
 .author-card .card-title {
   margin-bottom: 3px
 }
@@ -140,6 +145,11 @@ background: linear-gradient(0deg, rgba(41,47,61,1) 0%, rgba(105,175,255,1) 6%, r
   padding-bottom: 30px !important;
 }
 
+/*
+.section-heading > h1 {
+  margin-top:0px !important;
+}
+*/
 #about-intro.row p a {
 
     display: inline-block;
@@ -230,7 +240,7 @@ ul.ul-edu li .description p.year {
 
 /*links in intro*/
 
-p.intro a {
+p.intro a, li.intro a{
     color: #f8f8f2 !important;
     display: inline-block;
     position: relative;
@@ -247,7 +257,7 @@ p.intro  {
     letter-spacing:.025em
 }
 
-p.intro a:after {
+p.intro a:after, li.intro a:after {
     content: '';
     display: block;
     position: absolute;
@@ -260,11 +270,11 @@ p.intro a:after {
     background: #489bfa
 }
 
-p.intro a:hover {
+p.intro a:hover, li.intro a:hover {
     color:#fff
 }
 
-p.intro a:hover:after {
+p.intro a:hover:after, li.intro a:hover:after {
     height: -webkit-calc(100% - 9px);
     height: calc(100% - 9px);
     -webkit-transition: height, .15s;
@@ -300,6 +310,12 @@ body#top > .container {
   font-size: smaller !important;
 }
 
+/* Projects */
+
+#projects.home-section {
+  padding: 0px;
+}
+
 /* everything code related */
 @media screen and (min-width: 58em) {
 code {
@@ -311,7 +327,8 @@ pre > code {
 code {
   color: #ffffff !important;
   background: #4f586e !important; /*4f586e*/
-  font-family: Monaco, monospace;
+  /*font-family: Monaco, monospace; */
+  font-family: 'IBM Plex Mono', monospace; /* 'Source Serif Pro'*/
 }
 
 pre {
@@ -337,7 +354,7 @@ code a {
 
 
 /* syntax highlighting */
-/*
+
 .hljs,.hljs-subst {
   color: #ffffff !important;
 }
@@ -369,7 +386,9 @@ code a {
 .hljs-literal {
   color: #ff628c;
 }
-*/
+
+/* Operator */
+.chroma .o { color: #ed90a4;  }
 
 /* talks widget */
 #talks_happiness.home-section, #talks_datascience.home-section {
@@ -431,8 +450,12 @@ p.intro > a {
 
 #quote {
   color: #1f2229;
+  background: rgb(97,173,252);
+  background: linear-gradient(126deg, rgba(97,173,252,1) 0%, rgba(48,149,255,1) 37%, rgba(23,136,255,1) 100%);
+  /*
   background: rgb(65,158,255);
   background: linear-gradient(125deg, rgba(65,158,255,1) 0%, rgba(150,201,255,1) 100%);
+  */
 }
 
 
@@ -448,6 +471,10 @@ blockquote#mostly > i {
 
 .section-heading > h1 {
   font-size: 22px !important;
+}
+
+.section-heading > h3 {
+  color: #b2b2b2 !important;
 }
 
 @media screen and (min-width: 58em) {
