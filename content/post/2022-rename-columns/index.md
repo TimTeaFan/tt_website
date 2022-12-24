@@ -27,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 40848e51ae57d77e
+rmd_hash: bb9e980cbf57ffa4
 
 ---
 
@@ -37,7 +37,7 @@ Usually data sets come with short column names, which makes it easy to clean and
 
 Below we'll look at how to rename columns using different approaches in R. To make this a little bit more challenging, we'll add three conditions:
 
-1.  The lookup table is not complete, that means lookup table only covers a subset of the columns in our data set.
+1.  The lookup table is not complete, that means the lookup table only covers a subset of the columns in our data set.
 2.  We are working with a subset of the original data, that means, the lookup table, although being not complete, holds actually *more* column name pairs than there are actually columns in the subset of our data.
 3.  The sorting of the lookup table is different from the sorting of our actual column names.
 
