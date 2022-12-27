@@ -285,11 +285,25 @@ p.intro a:after, li.intro a:after {
     width: -webkit-calc(100% + 4px);
     width: calc(100% + 4px);
     left: -2px;
-    bottom: 4px;
-    height: 5px;
+    bottom: 3px;
+    height: 4px;
     background: #489bfa
 }
 
+@media screen and (min-width: 768px) {
+  p.intro a:after, li.intro a:after {
+      content: '';
+      display: block;
+      position: absolute;
+      z-index: -1;
+      width: -webkit-calc(100% + 4px);
+      width: calc(100% + 4px);
+      left: -2px;
+      bottom: 4px;
+      height: 5px;
+      background: #489bfa
+  }
+}
 p.intro a:hover, li.intro a:hover {
     color:#fff
 }
