@@ -173,16 +173,32 @@ background: linear-gradient(0deg, rgba(41,47,61,1) 0%, rgba(105,175,255,1) 6%, r
 }
 
 #about-intro.row p a:after {
-    content: '';
-    display: block;
-    position: absolute;
-    z-index: -1;
-    width: -webkit-calc(100% + 4px);
-    width: calc(100% + 4px);
-    left: -2px;
-    bottom: 4px;
-    height: 5px;
-    background:#33c09b
+      content: '';
+      display: block;
+      position: absolute;
+      z-index: -1;
+      width: -webkit-calc(100% + 4px);
+      width: calc(100% + 4px);
+      left: -2px;
+      bottom: 3px;
+      height: 4px;
+      background:#33c09b
+  }
+
+
+@media screen and (min-width: 768px) {
+  #about-intro.row p a:after {
+        content: '';
+        display: block;
+        position: absolute;
+        z-index: -1;
+        width: -webkit-calc(100% + 4px);
+        width: calc(100% + 4px);
+        left: -2px;
+        bottom: 4px;
+        height: 5px;
+        background:#33c09b
+    }
 }
 
 #about-intro.row p a:hover {
