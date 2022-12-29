@@ -90,7 +90,7 @@ body, body.dark, .dark .docs-toc-link, .dark .docs-sidebar, .dark .modal button.
 /*navbar*/
 
 a.navbar-brand {
-  font-weight: 300 !important;
+  font-weight: 400 !important;
   letter-spacing: .025em;
 }
 
@@ -367,9 +367,11 @@ ul.ul-edu li .description p.year {
   font-size: 0.75rem;
   color: rgba(0, 0, 0, 0.6); }
 
-/*links in intro*/
+/*links in intro and other places*/
 
-p.intro a, li.intro a{
+p.intro a,
+li.intro a,
+div.article-style > p > a[role="highlight"] {
     color: #f8f8f2 !important;
     display: inline-block;
     position: relative;
@@ -386,7 +388,9 @@ p.intro  {
     letter-spacing:.05em
 }
 
-p.intro a:after, li.intro a:after {
+p.intro a:after,
+li.intro a:after,
+div.article-style > p > a[role="highlight"]:after {
     content: '';
     display: block;
     position: absolute;
@@ -400,7 +404,9 @@ p.intro a:after, li.intro a:after {
 }
 
 @media screen and (min-width: 768px) {
-  p.intro a:after, li.intro a:after {
+  p.intro a:after,
+  li.intro a:after,
+  div.article-style > p > a[role="highlight"]:after {
       content: '';
       display: block;
       position: absolute;
@@ -413,11 +419,16 @@ p.intro a:after, li.intro a:after {
       background: #489bfa
   }
 }
-p.intro a:hover, li.intro a:hover {
-    color:#fff
+
+p.intro a:hover,
+li.intro a:hover,
+div.article-style > p > a[role="highlight"]:hover {
+    color:#fff;
 }
 
-p.intro a:hover:after, li.intro a:hover:after {
+p.intro a:hover:after,
+li.intro a:hover:after,
+div.article-style > p > a[role="highlight"]:hover:after {
     height: -webkit-calc(100% - 9px);
     height: calc(100% - 9px);
     -webkit-transition: height, .15s;
@@ -466,12 +477,14 @@ p.powered-by > a:focus {
 
 /* everything code related */
 @media screen and (min-width: 58em) {
-code {
-  font-size: 17px !important;
+  code {
+    font-size: 17px !important;
+    }
+  pre > code {
+    font-size: 15px !important;
   }
-pre > code {
-  font-size: 15px !important; }
 }
+
 code {
   color: #ffffff !important;
   background: #4f586e !important; /*4f586e*/
@@ -629,10 +642,20 @@ blockquote#mostly > i {
   .section-heading > h1  {
     font-size: 30px !important; } }
 
-/*license page*/
+/*license and privacy page*/
 
 .container.license {
   margin-bottom: 300px;
+}
+
+div.row.device {
+  color: #adbcc9;
+}
+
+@media screen and (min-width: 1024px) {
+  div.row.device {
+    display: none;
+  }
 }
 
 .legal > h1 {
@@ -651,9 +674,9 @@ blockquote#mostly > i {
 
 @media screen and (min-width: 58em) {
   .legal > h2 {
-
-      font-size: 22px !important; } }
-
+      font-size: 22px !important;
+  }
+}
 
 .legal > h3 {
   color: #d1dbe3 !important;
@@ -663,8 +686,19 @@ blockquote#mostly > i {
 @media screen and (min-width: 58em) {
   .legal > h3 {
       font-size: 18px !important;
+  }
+}
 
-  } }
+.legal > h5 {
+  color: #d1dbe3 !important;
+  font-size: 14px !important;
+}
+
+@media screen and (min-width: 58em) {
+  .legal > h5 {
+      font-size: 16px !important;
+  }
+}
 
 
 .legal > p,
@@ -690,6 +724,7 @@ blockquote#mostly > i {
 
 div.cc-window.cc-banner.cc-type-info.cc-theme-classic.cc-bottom {
   font-family: Open Sans,Lucida Sans Unicode,Lucida Grande,sansSerif;
+  letter-spacing: 0.0em;
   color: rgb(41, 47, 61) !important;
   background: rgb(92,208,177);
   background: linear-gradient(158deg, rgba(92,208,177,1) 0%, rgba(51,192,155,1) 35%, rgba(24,172,133,1) 100%);
