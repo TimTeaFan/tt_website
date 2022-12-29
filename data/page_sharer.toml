@@ -10,6 +10,14 @@
   enable = true
 
 [[buttons]]
+  id = "mastodon"
+  url = "https://toot.kytta.dev/?text={title}%20{url}"
+  title = "Mastodon"
+  icon_pack = "fab"
+  icon = "mastodon"
+  enable = true
+
+[[buttons]]
   id = "linkedin"
   url = "https://www.linkedin.com/shareArticle?url={url}&title={title}"
   title = "LinkedIn"
@@ -23,7 +31,7 @@
   title = "Facebook"
   icon_pack = "fab"
   icon = "facebook"
-  enable = true
+  enable = false
 
 [[buttons]]
   id = "xing"
@@ -31,7 +39,7 @@
   title = "Xing"
   icon_pack = "fab"
   icon = "xing"
-  enable = true
+  enable = false
 
 [[buttons]]
   id = "email"
