@@ -64,7 +64,8 @@ header:
 
 Tim Tiefenbach<br>
 Reiherstr. 2<br>
-65201 Wiesbaden
+65201 Wiesbaden<br>
+Germany
 </p>
 <p>
 Phone: +49 611 44599273<br>
@@ -78,7 +79,8 @@ Email: contact[at]tim-tiefenbach.de</p>
 
 Tim Tiefenbach<br>
 Reiherstr. 2<br>
-65201 Wiesbaden
+65201 Wiesbaden<br>
+Deutschland
 </p>
 <p>
 Telefon: +49 611 44599273<br>
