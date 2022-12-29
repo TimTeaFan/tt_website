@@ -1,0 +1,11 @@
+# Font style metadata
+name = "myfonts"
+
+# Optional Google font URL
+google_fonts = ""
+
+# Font families
+heading_font = "Open Sans"
+body_font = "Lato"
+nav_font = "Open Sans"
+mono_font = "IBM Plex Mono"
