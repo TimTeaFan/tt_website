@@ -5,7 +5,7 @@ header:
   caption: ""
   image: ""
 share: false
-title: "Legal Notice"
+title: 
 linktitle: 
 ---
 
