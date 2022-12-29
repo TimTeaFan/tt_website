@@ -14,19 +14,6 @@ header:
 
 <div class="container license">
 
-<div class="row device">
-  <div class="col-12 col-lg-6 legal">
-    <h2>Note</h2>
-    <p>This privacy policy is shown in two languages, English and German. On larger screens, both languages are displayed in two columns side by side. On smaller devices, each section is first displayed in English and then in German.
-    </p>
-  </div>
-    <div class="col-12 col-lg-6 legal">
-    <h2>Hinweis</h2>
-    <p>Diese Datenschutzerklärung wird in zwei Sprachen gezeigt. Auf größeren Bildschirmen werden beide Sprachen in parallelen Spalten dargestellt. Auf kleineren Geräten wird jede Sektion erst in Englisch und darunter in Deutsch dargestellt.
-    </p>
-  </div>
-</div>
-  
 <div class="row">
   <div class="col-12 col-lg-6 legal">
     <h1>Privacy Policy</h1>
