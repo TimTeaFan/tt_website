@@ -14,6 +14,19 @@ header:
 
 <div class="container license">
 
+<div class="row device">
+  <div class="col-12 col-lg-6 legal">
+    <h2>Note</h2>
+    <p>This privacy policy is shown in two languages, English and German. On larger screens, both languages are displayed in two columns side by side. On smaller devices, each section is first displayed in English and then in German.
+    </p>
+  </div>
+    <div class="col-12 col-lg-6 legal">
+    <h2>Hinweis</h2>
+    <p>Diese Datenschutzerklärung wird in zwei Sprachen gezeigt. Auf größeren Bildschirmen werden beide Sprachen in parallelen Spalten dargestellt. Auf kleineren Geräten wird jede Sektion erst in Englisch und darunter in Deutsch dargestellt.
+    </p>
+  </div>
+</div>
+  
 <div class="row">
   <div class="col-12 col-lg-6 legal">
     <h1>Privacy Policy</h1>
@@ -78,7 +91,7 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 <ul>
    <li>to confirmation of whether data concerning them is being processed, information about the data being processed, further information about the nature of the data processing, and copies of the data (cf. also Art. 15 GDPR);</li>
    <li>to correct or complete incorrect or incomplete data (cf. also Art. 16 GDPR);</li>
-   <li>to the immediate deletion of data concerning them (cf. also Art. 17 DSGVO), or, alternatively, if further processing is necessary as stipulated in Art. 17 Para. 3 GDPR, to restrict said processing per Art. 18 GDPR;</li>
+   <li>to the immediate deletion of data concerning them (cf. also Art. 17 GDPR), or, alternatively, if further processing is necessary as stipulated in Art. 17 Para. 3 GDPR, to restrict said processing per Art. 18 GDPR;</li>
    <li>to receive copies of the data concerning them and/or provided by them and to have the same transmitted to other providers/controllers (cf. also Art. 20 GDPR);</li>
    <li>to file complaints with the supervisory authority if they believe that data concerning them is being processed by the controller in breach of data protection provisions (see also Art. 77 GDPR).</li>
 </ul>
@@ -187,6 +200,7 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 <p>If you contact us via email or the contact form, the data you provide will be used for the purpose of processing your request. We must have this data in order to process and answer your inquiry; otherwise we will not be able to answer it in full or at all.</p>
 <p>The legal basis for this data processing is Art. 6 Para. 1 lit. b) GDPR.</p>
 <p>Your data will be deleted once we have fully answered your inquiry and there is no further legal obligation to store your data, such as if an order or contract resulted therefrom.</p>
+<p>The contact form is powered by the hosting service, Netlify. This means that if you contact us through the contact form, the data you provide will also be stored on Netlify's servers. All the points mentioned above under "Hosting by Netlify" apply here.</p>
    </div>
 
   <div class="col-12 col-lg-6 legal">
@@ -194,6 +208,7 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 <p>Sofern Sie per Kontaktformular oder E-Mail mit uns in Kontakt treten, werden die dabei von Ihnen angegebenen Daten zur Bearbeitung Ihrer Anfrage genutzt. Die Angabe der Daten ist zur Bearbeitung und Beantwortung Ihre Anfrage erforderlich – ohne deren Bereitstellung können wir Ihre Anfrage nicht oder allenfalls eingeschränkt beantworten.</p>
 <p>Rechtsgrundlage für diese Verarbeitung ist Art. 6 Abs. 1 lit. b) DSGVO.</p>
 <p>Ihre Daten werden gelöscht, sofern Ihre Anfrage abschließend beantwortet worden ist und der Löschung keine gesetzlichen Aufbewahrungspflichten entgegenstehen, wie bspw. bei einer sich etwaig anschließenden Vertragsabwicklung.</p>
+<p>Das Kontaktformular wird durch den Hosting-Dienst, Netlify, betrieben. D.h., wenn Sie durch das Kontaktformular mit uns in Kontakt treten werden Ihre angegebenen Daten zusätzlich auf den Servern von Netlify gespeichert. Hierbei gelten alle oben unter „Hosting durch Netlify“ genannten Punkte.</p>
    </div>
 </div>
 
@@ -201,8 +216,8 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 
   <div class="row">
   <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">General linking to third-party profiles</h4>
-<p>The provider uses a link on the website to the social networks listed below.</p>
+<h4 class="jet-listing-dynamic-field__content">General linking to third-party websites</h4>
+<p>The provider uses a link on the website to the social networks and web services listed below.</p>
 
 <p>The legal basis for this is Art. 6 para. 1 lit. f GDPR. The legitimate interest of the provider is to improve the quality of use of the website.</p>
 
@@ -210,29 +225,29 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 
 <p>After the customer has been redirected, information about the user is collected by the respective network. This is initially data such as IP address, date, time and page visited. If the user is logged into his user account of the respective network during this time, the network operator may be able to assign the collected information of the specific visit of the user to the personal account of the user. If the user interacts via a "Share" button of the respective network, this information can be stored in the user's personal user account and may be published. If the user wants to prevent the collected information from being directly assigned to his user account, the user must log out before clicking on the graphic. In addition, it is possible to configure the respective user account accordingly.</p>
 
-<p>The following social networks are linked by the provider:</p>
+<p>The following social networks and web services are linked by the provider:</p>
 
    </div>
 
   <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">Allgemeine Verlinkung auf Profile bei Drittanbietern</h4>
-<p>Der Anbieter setzt auf der Website eine Verlinkung auf die nachstehend aufgeführten sozialen Netzwerke ein.</p>
+<h4 class="jet-listing-dynamic-field__content">Allgemeine Verlinkung auf Webdienste von Drittanbietern</h4>
+<p>Der Anbieter setzt auf der Website eine Verlinkung auf die nachstehend aufgeführten sozialen Netzwerke und Webdienste ein.</p>
 <p>Rechtsgrundlage ist hierbei Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse des Anbieters besteht an der Verbesserung der Nutzungsqualität der Website.</p>
 <p>Die Einbindung der Plugins erfolgt dabei über eine verlinkte Grafik. Erst durch einen Klick auf die entsprechende Grafik wird der Nutzer zu dem Dienst des jeweiligen sozialen Netzwerks weitergeleitet.</p>
 <p>Nach der Weiterleitung des Kunden werden durch das jeweilige Netzwerk Informationen über den Nutzer erfasst. Dies sind zunächst Daten wie IP-Adresse, Datum, Uhrzeit und besuchte Seite. Ist der Nutzer währenddessen in seinem Benutzerkonto des jeweiligen Netzwerks eingeloggt, kann der Netzwerk-Betreiber ggf. die gesammelten Informationen des konkreten Besuches des Nutzers dem persönlichen Account des Nutzers zuordnen. Interagiert der Nutzer über einen „Teilen“-Button des jeweiligen Netzwerks, können diese Informationen in dem persönlichen Benutzerkonto des Nutzers gespeichert und ggf. veröffentlicht werden. Will der Nutzer verhindern, dass die gesammelten Informationen unmittelbar seinem Benutzerkonto zugeordnet werden, muss sich der Nutzer vor dem Anklicken der Grafik ausloggen. Zudem besteht die Möglichkeit, das jeweilige Benutzerkonto entsprechend zu konfigurieren.</p>
-<p>Folgende soziale Netzwerke sind vom Anbieter verlinkt:</p>
+<p>Folgende soziale Netzwerke und Webdienste sind vom Anbieter verlinkt:</p>
    </div>
 </div>
 
   <div class="row">
   <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">LinkedIn</h4>
-<p>LinkedIn Ireland Unlimited Company, Wilton Plaza, Wilton Place, Dublin 2, Irland, a subsidiary of LinkedIn Corporation, 1000 W. Maude Avenue, Sunnyvale, CA 94085 USA.</p>
+<h5 class="jet-listing-dynamic-field__content">LinkedIn</h5>
+<p>LinkedIn Ireland Unlimited Company, Wilton Plaza, Wilton Place, Dublin 2, Irland, a subsidiary of LinkedIn Corporation, 1000 W. Maude Avenue, Sunnyvale, CA 94085, United States.</p>
 <p>Privacy Policy: <a href="https://www.linkedin.com/legal/privacy-policy" target="_blank" rel="noopener nofollow">https://www.linkedin.com/legal/privacy-policy</a></p>
    </div>
 
   <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">LinkedIn</h4>
+<h5 class="jet-listing-dynamic-field__content">LinkedIn</h5>
 <p>LinkedIn Ireland Unlimited Company, Wilton Plaza, Wilton Place, Dublin 2, Irland, ein Tochterunternehmen der LinkedIn Corporation, 1000 W. Maude Avenue, Sunnyvale, CA 94085 USA.</p>
 <p>Datenschutzerklärung: <a href="https://www.linkedin.com/legal/privacy-policy" target="_blank" rel="noopener nofollow">https://www.linkedin.com/legal/privacy-policy</a></p>
    </div>
@@ -241,14 +256,14 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 
 <div class="row">
   <div class="col-12 col-lg-6 legal">
-    <h4 class="jet-listing-dynamic-field__content">Twitter</h4>
-    <p>Twitter Inc., 795 Folsom St., Suite 600, San Francisco, CA 94107, USA</p>
+    <h5 class="jet-listing-dynamic-field__content">Twitter</h5>
+    <p>Twitter Inc., 795 Folsom St., Suite 600, San Francisco, CA 94107, United States.</p>
     <p>Privacy Policy: <a href="https://twitter.com/privacy" target="_blank" rel="noopener nofollow">https://twitter.com/privacy</a></p>
   </div>
 
   <div class="col-12 col-lg-6 legal">
-    <h4 class="jet-listing-dynamic-field__content">Twitter</h4>
-    <p>Twitter Inc., 795 Folsom St., Suite 600, San Francisco, CA 94107, USA</p>
+    <h5 class="jet-listing-dynamic-field__content">Twitter</h5>
+    <p>Twitter Inc., 795 Folsom St., Suite 600, San Francisco, CA 94107, USA.</p>
     <p>Datenschutzerklärung: <a href="https://twitter.com/privacy" target="_blank" rel="noopener nofollow">https://twitter.com/privacy</a></p>
   </div>
 </div>
@@ -256,13 +271,15 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 
 <div class="row">
   <div class="col-12 col-lg-6 legal">
-    <h4>Fosstodon</h4>
-    <p>test iewafbeoirbgi oerbgioearg oieargtioerbgioe rbgoierb ioebrgior bgioerbg ioergbie rbiogieo</p>
+    <h5>Fosstodon</h5>
+    <p><a href="https://hub.fosstodon.org/about/">Fosstodon</a> is a community project running an instance of the open-source software Mastodon. The software is provided by Mastodon gGmbH, Mühlenstraße 8a, 14167 Berlin, Germany.</p>
+    <p>Privacy Policy: <a href="https://fosstodon.org/privacy-policy">https://fosstodon.org/privacy-policy</a></p>
   </div>
 
   <div class="col-12 col-lg-6 legal">
-    <h4>Fosstodon</h4>
-    <p>Test dioa bgeroigbrteoi greiotbgiot rbgoitrbg iortgiortbgoib triobrt iogbiortbio rtirbtb rtbtrbrtbrtb </p>
+    <h5>Fosstodon</h5>
+    <p><a href="https://hub.fosstodon.org/about/">Fosstodon</a> ist ein Gemeinschaftsprojekt, das eine Instanz der Open-Source-Software Mastodon betreibt. Die Software wird bereitgestellt von: Mastodon gGmbH, Mühlenstraße 8a, 14167 Berlin, Deutschland.</p>
+<p>Datenschutzerklärung: <a href="https://fosstodon.org/privacy-policy">https://fosstodon.org/privacy-policy</a></p>
   </div>
 </div>
 
@@ -270,89 +287,61 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 
 <div class="row">
   <div class="col-12 col-lg-6 legal">
-    <h4>GitHub</h4>
-    <p>test iewafbeoirbgi oerbgioearg oieargtioerbgioe rbgoierb ioebrgior bgioerbg ioergbie rbiogieo</p>
+    <h5>GitHub</h5>
+    <p>GitHub, Inc., 88 Colin P. Kelly Jr St, San Francisco, CA 94107, United States.</p>
+    <p>Privacy Policy: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener nofollow">https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement</a></p>
   </div>
 
   <div class="col-12 col-lg-6 legal">
-    <h4>GitHub</h4>
-    <p>Test dioa bgeroigbrteoi greiotbgiot rbgoitrbg iortgiortbgoib triobrt iogbiortbio rtirbtb rtbtrbrtbrtb </p>
-  </div>
-</div>
-
-
-<div class="row">
-  <div class="col-12 col-lg-6 legal">
-    <h4>StackOverflow</h4>
-    <p>test iewafbeoirbgi oerbgioearg oieargtioerbgioe rbgoierb ioebrgior bgioerbg ioergbie rbiogieo</p>
-  </div>
-
-  <div class="col-12 col-lg-6 legal">
-    <h4>StackOverflow</h4>
-    <p>Test dioa bgeroigbrteoi greiotbgiot rbgoitrbg iortgiortbgoib triobrt iogbiortbio rtirbtb rtbtrbrtbrtb </p>
+    <h5>GitHub</h5>
+    <p>GitHub, Inc., 88 Colin P. Kelly Jr St, San Francisco, CA 94107, USA.</p>
+    <p>Datenschutzerklärung: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener nofollow">https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement</a></p>
   </div>
 </div>
 
 
 <div class="row">
   <div class="col-12 col-lg-6 legal">
-    <h4>Google Scholar</h4>
-    <p>test iewafbeoirbgi oerbgioearg oieargtioerbgioe rbgoierb ioebrgior bgioerbg ioergbie rbiogieo</p>
+    <h5>Stack Overflow</h5>
+    <p>Stack Overflow is maintained by Stack Exchange Inc., 110 William Street, 28th Floor, New York, NY 10038, United States.
+</p>
+<p>Privacy Policy: <a href="https://stackoverflow.com/legal/privacy-policy">https://stackoverflow.com/legal/privacy-policy</a></p>
   </div>
 
   <div class="col-12 col-lg-6 legal">
-    <h4>Google Scholar</h4>
-    <p>Test dioa bgeroigbrteoi greiotbgiot rbgoitrbg iortgiortbgoib triobrt iogbiortbio rtirbtb rtbtrbrtbrtb </p>
+    <h5>Stack Overflow</h5>
+    <p>Stack Overflow wird betrieben von Stack Exchange Inc., 110 William Street, 28th Floor, New York, NY 10038, USA.
+    </p>
+    <p>Datenschutzerklärung: <a href="https://stackoverflow.com/legal/privacy-policy">https://stackoverflow.com/legal/privacy-policy</a></p>
   </div>
 </div>
 
 
 <div class="row">
   <div class="col-12 col-lg-6 legal">
-    <h4>Social plugins and share links</h4>
-    <p>test iewafbeoirbgi oerbgioearg oieargtioerbgioe rbgoierb ioebrgior bgioerbg ioergbie rbiogieo</p>
+    <h5>Google Scholar and Youtube</h5>
+    <p>Google Scholar and Youtube are web services maintained by Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland.</p>
+    <p>Privacy Policy: <a href="https://www.google.com/policies/privacy/">https://www.google.com/policies/privacy/</a></p>
   </div>
 
   <div class="col-12 col-lg-6 legal">
-    <h4>Social-Plugins und Share-Links</h4>
-    <p>Test dioa bgeroigbrteoi greiotbgiot rbgoitrbg iortgiortbgoib triobrt iogbiortbio rtirbtb rtbtrbrtbrtb </p>
+    <h5>Google Scholar und Youtube</h5>
+    <p>Google Scholar und Youtube sind Webdienste die von Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, betrieben werden.</p>
+    <p>Datenschutzerklärung: <a href="https://www.google.de/intl/de/policies/privacy/">https://www.google.de/intl/de/policies/privacy/</a></p>
   </div>
 </div>
 
-
-  <div class="row">
-  <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">Twitter plug-in</h4>
-<p>Our website uses the plug-in of the Twitter social network. The Twitter service is operated by Twitter Inc., 795 Folsom St., Suite 600, San Francisco, CA 94107, USA („Twitter“).</p>
-<p>In case you have granted your consent to this processing the legal basis is Article 6 para. 1 lit. a GDPR. The legal basis can also be Article 6 para. 1 lit. f GDPR. Our legitimate interest lies in improving the quality of our website.</p>
-<p>If the plug-in is stored on one of the pages you visit on our website, your browser will download an icon for the plug-in from Twitter’s servers in the USA. For technical reasons, it is necessary for Twitter to process your IP address. In addition, the date and time of your visit to our website will also be recorded.</p>
-<p>If you are logged in to Twitter while visiting one of our plugged-in websites, the information collected by the plug-in from your specific visit will be recognized by Twitter. The information collected may then be assigned to your personal account at Twitter. If, for example, you use the Twitter Tweet button, this information will be stored in your Twitter account and may be published on the Twitter platform. To prevent this, you must either log out of Twitter before visiting our site or make the appropriate settings in your Twitter account.</p>
-<p>Further information about the collection and use of data as well as your rights and protection options in Twitter’s privacy policy found at</p>
-<p><a href="https://twitter.com/privacy" target="_blank" rel="noopener nofollow">https://twitter.com/privacy</a></p>
-   </div>
-
-  <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">„Twitter“-Social-Plug-in</h4>
-<p>In unserem Internetauftritt setzen wir das Plug-in des Social-Networks Twitter ein. Bei Twitter handelt es sich um einen Internetservice der Twitter Inc., 795 Folsom St., Suite 600, San Francisco, CA 94107, USA, nachfolgend nur „Twitter“ genannt.</p>
-<p>Im Falle einer von Ihnen erteilten Einwilligung für diese Verarbeitung ist Rechtsgrundlage Art. 6 Abs. 1 lit. a DSGVO. Rechtsgrundlage kann auch Art. 6 Abs. 1 lit. f DSGVO sein. Unser berechtigtes Interesse liegt in der Qualitätsverbesserung unseres Internetauftritts.</p>
-<p>Sofern das Plug-in auf einer der von Ihnen besuchten Seiten unseres Internetauftritts hinterlegt ist, lädt Ihr Internet-Browser eine Darstellung des Plug-ins von den Servern von Twitter in den USA herunter. Aus technischen Gründen ist es dabei notwendig, dass Twitter Ihre IP-Adresse verarbeitet. Daneben werden aber auch Datum und Uhrzeit des Besuchs unserer Internetseiten erfasst.</p>
-<p>Sollten Sie bei Twitter eingeloggt sein, während Sie eine unserer mit dem Plug-in versehenen Internetseite besuchen, werden die durch das Plug-in gesammelten Informationen Ihres konkreten Besuchs von Twitter erkannt. Die so gesammelten Informationen weist Twitter womöglich Ihrem dortigen persönlichen Nutzerkonto zu. Sofern Sie also bspw. den sog. „Teilen“-Button von Twitter benutzen, werden diese Informationen in Ihrem Twitter-Nutzerkonto gespeichert und ggf. über die Plattform von Twitter veröffentlicht. Wenn Sie das verhindern möchten, müssen Sie sich entweder vor dem Besuch unseres Internetauftritts bei Twitter ausloggen oder die entsprechenden Einstellungen in Ihrem Twitter-Benutzerkonto vornehmen.</p>
-<p>Weitergehende Informationen über die Erhebung und Nutzung von Daten sowie Ihre diesbezüglichen Rechte und Schutzmöglichkeiten hält Twitter in den unter</p>
-<p><a href="https://twitter.com/privacy" target="_blank" rel="noopener nofollow">https://twitter.com/privacy</a></p>
-<p>abrufbaren Datenschutzhinweisen bereit.</p>
-   </div>
-</div>
 
 
 <div class="row">
   <div class="col-12 col-lg-6 legal">
     <h4>Other third party services</h4>
-    <p>test iewafbeoirbgi oerbgioearg oieargtioerbgioe rbgoierb ioebrgior bgioerbg ioergbie rbiogieo</p>
+    <p>The following other third party services are used on this website:</p>
   </div>
 
   <div class="col-12 col-lg-6 legal">
     <h4>Weitere Services von Drittanbietern</h4>
-    <p>Test dioa bgeroigbrteoi greiotbgiot rbgoitrbg iortgiortbgoib triobrt iogbiortbio rtirbtb rtbtrbrtbrtb </p>
+    <p>Die folgenden anderen Dienste von Drittanbietern werden auf dieser Website verwendet:</p>
   </div>
 </div>
 
@@ -360,100 +349,38 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 
   <div class="row">
   <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">FontAwesome</h4>
+<h5 class="jet-listing-dynamic-field__content">FontAwesome</h5>
 <p>In order to be able to display fonts and visual elements of our website, we use FontAwesome’s external fonts.&nbsp; FontAwesome is a service of</p>
 <p>Fonticons Inc., 6 Porter Road, Apartment 3R, Cambridge, MA 02140, USA, hereinafter referred to as „FontAwesome“.</p>
 <p>When you access our website, a connection is established to the FontAwesome server in the USA in order to enable and update the display of fonts and visual elements.</p>
 <p>The legal basis is Art.&nbsp; 6 para. 1 lit. f) GDPR. Our legitimate interest lies in the optimisation and economic operation of our website.</p>
 <p>By connecting to the FontAwesome server when you access our website, FontAwesome can determine from which website your request was sent and to which IP address the font should be sent.</p>
-<p>At</p>
-<p><a href="https://fontawesome.com/privacy" target="_blank" rel="noopener nofollow">https://fontawesome.com/privacy</a></p>
-<p>FontAwesome offers further information, in particular on the options for preventing data use.</p>
+<p>At <a href="https://fontawesome.com/privacy" target="_blank" rel="noopener nofollow">https://fontawesome.com/privacy</a> FontAwesome offers further information, in particular on the options for preventing data use.</p>
    </div>
 
 
-
   <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">FontAwesome</h4>
+<h5 class="jet-listing-dynamic-field__content">FontAwesome</h5>
 <p>Um Schriften und visuelle Elemente unseres Internetauftritts darstellen zu können, setzen wir die externen Schriftarten von FontAwesome ein. Bei FontAwesome handelt es sich um einen Dienst der</p>
 <p>Fonticons Inc., 6 Porter Road, Apartment 3R, Cambridge, MA 02140, USA, nachfolgend nur „FontAwesome“ genannt.</p>
 <p>Bei dem Aufruf unseres Internetauftritts wird eine Verbindung zum Server von FontAwesome in den USA aufgebaut, um so die Darstellung von Schriften und visuellen Elemente zu ermöglichen und zu aktualisieren.</p>
 <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f) DSGVO. Unser berechtigtes Interesse liegt in der Optimierung und dem wirtschaftlichen Betrieb unseres Internetauftritts.</p>
 <p>Durch die bei Aufruf unseres Internetauftritts hergestellte Verbindung zum Server von FontAwesome kann FontAwesome ermitteln, von welcher Website Ihre Anfrage gesendet worden ist und an welche IP-Adresse die Darstellung der Schrift zu übermitteln ist.</p>
-<p>FontAwesome bietet unter</p>
-<p><a href="https://fontawesome.com/privacy" target="_blank" rel="noopener nofollow">https://fontawesome.com/privacy</a></p>
-<p>weitere Informationen an und zwar insbesondere zu den Möglichkeiten der Unterbindung der Datennutzung.</p>
+<p>FontAwesome bietet unter <a href="https://fontawesome.com/privacy" target="_blank" rel="noopener nofollow">https://fontawesome.com/privacy</a> weitere Informationen an und zwar insbesondere zu den Möglichkeiten der Unterbindung der Datennutzung.</p>
    </div>
 </div>
 
-  <div class="row">
-  <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">Vimeo</h4>
-<p>We use Vimeo to display videos on our website. This is a service of Vimeo, LLC, 555 West 18th Street, New York, New York 10011, USA, hereinafter referred to as „Vimeo.“</p>
-<p>In case you have granted your consent to this processing the legal basis is Article 6 para. 1 lit. a GDPR. The legal basis can also be Article 6 para. 1 lit. f GDPR. Our legitimate interest lies in improving the quality of our website.</p>
-<p>When you access a page on our website that has Vimeo embedded in it, a connection to Vimeo’s servers in the USA is established. For technical reasons, it is necessary for Vimeo to process your IP address. In addition, the date and time of your visit to our website will also be recorded.</p>
-<p>If you are logged into Vimeo while visiting one of our webpages containing a Vimeo video, Vimeo will associate information about your interaction with our site to your Vimeo account. If you wish to prevent this, you must either log out of Vimeo before visiting our website or configure your Vimeo user account accordingly.</p>
-<p>For the purpose of functionality and usage analysis, Vimeo uses Google Analytics. Google Analytics stores cookies on your terminal device via your browser and transmits information about the use of those websites in which a Vimeo video is embedded to Google. It is possible that Google will process this information in the USA.</p>
-<p>If you do not agree to this processing, you have the option of preventing the installation of cookies by making the appropriate settings in your browser. Further details can be found in the section about cookies above.</p>
-<p>The legal basis for collecting and processing this information is Art. 6 Para. 1 lit. f) GDPR. Our legitimate interest lies in improving the quality of our website and in Vimeo’s legitimate interest in statistically analyzing user behavior for optimization and marketing purposes.</p>
-<p>Vimeo offers further information about its data collection and processing as well your rights and your options for protecting your privacy at this link:</p>
-<p><a href="http://vimeo.com/privacy" target="_blank" rel="noopener nofollow">http://vimeo.com/privacy</a>.</p>
-
-   </div>
-
-  <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">Vimeo</h4>
-<p>Zur Darstellung von Videos setzen wir auf unserer Internetseite „Vimeo“ ein. Hierbei handelt es sich um einen Dienst der Vimeo, LL C, 555 West 18 th Street, New York, New York 10011, USA, nachfolgend nur „Vimeo“ genannt, ein.</p>
-<p>Teilweise erfolgt die Verarbeitung der Nutzerdaten auf Servern von Vimeo in den USA.</p>
-<p>Im Falle einer von Ihnen erteilten Einwilligung für diese Verarbeitung ist Rechtsgrundlage Art. 6 Abs. 1 lit. a DSGVO. Rechtsgrundlage kann auch Art. 6 Abs. 1 lit. f DSGVO sein. Unser berechtigtes Interesse liegt in der Qualitätsverbesserung unseres Internetauftritts.</p>
-<p>Besuchen Sie eine Seite unseres Internetauftritts, in die ein Video eingebettet ist, wird zur Darstellung des Videos eine Verbindung zu den Servern von Vimeo in den USA hergestellt. Aus technischen Gründen ist es dabei notwendig, dass Vimeo Ihre IP – Adresse verarbeitet. Daneben werden aber auch Datum und Uhrzeit des Besuchs unserer Internetseiten erfasst.</p>
-<p>Sollten Sie gleichzeitig bei Vimeo eingeloggt sein, während Sie eine unserer Internetseiten besuchen, in die ein Vimeo-Video eingebettet ist, weist Vimeo die so gesammelten Informationen womöglich Ihrem dortigen persönlichen Nutzerkonto zu. Wenn Sie das verhindern möchten, müssen Sie sich entweder vor dem Besuch unseres Internetauftritts bei Vimeo ausloggen oder Ihr Nutzerkonto bei Vimeo entsprechend konfigurieren.</p>
-<p>Zum Zwecke der Funktionalität und Nutzungsanalyse setzt Vimeo den Webanalysedienst Google Analytics ein. Durch Google Analytics werden Cookies über Ihren Internet-Browser auf Ihrem Endgerät gespeichert und Informationen über die Benutzung unserer Internetseiten, in die ein Vimeo- Video eingebettet ist, an Google übersandt. Hierbei kann nicht ausgeschlossen werden, dass Google diese Informationen in den USA verarbeitet.</p>
-<p>Sofern Sie mit dieser Verarbeitung nicht einverstanden sind, haben Sie die Möglichkeit, die Installation der Cookies durch die entsprechenden Einstellungen in Ihrem Internet-Browser zu verhindern. Einzelheiten hierzu finden Sie vorstehend unter dem Punkt „Cookies“.</p>
-<p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f) DSGVO. Unser berechtigtes Interesse liegt in der Qualitätsverbesserung unseres Internetauftritts und in dem berechtigten Interesse von Vimeo , das Nutzerverhalten statistisch zu Optimierungs- und Marketingzwecken zu analysieren.</p>
-<p>Vimeo bietet unter</p>
-<p><a href="http://vimeo.com/privacy" target="_blank" rel="noopener nofollow">http://vimeo.com/privacy</a></p>
-<p>weitere Informationen zur Erhebung und Nutzung der Daten sowie zu Ihren Rechten und Möglichkeiten zum Schutz Ihrer Privatsphäre an.</p>
-
-   </div>
-</div>
 
   <div class="row">
   <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">YouTube</h4>
-<p>We use YouTube on our website. This is a video portal operated by Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, hereinafter referred to as „YouTube“.</p>
-<p>We use YouTube in its advanced privacy mode to show you videos. In case you have granted your consent to this processing the legal basis is Article 6 para. 1 lit. a GDPR. The legal basis can also be Article 6 para. 1 lit. f GDPR. Our legitimate interest lies in improving the quality of our website. According to YouTube, the advanced privacy mode means that the data specified below will only be transmitted to the YouTube server if you actually start a video.</p>
-<p>Without this mode, a connection to the YouTube server in the USA will be established as soon as you access any of our webpages on which a YouTube video is embedded.</p>
-<p>This connection is required in order to be able to display the respective video on our website within your browser. YouTube will record and process at a minimum your IP address, the date and time the video was displayed, as well as the website you visited. In addition, a connection to the DoubleClick advertising network of Google is established.</p>
-<p>If you are logged in to YouTube when you access our site, YouTube will assign the connection information to your YouTube account. To prevent this, you must either log out of YouTube before visiting our site or make the appropriate settings in your YouTube account.</p>
-<p>For the purpose of functionality and analysis of usage behavior, YouTube permanently stores cookies on your device via your browser. If you do not agree to this processing, you have the option of preventing the installation of cookies by making the appropriate settings in your browser. Further details can be found in the section about cookies above.</p>
-<p>Further information about the collection and use of data as well as your rights and protection options in Google’s privacy policy found at</p>
-<p><a href="https://policies.google.com/privacy" target="_blank" rel="noopener nofollow">https://policies.google.com/privacy</a></p>
-   </div>
-
-  <div class="col-12 col-lg-6 legal">
-<h4 class="jet-listing-dynamic-field__content">YouTube</h4>
-<p>In unserem Internetauftritt setzen wir YouTube ein. Hierbei handelt es sich um ein Videoportal der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, nachfolgend nur „YouTube“ genannt.</p>
-<p>Wir nutzen YouTube im Zusammenhang mit der Funktion „Erweiterter Datenschutzmodus“, um Ihnen Videos anzeigen zu können. Im Falle einer von Ihnen erteilten Einwilligung für diese Verarbeitung ist Rechtsgrundlage Art. 6 Abs. 1 lit. a DSGVO. Rechtsgrundlage kann auch Art. 6 Abs. 1 lit. f DSGVO sein. Unser berechtigtes Interesse liegt in der Qualitätsverbesserung unseres Internetauftritts. Die Funktion „Erweiterter Datenschutzmodus“ bewirkt laut Angaben von YouTube, dass die nachfolgend noch näher bezeichneten Daten nur dann an den Server von YouTube übermittelt werden, wenn Sie ein Video auch tatsächlich starten.</p>
-<p>Ohne diesen „Erweiterten Datenschutz“ wird eine Verbindung zum Server von YouTube in den USA hergestellt, sobald Sie eine unserer Internetseiten, auf der ein YouTube-Video eingebettet ist, aufrufen.</p>
-<p>Diese Verbindung ist erforderlich, um das jeweilige Video auf unserer Internetseite über Ihren Internet-Browser darstellen zu können. Im Zuge dessen wird YouTube zumindest Ihre IP-Adresse, das Datum nebst Uhrzeit sowie die von Ihnen besuchte Internetseite erfassen und verarbeiten. Zudem wird eine Verbindung zu dem Werbenetzwerk „DoubleClick“ von Google hergestellt.</p>
-<p>Sollten Sie gleichzeitig bei YouTube eingeloggt sein, weist YouTube die Verbindungsinformationen Ihrem YouTube-Konto zu. Wenn Sie das verhindern möchten, müssen Sie sich entweder vor dem Besuch unseres Internetauftritts bei YouTube ausloggen oder die entsprechenden Einstellungen in Ihrem YouTube-Benutzerkonto vornehmen.</p>
-<p>Zum Zwecke der Funktionalität sowie zur Analyse des Nutzungsverhaltens speichert YouTube dauerhaft Cookies über Ihren Internet-Browser auf Ihrem Endgerät. Falls Sie mit dieser Verarbeitung nicht einverstanden sind, haben Sie die Möglichkeit, die Speicherung der Cookies durch eine Einstellung in Ihrem Internet-Browsers zu verhindern. Nähere Informationen hierzu finden Sie vorstehend unter „Cookies“.</p>
-<p>Weitergehende Informationen über die Erhebung und Nutzung von Daten sowie Ihre diesbezüglichen Rechte und Schutzmöglichkeiten hält Google in den unter</p>
-<p><a href="https://policies.google.com/privacy" target="_blank" rel="noopener nofollow">https://policies.google.com/privacy</a></p>
-<p>abrufbaren Datenschutzhinweisen bereit.</p>
-
-   </div>
-</div>
-
-  <div class="row">
-  <div class="col-12 col-lg-6 legal">
-<p><a href="https://www.generator-datenschutzerklärung.de" target="_blank" rel="noopener">Privacy Policy Template</a> by <a href="https://www.ratgeberrecht.eu/" target="_blank" rel="noopener">Anwaltskanzlei Weiß &amp; Partner</a></p>
+  <h4>Source</h4>
+<p>This privacy policy statement is based on the <a href="https://www.generator-datenschutzerklärung.de" target="_blank" rel="noopener">Privacy Policy Template</a> by <a href="https://www.ratgeberrecht.eu/" target="_blank" rel="noopener">Anwaltskanzlei Weiß &amp; Partner</a>.</p>
 
    </div>
 
   <div class="col-12 col-lg-6 legal">
-<p><a href="https://www.generator-datenschutzerklärung.de" target="_blank" rel="noopener">Muster-Datenschutzerklärung</a> der <a href="https://www.ratgeberrecht.eu/datenschutz/datenschutzerklaerung-generator-dsgvo.html" target="_blank" rel="noopener">Anwaltskanzlei Weiß &amp; Partner</a></p>
+  <h4>Quellenangabe</h4>
+<p>Diese Datenschutzerklärung basiert auf der <a href="https://www.generator-datenschutzerklärung.de" target="_blank" rel="noopener">Muster-Datenschutzerklärung</a> der <a href="https://www.ratgeberrecht.eu/datenschutz/datenschutzerklaerung-generator-dsgvo.html" target="_blank" rel="noopener">Anwaltskanzlei Weiß &amp; Partner</a>.</p>
    </div>
 </div>
 

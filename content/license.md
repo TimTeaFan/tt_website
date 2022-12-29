@@ -110,4 +110,15 @@ linktitle: "<i class=\"fab fa-creative-commons fa-2x\"></i><i class=\"fab fa-cre
 </center></a></p>
          </div>
    </div>
+   
+<div class="row">
+  <div class="col-12 col-lg-6 legal">
+    <h2>Privacy Policy</h2>
+    <p>Read our full <a href="/privacy">privacy policy</a> here.</p>
+  </div>
+  <div class="col-12 col-lg-6 legal">
+    <h2>Datenschutzerklärung</h2>
+    <p>Hier finden Sie unsere vollständige <a href="/privacy">Datenschutzerklärung</a>.</p>
+  </div>
+</div>
 
