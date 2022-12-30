@@ -117,7 +117,7 @@ phone = ""
 ############################
 
 # Default image for social sharing and search engines. Place image in `static/img/` folder and specify image name here.
-sharing_image = "tt_website_social_preview.png"
+sharing_image = "tt_website_social_preview.jpg"
 
 # Twitter username (without @). Used when a visitor shares your site on Twitter.
 twitter = "timteafan"
