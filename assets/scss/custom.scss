@@ -722,8 +722,11 @@ div.row.device {
 
 /* cookie banner */
 
-div.cc-window.cc-banner.cc-type-info.cc-theme-classic.cc-bottom,
-div.cc-window.cc-floating.cc-type-info.cc-theme-classic.cc-bottom {
+div.cc-window[aria-label="cookieconsent"] {
+/*
+  .cc-banner.cc-type-info.cc-theme-classic.cc-bottom,
+div.cc-window.cc-floating.cc-type-info.cc-theme-classic.cc-bottom
+*/
   font-family: Open Sans,Lucida Sans Unicode,Lucida Grande,sansSerif;
   letter-spacing: 0.0em;
   color: rgb(41, 47, 61) !important;
