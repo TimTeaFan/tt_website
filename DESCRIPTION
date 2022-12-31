@@ -1,0 +1,14 @@
+Package: tt_website
+Title: Personal Website of Tim Tiefenbach
+Version: 0.1.0.9000
+Authors@R: 
+    person(given = "Tim",
+           family = "Tiefenbach",
+           role = c("aut", "cre"),
+           email = "mailme@tim-tiefenbach.de",
+           comment = c(ORCID = "0000-0001-9443-2434"))
+Description: Markdown and config files to render a website with Hugo and hugodown.
+License: 
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
