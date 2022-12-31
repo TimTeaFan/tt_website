@@ -220,22 +220,15 @@ ul.share > li > a {
 /* about section */
 
 #about {
-  color: #ffffff; /*#ffffff*/
-  /*ackground-color: #59aaff;
-background: rgb(148,198,255);
-background: linear-gradient(126deg, rgba(148,198,255,1) 0%, rgba(105,175,255,1) 10%, rgba(23,122,236,1) 100%, rgba(31,34,41,1) 100%);
-*/
+  color: #ffffff;
+  background: rgb(97,173,252);
+  background: linear-gradient(126deg, rgba(97,173,252,1) 0%, rgba(48,149,255,1) 37%, rgba(23,136,255,1) 100%);
+}
 
-background: rgb(97,173,252);
-background: linear-gradient(126deg, rgba(97,173,252,1) 0%, rgba(48,149,255,1) 37%, rgba(23,136,255,1) 100%);
-/*
-background: rgb(65,158,255);
-background: linear-gradient(125deg, rgba(65,158,255,1) 0%, rgba(150,201,255,1) 100%);
-background: rgb(105,175,255);
-background: linear-gradient(125deg, rgba(105,175,255,1) 0%, rgba(145,199,255,1) 64%);
-background: rgb(41,47,61);
-background: linear-gradient(0deg, rgba(41,47,61,1) 0%, rgba(105,175,255,1) 6%, rgba(105,175,255,1) 100%, rgba(31,34,41,1) 100%);
-*/
+@media screen and (min-width: 768px) {
+  #about {
+    background: linear-gradient(126deg, #4e8fd1, #2474c8 37%, #0d5caf) !important;
+  }
 }
 
 /*
