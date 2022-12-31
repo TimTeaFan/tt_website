@@ -99,6 +99,13 @@ a.nav-link {
   letter-spacing: .025em;
 }
 
+/*
+.nav-link:hover,
+.nav-link:focus,{
+  color: #33c09b !important;
+  transition: color 0s ease;
+}
+*/
 
 .navbar .navbar-nav .nav-link.active {
   font-weight: 400 !important;
