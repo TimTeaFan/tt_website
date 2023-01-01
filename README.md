@@ -49,3 +49,5 @@ from the basic academic theme:
     supported)
 6.  Getting rid of the Google font dependency<br>as described in [this
     post](https://www.chrislockard.net/posts/using-local-fonts-hugo-academic-theme/)
+7.  Adding favicons (hopefully displayed on most devices)
+8.  Adding a social preview (for most apps & services)
