@@ -1,0 +1,34 @@
+{{ $item := . }}
+{{ if and site.Params.sharing (ne .Params.share false) }}
+{{ $mytext := "Did you enjoy this post?" }}
+{{ if eq $item.Type "publication" }}
+  {{ $mytext = "Do you like this publication?" }}
+{{ else if eq $item.Type "talk" }}
+  {{ $mytext = "Do you like this talk?" }}
+{{ end }}
+
+<div class="spread">
+ {{ $mytext }} Spread the word!
+  </div>
+<div class="outer-share-box">
+  <div class="share-box" aria-hidden="true">
+  <ul class="share">
+    {{ range where site.Data.page_sharer.buttons "enable" true }}
+      {{ $pack := or .icon_pack "fas" }}
+      {{ $pack_prefix := $pack }}
+      {{ if in (slice "fab" "fas" "far" "fal") $pack }}
+        {{ $pack_prefix = "fa" }}
+      {{ end }}
+      {{ $link := replace .url "{url}" ($.Permalink | htmlEscape) }}
+      {{ $link = replace $link "{title}" ($.Title | htmlEscape) }}
+      <li>
+        <a href="{{$link|safeURL}}" target="_blank" rel="noopener" class="share-btn-{{.id}}">
+          <i class="{{$pack}} {{$pack_prefix}}-{{.icon}}"></i>
+        </a>
+      </li>
+    {{ end }}
+  </ul>
+</div>
+</div>
+
+{{ end }}
