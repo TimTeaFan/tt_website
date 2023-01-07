@@ -107,8 +107,10 @@ a.nav-link {
 }
 */
 
-.navbar .navbar-nav .nav-link.active {
+.navbar .navbar-nav .nav-link.active,
+a.nav-link[data-target="[]"]{
   font-weight: 400 !important;
+  color: #59aaff !important;
 }
 
 
