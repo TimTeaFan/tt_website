@@ -105,7 +105,7 @@ Lets start with base R. If it weren't for the three conditions outlined above, r
 recode_df$new[match(names(mycars), recode_df$old)]
 ```
 
-But as we can see, this create an `NA` for the column name that is not included in the lookup table `model`.
+But as we can see, this creates an `NA` for the column name that is not included in the lookup table `model`.
 
 This leaves use with two options. Extract only those new column names `recode_df$new` for which we have recodes `recodes_nms`. We then replace only those names in our data.
 

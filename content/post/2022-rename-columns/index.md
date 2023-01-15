@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 57f4d07035f86ef1
+rmd_hash: 838c1bde699c0270
 
 ---
 
@@ -127,7 +127,7 @@ Lets start with base R. If it weren't for the three conditions outlined above, r
 
 </div>
 
-But as we can see, this create an `NA` for the column name that is not included in the lookup table `model`.
+But as we can see, this creates an `NA` for the column name that is not included in the lookup table `model`.
 
 This leaves use with two options. Extract only those new column names `recode_df$new` for which we have recodes `recodes_nms`. We then replace only those names in our data.
 
