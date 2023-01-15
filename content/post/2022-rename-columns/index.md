@@ -1,5 +1,7 @@
 ---
-output: hugodown::md_document
+output:
+  hugodown::md_document:
+    toc: TRUE
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
 title: "Partially renaming columns using a lookup table"
@@ -27,9 +29,16 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: d32d6691868723e7
+rmd_hash: 57f4d07035f86ef1
 
 ---
+
+-   <a href="#intro" id="toc-intro">Intro</a>
+-   <a href="#setup" id="toc-setup">Setup</a>
+-   <a href="#base-r" id="toc-base-r">base R</a>
+-   <a href="#data.table" id="toc-data.table">data.table</a>
+-   <a href="#dplyr-tidyverse" id="toc-dplyr-tidyverse">dplyr (tidyverse)</a>
+-   <a href="#python" id="toc-python">Python</a>
 
 ## Intro
 
@@ -196,7 +205,7 @@ Both cases are somewhat verbose and cumbersome, so lets have a look how we can t
 
 ## data.table
 
-The 'data.table' package sometimes has the reputation for offering a crypting, arcane syntax, but many users don't know that the package also contains many helpful functions which are pretty straight-forward to use. In our case we can apply [`data.table::setnames()`](https://rdrr.io/pkg/data.table/man/setattr.html) out of the box. It takes a `data.table`, a vector of old and new column names and finally all we have to do is to set the `skip_absent` argument to `TRUE`, to prevent 'data.table' from raising an error, since not all of the names in our lookup table are present in the data.
+The 'data.table' package sometimes has the reputation for offering a crypting, arcane syntax, but many users don't know that the package also contains many helpful functions which are pretty straight-forward to use. In our case we can apply [`data.table::setnames()`](https://Rdatatable.gitlab.io/data.table/reference/setattr.html) out of the box. It takes a `data.table`, a vector of old and new column names and finally all we have to do is to set the `skip_absent` argument to `TRUE`, to prevent 'data.table' from raising an error, since not all of the names in our lookup table are present in the data.
 
 Unlike base R, the names are changed "by reference", meaning that we don't need to assign the result to a new variable, since no copy is made. Instead the data is "modified in place".
 
@@ -204,9 +213,9 @@ Unlike base R, the names are changed "by reference", meaning that we don't need 
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://r-datatable.com'>data.table</a></span><span class='o'>)</span></span>
 <span></span>
-<span><span class='nv'>mycars_dt</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/pkg/data.table/man/as.data.table.html'>as.data.table</a></span><span class='o'>(</span><span class='nv'>mycars</span><span class='o'>)</span></span>
+<span><span class='nv'>mycars_dt</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html'>as.data.table</a></span><span class='o'>(</span><span class='nv'>mycars</span><span class='o'>)</span></span>
 <span></span>
-<span><span class='nf'><a href='https://rdrr.io/pkg/data.table/man/setattr.html'>setnames</a></span><span class='o'>(</span><span class='nv'>mycars_dt</span>,</span>
+<span><span class='nf'><a href='https://Rdatatable.gitlab.io/data.table/reference/setattr.html'>setnames</a></span><span class='o'>(</span><span class='nv'>mycars_dt</span>,</span>
 <span>         old <span class='o'>=</span> <span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>old</span>,</span>
 <span>         new <span class='o'>=</span> <span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>new</span>,</span>
 <span>         skip_absent <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span></span>
@@ -303,7 +312,7 @@ The cool, and undocumented feature is that we can use [`any_of()`](https://tidys
 
 </div>
 
-The good thing about both approaches in 'data.table' and 'dplyr' is that we can deliberately ignore errors when not all of the column name pairs are present in our data. Either by setting [`data.table::setnames()`](https://rdrr.io/pkg/data.table/man/setattr.html)'s `skip_absent` argument to `TRUE` or by using [`tidyselect::any_of()`](https://tidyselect.r-lib.org/reference/all_of.html). Which means we can also raise errors if we need them: setting `skip_absent` to `FALSE` or using [`tidyselect::all_of()`](https://tidyselect.r-lib.org/reference/all_of.html) (which is the opposite of [`any_of()`](https://tidyselect.r-lib.org/reference/all_of.html) and requires all column names to be present in the data).
+The good thing about both approaches in 'data.table' and 'dplyr' is that we can deliberately ignore errors when not all of the column name pairs are present in our data. Either by setting [`data.table::setnames()`](https://Rdatatable.gitlab.io/data.table/reference/setattr.html)'s `skip_absent` argument to `TRUE` or by using [`tidyselect::any_of()`](https://tidyselect.r-lib.org/reference/all_of.html). Which means we can also raise errors if we need them: setting `skip_absent` to `FALSE` or using [`tidyselect::all_of()`](https://tidyselect.r-lib.org/reference/all_of.html) (which is the opposite of [`any_of()`](https://tidyselect.r-lib.org/reference/all_of.html) and requires all column names to be present in the data).
 
 Finally, lets have a look at how we would solve this problem in Python's 'pandas' library.
 
