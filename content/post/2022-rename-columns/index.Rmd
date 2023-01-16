@@ -232,7 +232,7 @@ The good thing about both approaches in 'data.table' and 'dplyr' is that we can 
 
 Finally, lets have a look at how we would solve this problem in Python's 'pandas' library.
 
-## Python
+## Python pandas
 
 In Python we can use 'pandas's [`pd.DataFrame.rename`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html) function to rename columns of a `DataFrame`. The only thing we need to take care of is supplying the `columns` argument with a dictionary of column name pairs `{"old" : "new"}`. There are several ways to create a dictionary from our `recode_df`. Below we use a pandas approach with `set_index(...).to_dict()`, but we could also have used Pythons `dict(zip())` functions.
 

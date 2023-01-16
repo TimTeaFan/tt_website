@@ -178,6 +178,12 @@ h3.article-title > a {
   list-style-type: "‣  ";
 }
 
+/* post header image */
+
+.article-header > div > img {
+  border-radius: 5px;
+}
+
 /* sharebox */
 
 @media screen and (min-width: 1024px) {

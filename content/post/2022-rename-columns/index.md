@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 838c1bde699c0270
+rmd_hash: b61ef87187a12378
 
 ---
 
@@ -38,7 +38,7 @@ rmd_hash: 838c1bde699c0270
 -   <a href="#base-r" id="toc-base-r">base R</a>
 -   <a href="#data.table" id="toc-data.table">data.table</a>
 -   <a href="#dplyr-tidyverse" id="toc-dplyr-tidyverse">dplyr (tidyverse)</a>
--   <a href="#python" id="toc-python">Python</a>
+-   <a href="#python-pandas" id="toc-python-pandas">Python pandas</a>
 
 ## Intro
 
@@ -316,7 +316,7 @@ The good thing about both approaches in 'data.table' and 'dplyr' is that we can 
 
 Finally, lets have a look at how we would solve this problem in Python's 'pandas' library.
 
-## Python
+## Python pandas
 
 In Python we can use 'pandas's [`pd.DataFrame.rename`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html) function to rename columns of a `DataFrame`. The only thing we need to take care of is supplying the `columns` argument with a dictionary of column name pairs `{"old" : "new"}`. There are several ways to create a dictionary from our `recode_df`. Below we use a pandas approach with `set_index(...).to_dict()`, but we could also have used Pythons `dict(zip())` functions.
 
