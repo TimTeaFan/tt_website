@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: b61ef87187a12378
+rmd_hash: 5d7cbfc6ec01dc53
 
 ---
 
@@ -50,7 +50,7 @@ Below we'll look at how to rename columns using different approaches in R. To ma
 2.  We are working with a subset of the original data, that means, the lookup table, although being not complete, holds actually *more* column name pairs than there are actually columns in the subset of our data.
 3.  The sorting of the lookup table is different from the sorting of our actual column names.
 
-Without those three conditions partially renaming columns is actually not a big deal. In real world settings however, there are definitely cases where we have to rename columns under one or more of the above conditions.
+Without those three conditions partially renaming columns is actually not a big deal. In real world settings however, there are many cases where we have to rename columns under one or more of the above conditions. Especially, since we often use short column names in the analysis and just rename them in the final step when creating a report. The latter almost never contains all the columns names of our originial data set.
 
 It is interesting to see how the three large paradigms in R, base R, 'data.table' and 'dplyr' compare in handling this problem.
 
@@ -108,7 +108,12 @@ As as final step lets write both data.frame's `mycars` and `recode_df` from R to
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='o'>(</span><span class='nv'>mycars</span>, <span class='s'>"mycars.csv"</span><span class='o'>)</span></span>
-<span><span class='nf'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='o'>(</span><span class='nv'>recode_df</span>, <span class='s'>"recode_df.csv"</span><span class='o'>)</span></span></code></pre>
+<span><span class='c'># available at:</span></span>
+<span><span class='c'># read.csv("https://raw.githubusercontent.com/TimTeaFan/tt_website/main/content/post/2022-rename-columns/mycars.csv")</span></span>
+<span></span>
+<span><span class='nf'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='o'>(</span><span class='nv'>recode_df</span>, <span class='s'>"recode_df.csv"</span><span class='o'>)</span></span>
+<span><span class='c'># available at:</span></span>
+<span><span class='c'># https://raw.githubusercontent.com/TimTeaFan/tt_website/main/content/post/2022-rename-columns/recode_df.csv</span></span></code></pre>
 
 </div>
 
@@ -129,24 +134,19 @@ Lets start with base R. If it weren't for the three conditions outlined above, r
 
 But as we can see, this creates an `NA` for the column name that is not included in the lookup table `model`.
 
-This leaves use with two options. Extract only those new column names `recode_df$new` for which we have recodes `recodes_nms`. We then replace only those names in our data.
+However, slightly modifying [this answer on SO](https://stackoverflow.com/a/34731914/9349302) by Gregor Thomas, shows how to get rid of the `NA`s and only overwrite those column names that are present in our lookup table:
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># create a new object so that we don't overwrite our original `mycars` data</span></span>
 <span><span class='nv'>mycars_base</span> <span class='o'>&lt;-</span> <span class='nv'>mycars</span></span>
 <span></span>
-<span><span class='c'># get the column names of our data</span></span>
-<span><span class='nv'>mycars_cols</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>mycars_base</span><span class='o'>)</span></span>
+<span><span class='c'># create an index vector with match to find those names in`recode_df` ... </span></span>
+<span><span class='c'># ...that are present in our data</span></span>
+<span><span class='nv'>idx_vec</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='o'>(</span><span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>old</span>, <span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>mycars_base</span><span class='o'>)</span><span class='o'>)</span></span>
 <span></span>
-<span><span class='c'># find the column names for which we do have updated column names</span></span>
-<span><span class='nv'>recode_nms</span> <span class='o'>&lt;-</span> <span class='nv'>mycars_cols</span><span class='o'>[</span><span class='nv'>mycars_cols</span> <span class='o'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>old</span><span class='o'>]</span></span>
-<span></span>
-<span><span class='c'># get the new names by extracting `[` with `match()`</span></span>
-<span><span class='nv'>new_nms</span> <span class='o'>&lt;-</span> <span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>new</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='o'>(</span><span class='nv'>recode_nms</span>, <span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>old</span><span class='o'>)</span><span class='o'>]</span></span>
-<span></span>
-<span><span class='c'># Replace column names for which we have recodes with our new column names</span></span>
-<span><span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>mycars_base</span><span class='o'>)</span><span class='o'>[</span><span class='nv'>mycars_cols</span> <span class='o'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='nv'>recode_nms</span><span class='o'>]</span> <span class='o'>&lt;-</span> <span class='nv'>new_nms</span></span>
+<span><span class='c'># assign the names</span></span>
+<span><span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>mycars_base</span><span class='o'>)</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='o'>(</span><span class='nv'>idx_vec</span><span class='o'>)</span><span class='o'>]</span> <span class='o'>&lt;-</span> <span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>new</span><span class='o'>[</span><span class='o'>!</span><span class='nf'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='o'>(</span><span class='nv'>idx_vec</span><span class='o'>)</span><span class='o'>]</span></span>
 <span></span>
 <span><span class='c'># use `str()` for better printing</span></span>
 <span><span class='nf'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='o'>(</span><span class='nv'>mycars_base</span><span class='o'>)</span></span>
@@ -162,50 +162,11 @@ This leaves use with two options. Extract only those new column names `recode_df
 
 </div>
 
-The approach above is somewhat verbose, but it makes it easier to see each single step. It could be rewritten in one or two cryptic lines, but we wouldn't gain much from that.
-
-The other option to stick to the original [`match()`](https://rdrr.io/r/base/match.html) extract `[` approach and [`replace()`](https://rdrr.io/r/base/replace.html) the `NA`s with the column names that don't change for which we need an index, below `idx_na`:
-
-<div class="highlight">
-
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># create a new object so that we don't overwrite our original `mycars` data</span></span>
-<span><span class='nv'>mycars_base</span> <span class='o'>&lt;-</span> <span class='nv'>mycars</span></span>
-<span></span>
-<span><span class='c'># get the column names of our data</span></span>
-<span><span class='nv'>mycars_cols</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>mycars_base</span><span class='o'>)</span></span>
-<span></span>
-<span><span class='c'># use original `match()` extract `[` approach </span></span>
-<span><span class='nv'>new_nms</span> <span class='o'>&lt;-</span> <span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>new</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='o'>(</span><span class='nv'>mycars_cols</span>, <span class='nv'>recode_df</span><span class='o'>$</span><span class='nv'>old</span><span class='o'>)</span><span class='o'>]</span></span>
-<span></span>
-<span><span class='c'># Get index of `NA`s</span></span>
-<span><span class='nv'>idx_na</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='o'>(</span><span class='nv'>new_nms</span><span class='o'>)</span></span>
-<span></span>
-<span><span class='c'># replace `NA`s in new_nms with original names in mycars</span></span>
-<span><span class='nv'>new_nms_all</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/replace.html'>replace</a></span><span class='o'>(</span><span class='nv'>new_nms</span>, <span class='c'># vector in which we want to replace values</span></span>
-<span>                       <span class='nv'>idx_na</span>,  <span class='c'># index of values to replace</span></span>
-<span>                       <span class='nv'>mycars_cols</span><span class='o'>[</span><span class='nv'>idx_na</span><span class='o'>]</span><span class='o'>)</span> <span class='c'># values to fill in</span></span>
-<span></span>
-<span><span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>mycars_base</span><span class='o'>)</span> <span class='o'>&lt;-</span> <span class='nv'>new_nms_all</span></span>
-<span></span>
-<span><span class='c'># use `str()` for better printing</span></span>
-<span><span class='nf'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='o'>(</span><span class='nv'>mycars_base</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; 'data.frame':  32 obs. of  7 variables:</span></span>
-<span><span class='c'>#&gt;  $ model                  : chr  "Mazda RX4" "Mazda RX4 Wag" "Datsun 710" "Hornet 4 Drive" ...</span></span>
-<span><span class='c'>#&gt;  $ Miles per galon        : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...</span></span>
-<span><span class='c'>#&gt;  $ Displacement (cu.in.)  : num  160 160 108 258 360 ...</span></span>
-<span><span class='c'>#&gt;  $ Rear axle ratio        : num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...</span></span>
-<span><span class='c'>#&gt;  $ 1/4 mile time          : num  16.5 17 18.6 19.4 17 ...</span></span>
-<span><span class='c'>#&gt;  $ Number of forward gears: num  1 1 1 0 0 0 0 0 0 0 ...</span></span>
-<span><span class='c'>#&gt;  $ Number of carbuertors  : num  4 4 1 1 2 1 4 2 2 4 ...</span></span>
-<span></span></code></pre>
-
-</div>
-
-Both cases are somewhat verbose and cumbersome, so lets have a look how we can tackle this problem using 'data.table' and 'dplyr'.
+Although this approach is not very verbose, it does require some serious thinking about matching, extracting and indexing. It feels like there should be a cleaner solution for a common problem like this, so lets have a look how we can tackle this problem using 'data.table' and 'dplyr'.
 
 ## data.table
 
-The 'data.table' package sometimes has the reputation for offering a crypting, arcane syntax, but many users don't know that the package also contains many helpful functions which are pretty straight-forward to use. In our case we can apply [`data.table::setnames()`](https://Rdatatable.gitlab.io/data.table/reference/setattr.html) out of the box. It takes a `data.table`, a vector of old and new column names and finally all we have to do is to set the `skip_absent` argument to `TRUE`, to prevent 'data.table' from raising an error, since not all of the names in our lookup table are present in the data.
+The 'data.table' package sometimes has the reputation for offering a cryptic, arcane syntax, but many users don't know that the package also contains many helpful functions which are pretty straight-forward to use. In our case we can apply [`data.table::setnames()`](https://Rdatatable.gitlab.io/data.table/reference/setattr.html) out of the box. It takes a `data.table`, a vector of old and new column names and finally all we have to do is to set the `skip_absent` argument to `TRUE`, to prevent 'data.table' from raising an error, since not all of the names in our lookup table are present in the data.
 
 Unlike base R, the names are changed "by reference", meaning that we don't need to assign the result to a new variable, since no copy is made. Instead the data is "modified in place".
 
@@ -360,7 +321,7 @@ mycars.info()
 
 </div>
 
-When it comes to renaming columns, we can see that 'pandas' is pretty similar to 'dplyr', even more so when we write our Python code according to the <a href="https://store.metasnake.com/effective-pandas-book" role="highlight"> Effective Pandas"</a> style. However, it also resembles 'data.table' in two aspects. First, when setting the `inplace` argument to `True` the `DataFrame` is modified in place, no copy is made, and we don't need to assign the result back to a variable. Second, `rename` has an argument `errors` which is set to `'ignore'` by default. If we want pandas to throw an error if not all columns are present in our data, we can set it to `'raise'`.
+When it comes to renaming columns, we can see that 'pandas' is pretty similar to 'dplyr', even more so when we write our Python code according to the <a href="https://store.metasnake.com/effective-pandas-book" role="highlight">"Effective Pandas"</a> style. However, it also resembles 'data.table' in two aspects. First, when setting the `inplace` argument to `True` the `DataFrame` is modified in place, no copy is made, and we don't need to assign the result back to a variable. Second, `rename` has an argument `errors` which is set to `'ignore'` by default. If we want pandas to throw an error if not all columns are present in our data, we can set it to `'raise'`.
 
 That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know via Twitter, Mastadon or Github.
 
