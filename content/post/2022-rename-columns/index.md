@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 5d7cbfc6ec01dc53
+rmd_hash: 472c4935cddf0697
 
 ---
 
@@ -323,5 +323,5 @@ mycars.info()
 
 When it comes to renaming columns, we can see that 'pandas' is pretty similar to 'dplyr', even more so when we write our Python code according to the <a href="https://store.metasnake.com/effective-pandas-book" role="highlight">"Effective Pandas"</a> style. However, it also resembles 'data.table' in two aspects. First, when setting the `inplace` argument to `True` the `DataFrame` is modified in place, no copy is made, and we don't need to assign the result back to a variable. Second, `rename` has an argument `errors` which is set to `'ignore'` by default. If we want pandas to throw an error if not all columns are present in our data, we can set it to `'raise'`.
 
-That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know via Twitter, Mastadon or Github.
+That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know via Twitter, Mastodon or Github.
 
