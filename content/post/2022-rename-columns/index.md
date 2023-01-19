@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 472c4935cddf0697
+rmd_hash: d8817e67690af4ba
 
 ---
 
@@ -113,7 +113,7 @@ As as final step lets write both data.frame's `mycars` and `recode_df` from R to
 <span></span>
 <span><span class='nf'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='o'>(</span><span class='nv'>recode_df</span>, <span class='s'>"recode_df.csv"</span><span class='o'>)</span></span>
 <span><span class='c'># available at:</span></span>
-<span><span class='c'># https://raw.githubusercontent.com/TimTeaFan/tt_website/main/content/post/2022-rename-columns/recode_df.csv</span></span></code></pre>
+<span><span class='c'># read.csv("https://raw.githubusercontent.com/TimTeaFan/tt_website/main/content/post/2022-rename-columns/recode_df.csv")</span></span></code></pre>
 
 </div>
 

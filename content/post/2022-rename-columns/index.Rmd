@@ -98,7 +98,7 @@ write.csv(mycars, "mycars.csv")
 
 write.csv(recode_df, "recode_df.csv")
 # available at:
-# https://raw.githubusercontent.com/TimTeaFan/tt_website/main/content/post/2022-rename-columns/recode_df.csv
+# read.csv("https://raw.githubusercontent.com/TimTeaFan/tt_website/main/content/post/2022-rename-columns/recode_df.csv")
 ```
 
 
