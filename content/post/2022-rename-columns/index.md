@@ -9,7 +9,7 @@ subtitle: ""
 summary: "This blog post shows how to partially rename columns with a lookup table using four different approaches: base R, data.table, dplyr, and pandas."
 authors: []
 tags: ["R", "Python"]
-categories: ["R", "Python"]
+categories: ["R", "Python", "base R", "dplyr", "data.table", "pandas"]
 date: 2022-12-23
 lastmod: 2022-12-23
 featured: false
@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: d8817e67690af4ba
+rmd_hash: 4b33892e83424ca1
 
 ---
 
@@ -324,4 +324,53 @@ mycars.info()
 When it comes to renaming columns, we can see that 'pandas' is pretty similar to 'dplyr', even more so when we write our Python code according to the <a href="https://store.metasnake.com/effective-pandas-book" role="highlight">"Effective Pandas"</a> style. However, it also resembles 'data.table' in two aspects. First, when setting the `inplace` argument to `True` the `DataFrame` is modified in place, no copy is made, and we don't need to assign the result back to a variable. Second, `rename` has an argument `errors` which is set to `'ignore'` by default. If we want pandas to throw an error if not all columns are present in our data, we can set it to `'raise'`.
 
 That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know via Twitter, Mastodon or Github.
+
+<div class="session" markdown="1">
+
+<details>
+<summary class="session-header">
+Session Info <i class="fas fa-tools"></i>
+</summary>
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Session info ───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class='c'>#&gt;  <span style='color: #555555; font-style: italic;'>setting </span> <span style='color: #555555; font-style: italic;'>value</span></span></span>
+<span><span class='c'>#&gt;  version  R version 4.2.1 (2022-06-23)</span></span>
+<span><span class='c'>#&gt;  os       macOS Big Sur ... 10.16</span></span>
+<span><span class='c'>#&gt;  system   x86_64, darwin17.0</span></span>
+<span><span class='c'>#&gt;  ui       X11</span></span>
+<span><span class='c'>#&gt;  language (EN)</span></span>
+<span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
+<span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
+<span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
+<span><span class='c'>#&gt;  date     2023-01-20</span></span>
+<span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class='c'>#&gt;  <span style='color: #555555; font-style: italic;'>package   </span> <span style='color: #555555; font-style: italic;'>*</span> <span style='color: #555555; font-style: italic;'>version</span> <span style='color: #555555; font-style: italic;'>date (UTC)</span> <span style='color: #555555; font-style: italic;'>lib</span> <span style='color: #555555; font-style: italic;'>source</span></span></span>
+<span><span class='c'>#&gt;  data.table * 1.14.2  <span style='color: #555555;'>2021-09-27</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  dplyr      * 1.0.10  <span style='color: #555555;'>2022-09-01</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  reticulate * 1.26    <span style='color: #555555;'>2022-08-31</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> [1] /Library/Frameworks/R.framework/Versions/4.2/Resources/library</span></span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Python configuration ───────────────────────────────────────────────────────</span></span></span>
+<span><span class='c'>#&gt;  python:         /usr/local/Caskroom/miniconda/base/bin/python3.9</span></span>
+<span><span class='c'>#&gt;  libpython:      /usr/local/Caskroom/miniconda/base/lib/libpython3.9.dylib</span></span>
+<span><span class='c'>#&gt;  pythonhome:     /usr/local/Caskroom/miniconda/base:/usr/local/Caskroom/miniconda/base</span></span>
+<span><span class='c'>#&gt;  version:        3.9.12 (main, Apr  5 2022, 01:53:17)  [Clang 12.0.0 ]</span></span>
+<span><span class='c'>#&gt;  numpy:          /usr/local/Caskroom/miniconda/base/lib/python3.9/site-packages/numpy</span></span>
+<span><span class='c'>#&gt;  numpy_version:  1.22.3</span></span>
+<span><span class='c'>#&gt;  </span></span>
+<span><span class='c'>#&gt;  NOTE: Python version was forced by RETICULATE_PYTHON</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>──────────────────────────────────────────────────────────────────────────────</span></span></span>
+<span></span></code></pre>
+
+</div>
+
+</details>
+
+</div>
 

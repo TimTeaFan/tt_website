@@ -1,0 +1,17 @@
+---
+title: "Untitled"
+author: "Tim Tiefenbach"
+date: "2023-01-20"
+output: hugodown::md_document
+---
+
+<div class="session" markdown="1">
+<details>
+  <summary class="session-header" markdown="1">
+  Session Info <i class="fas fa-tools"></i>
+  </summary>
+```{r, echo = FALSE}
+sessioninfo::session_info(pkgs = "attached")
+```
+  </details>
+</div>

@@ -9,7 +9,7 @@ subtitle: ""
 summary: "This blog post shows how to partially rename columns with a lookup table using four different approaches: base R, data.table, dplyr, and pandas."
 authors: []
 tags: ["R", "Python"]
-categories: ["R", "Python"]
+categories: ["R", "Python", "base R", "dplyr", "data.table", "pandas"]
 date: 2022-12-23
 lastmod: 2022-12-23
 featured: false
@@ -234,3 +234,5 @@ When it comes to renaming columns, we can see that 'pandas' is pretty similar to
 
 That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know via Twitter, Mastodon or Github.
 
+```{r, child = here::here("static/rmdtemp/session_info.Rmd")}
+```
