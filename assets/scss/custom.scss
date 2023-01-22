@@ -168,13 +168,24 @@ h3.article-title > a {
 
 /* posts: toc */
 
+@media screen and (max-width: 768px) {
+  .article-style > ul:first-child {
+    width: 70%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .article-style > ul:first-child {
+    width: 50%;
+  }
+}
+
 .article-style > ul:first-child {
   margin: auto;
   padding-top: 10px;
   padding-bottom: 10px;
   border: 1px dotted #69afff;
   border-radius: 5px;
-  width: 50%;
   list-style-type: "‣  ";
 }
 
@@ -204,10 +215,11 @@ h3.article-title > a {
   border:1px solid #33c09b;
   border-radius: 5px;
   padding: 0;
-  margin-left: 48px;
+  margin-left: 0px;
 }
 
-summary.note-header {
+summary.note-header,
+.note-header {
   padding: 2px 10px 0px 10px;
   margin: 0;
   background: #33c09b;
@@ -219,6 +231,7 @@ summary.note-header {
 .note-details {
   padding: 10px 10px 0px 10px;
   margin: 0 0 10px 0;
+  font-size: 0.8335rem;
 }
 
 .session {
@@ -249,8 +262,8 @@ details > div > pre.chroma {
   margin-left:0px;
 }
 
-details > div > pre > code > span > span > span.hljs-comment,
-details > div > pre > code > span > span > span > span.hljs-comment {
+details.sess > div > pre > code > span > span > span.hljs-comment,
+details.sess > div > pre > code > span > span > span > span.hljs-comment {
   color: #b2b2b2;
 }
 
@@ -602,6 +615,9 @@ p.powered-by > a:focus {
     }
   pre > code {
     font-size: 15px !important;
+  }
+  details > div > pre > code {
+    font-size: 13px !important;
   }
 }
 

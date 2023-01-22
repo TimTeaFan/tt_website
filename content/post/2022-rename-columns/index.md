@@ -327,7 +327,7 @@ That's it. I hope you enjoyed reading about renaming columns in R and Python. If
 
 <div class="session" markdown="1">
 
-<details>
+<details class="sess">
 <summary class="session-header">
 Session Info <i class="fas fa-tools"></i>
 </summary>
@@ -344,7 +344,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-01-20</span></span>
+<span><span class='c'>#&gt;  date     2023-01-22</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
