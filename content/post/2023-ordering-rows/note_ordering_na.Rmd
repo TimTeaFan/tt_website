@@ -1,0 +1,27 @@
+---
+Title: Ordering rows containing `NA`s
+---
+Base R's `order()` has an argument `na.last` which is set to `TRUE` by default and sorts `NA` to the bottom:
+```{r}
+mycars[order(mycars$mpg),]
+```
+
+Setting `na.last = FALSE` sorts `NA`s to the top: 
+```{r}
+mycars[order(mycars$mpg, na.last = FALSE),]
+```
+
+A bit surprisingly `na.last` can also be set `NA` which will remove `NA`s from the vector or `data.frame` making it a combined filter and ordering operation:
+```{r}
+mycars[order(mycars$mpg, na.last = NA),]
+```
+
+For some users this behavior might not be very intuitive, which is why splitting ordering and filtering operations is preferable for code clarity.
+
+This is especially relevant for users coming from 'dplyr' or 'data.table'. `dplyr::arrange()` always orders `NA`s last and doesn't come with an option to change this behavior. `data.table::setorder()` has an argument `na.last`, but (1) it can only be set `TRUE` or `FALSE` and (2) it defaults to the former which is the opposite of what `base::order()` does:
+
+```{r}
+mycarsDT <- data.table::as.data.table(mycars)
+data.table::setorder(mycarsDT, mpg)
+mycarsDT
+```

@@ -1,0 +1,346 @@
+---
+output:
+  hugodown::md_document:
+    includes:
+      after_body: ./../../../static/rmdtemp/wrap_info_box.html
+    toc: TRUE
+# Documentation: https://sourcethemes.com/academic/docs/managing-content/
+
+title: "Basic and advanced odering operations"
+subtitle: ""
+summary: "This blog post shows how to order rows in a dataframe using four different approaches: base R, data.table, dplyr, and pandas."
+authors: []
+tags: ["R", "python", "dplyr", "base R", "data.table", "pandas"]
+categories: []
+date: 2023-01-16
+lastmod: 2023-01-16
+featured: false
+draft: true
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Focal points: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight.
+image:
+  caption: ""
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(reticulate)
+reticulate::use_python("/usr/local/Caskroom/miniconda/base/bin/python3.9")
+reticulate::import("pandas", as = "pd")
+```
+
+## Intro
+
+Sorting rows in a `data.frame` is generally considered a straightforward task, which it mostly is - until it isn't. This post looks at several ordering operations and compares how the three big paradigms in R, base R, 'data.table' and 'dplyr', compare in tackling problems with increasing complexity.
+
+<!-- This blog post is split in two parts. If you're already familiar with the <a href="#basic-ordering" role="highlight">basics</a> just skip through to the <a href="#advanced-ordering-operations" role="highlight">advanced ordering operations</a> below. Each part concludes by comparing how we would tackle the same problems in Python's 'pandas' library. -->
+
+Let's start by outlining the challenges and setup.
+
+
+## Challenges & Setup
+
+We will look at six challenges loosely ordered by their increasing complexity.
+
+Order rows according to ...
+
+1.  ... one or several columns in ascending or descending order.
+1.  ... a character vector with matching names.
+1.  ... an expression.
+1.  ... all columns in a `data.frame`.
+1.  ... a vector of column names.
+1.  ... a vector of matching patterns.
+
+Below is our setup. We take R's build in `mtcars` data, extract a couple of rows and columns to make it more compact, and introduce some `NA`s to get an understanding of what's happening when the data includes missing values.
+
+```{r}
+mycols <- c("cyl", "vs", "gear", "mpg", "disp")
+myrows <- which(rownames(mtcars) %in% c("Cadillac Fleetwood", "Honda Civic"))
+mycars <- mtcars[c(1:10, myrows), mycols]
+
+mycars <- data.frame(model = rownames(mycars),
+                     data.frame(mycars, row.names=NULL))
+
+mycars[mycars$model %in% c("Cadillac Fleetwood", "Honda Civic"), c("mpg", "disp")] <- NA
+
+mycars
+```
+
+Finally lets save this data to a csv file which we will read in later in Python:
+
+```{r}
+write.csv(mycars, "mycars.csv")
+# available at:
+# read.csv("https://raw.githubusercontent.com/TimTeaFan/tt_website/main/content/post/2023-ordering-rows/mycars.csv")
+```
+
+
+## base R
+
+#### 1. Ordering by one or several variables
+
+Ordering rows of a `data.frame` in base R is simple: we subset the rows of the `data.frame` with the `order()` function called on one or more variables.
+
+```{r}
+# order by one column ascending
+mycars[order(mycars$mpg), ]
+
+# order by two columns, first descending, second ascending:
+mycars[order(-mycars$mpg, mycars$cyl), ]
+```
+
+Important to note is that, as default, `NA`s are sorted to bottom of the `data.frame` (read more about sorting `NA` values below).
+
+::: {.info-box title="Ordering rows containing NAs"}
+```{r, child="note_ordering_na.Rmd"}
+```
+:::
+
+How different vector types are sorted and some more information about what exactly happens, when we call `df[order(variable), ]` can be found in the info box below.
+
+::: {.info-box title="The logic of ordering rows in base R"}
+```{r, child="note_logic_ordering.Rmd"}
+```
+:::
+
+
+#### 2. Ordering by a character vector with matching names
+
+Sometimes sorting by `numeric` and `character` variables in ascending or descending order is not enough. There are cases where we have a given non-alphabetical (or non-numerical) order of names which we want to apply to our data. In this case we use `factor` variables.
+
+Lets assume we have a given order of model names that we want to sort our data by. Then we have two choices. We either transform the `mycars$model` column into a `factor` and supply our desired order of names as factor `levels` (see info box: "the logic of ordering rows" above).
+
+```{r}
+# a character vector with matching names
+my_vec <- c("Hornet Sportabout", "Cadillac Fleetwood", "Valiant",
+            "Hornet 4 Drive", "Mazda RX4", "Mazda RX4 Wag", "Honda Civic",
+            "Datsun 710", "Duster 360", "Merc 240D", "Merc 230", "Merc 280")
+
+mycars2 <- mycars # lets create a new copy
+
+# transform model column into factor and use level from my_vec
+mycars2$model <- factor(mycars2$model, levels = my_vec) 
+
+mycars2[order(mycars2$model), ]
+```
+
+However, we might not want to transform our original data and rather leave our `model` column untouched. In this case we can construct a factor variable on the fly and use it within `order()` without changing the `data.frame` itself:
+
+```{r}
+mycars[order(factor(mycars$model, levels = my_vec)), ]
+```
+
+
+#### 3. Ordering by an expression
+
+Apart from sorting according to one or more variables, sometimes we want to sort according to a specific expression. Lets say we want the row `"Hornet Sportabout"` to be sorted to the top of our
+`data.frame`. In this case, we can construct a logical vector `mycars$model != "Hornet Sportabout"` returning `TRUE` and `FALSE` for each row. Passing this to `order()` yields the desired result:
+
+```{r}
+# bring one column to the top / bottom
+mycars[order(mycars$model != "Hornet Sportabout"),]
+```
+
+Note, that we negate the comparison with `!=`, since `logical` vectors are sorted from `FALSE` to `TRUE` (see info box: "the logic of ordering rows" above).
+
+```{r}
+# bring one column to the top / bottom
+mycars[order(mycars$model != "Hornet Sportabout"),]
+```
+
+
+```{r}
+
+```
+
+
+
+
+#### 4. Ordering by all columns of a data.frame
+
+Another common operation is to order by all variables in a `data.frame`. For our toy data this means we want to first sort `cyl` from `4` to `8`, within `cyl` we want the rows to be sorted according to `vs` and ties here should be sorted according to `gear`, `mpg` and then `dsip`.
+
+We could just write out all variables as we did in the examples above:
+
+```{r, eval = FALSE}
+mycars[order(mycars$cyl, mycars$vs, mycars$gear, mycars$mpg, mycars$disp),]
+```
+
+However, this is a lot of typing. Ideally we'd prefer a more programmatic way of sorting according to all variables. In base R, we can do this with `do.call("order", args = list_of_vectors_to_sort_by)`. 
+
+`do.call` basically constructs and evaluates a call to the specified function, here `"order"`, and passes the `list` in the `args` argument to the arguments of the call to `order()`.
+
+In our case the list of vectors to sort by is the `mycars` `data.frame` itself except for the first column `model`, hence `mycars[,-1]`. Since we want to pass our list of vectors to `order`'s ellipsis  `...` argument, the vectors in our `list` should be unnamed: `unname(mycars[,-1])`.
+
+```{r}
+# order by all columns ascending
+mycars[do.call("order", unname(mycars[,-1])),]
+```
+
+Forgetting to `unname()` our list of vectors will cause trouble if one of the column names corresponds to an argument of `order()`: `na.last`, `decreasing` and `method`. In this case `do.call` will pass the values of this column to the corresponding argument, throwing an error in the best case, or doing something we don't expect (and notice) in the worst.
+
+#### 5. Ordering by a list or vector of column names
+
+Similar to sorting a `data.frame` by all variables, we sometimes have a vector of variables names we want to sort by. Here we can apply the same approach as above and use `do.call("order", ...)` on our `data.frame`. Lets further assume that we want to sort some columns ascending and some descending.
+
+In this case we combine both arguments, the vectors to sort by and their decreasing order, in a list and supply it to `do.call("order", our_list_of_argument)`:
+
+```{r, eval = FALSE}
+# lets say we have the names of the columns ...
+# ... we want to order by in a vector
+mycols <- c("mpg", "cyl")
+
+# then we need to construct the arguments in list form ...
+# 1. only the values of the columns to sort by (therefore `unname()`)
+sort_df <- unname(mycars[,mycols])
+# 2. the logical values for `order()`s `decreasing` argument:
+desc_ls <- list(decreasing = c(TRUE, FALSE))
+
+# we combine the arguments inside `do.call()`
+mycars[do.call("order", c(sort_df, desc_ls)),]
+
+# the above is equivalent to 
+mycars[order(-mycars$mpg, mycars$cyl),]
+```
+
+
+
+#### 6. Ordering by a vector of matching patterns
+
+```{r}
+# order by matching pattern
+my_pattern <- c("Mazda", "Merc", "Hornet")
+
+idx_ls <- lapply(my_pattern,
+                 \(x) -(grepl(paste0("^", x), rownames(mycars))))
+
+mycars[do.call(order, idx_ls), ]
+```
+
+
+
+#### Summing up: Ordering in base R
+
+Ordering in base R boils down to subsetting a `data.frame` by itself in a different order. We create this new order either by applying `order()` directly to one or several variables, or by wrapping it in a `do.call()` together with a list of arguments.
+
+While the former can be considered an easy, straightforward operation, the later requires quite some knowledge about constructing calls with `do.call()` and the possible pitfalls we might encounter (think of: `unname()`). Nevertheless, once useRs have understood the advanced concept of `do.call()` and how to use it, the more advanced ordering operations can be tackled easily well.
+
+
+
+
+## data.table
+
+When it comes to orderings rows 'data.table' is not much different than base R. Most of the ordering operations introduced above can be applied almost identically on a `data.table`. While the syntax resembles base R, 'data.table' is using its own implementation of `order()` under the hood, which is optimized and much faster compared to base R.
+
+
+
+1. NSE
+2. Subsetting a `data.table` with a character vector of column names
+3. 'data.table's setorder functions
+
+#### Non-standard Evaluation
+
+One decisive difference between base R is that 'data.table' supports non-standard evaluation (NSE) within the subsetting / extracting `[` expression.
+
+This means we can refer bare column names like:
+
+```{r, error = TRUE, results = "hide"}
+library(data.table)
+mycarsDT <- as.data.table(mycars)
+
+# both work in data.table
+mycarsDT[order(mycarsDT$mpg),]
+mycarsDT[order(mpg),]
+
+# only the first works in base R 
+mycars[order(mycars$mpg),]
+mycars[order(mpg),]
+```
+
+#### Subsetting a data.table with a character vector of column names
+
+```{r}
+
+```
+
+#### 'data.table's setorder functions
+
+
+```{r}
+library(data.table)
+
+mycarsDT <- as.data.table(mycars)
+
+# data.table supports non standard evaluation (NSE) ...
+# ... which is why we can call `mpg` instead of `mycarsDT$mpg`.
+mycarsDT[order(mycarsDT$mpg),]
+mycarsDT[order(mpg),]
+
+# order by one column ascending
+setorder(mycarsDT, mpg)
+mycarsDT
+
+# order by several columns
+setorder(mycarsDT, mpg, na.last = TRUE)
+mycarsDT
+
+# order by all rows
+mycarsDT[do.call("order", unname(mycarsDT[,-1])),]
+
+# list of columns
+dt[, ..cols]
+sort_df <- unname(mycarsDT[,mycols, with = FALSE])
+sort_df <- unname(mycarsDT[,..mycols])
+desc_ls <- list(decreasing = c(TRUE, FALSE))
+mycarsDT[do.call("order", unname(mycarsDT[,-1])),]
+
+# setorder(mycarsDT, mpg, na.last = NA)
+mycarsDT
+
+# order by two columns, first descending, second ascending,
+setorder(mycarsDT, -mpg, cyl, na.last = TRUE)
+mycarsDT
+```
+
+Order according to a vector of column names:
+
+```{r, eval = FALSE}
+# lets say we have the names of the columns ...
+# ... we want to order by in a vector
+mycols <- c("mpg", "cyl")
+
+setorderv(mycarsDT,
+          cols = mycols,
+          order = c(-1,1),
+          na.last = TRUE)
+
+
+# the above is equivalent to 
+setorder(mycarsDT, -mpg, cyl, na.last = TRUE)
+```
+
+
+#### Summing up: Ordering in 'data.table' 
+
+
+
+
+## dplyr
+
+## pandas
+
+
+```{r, child = here::here("static/rmdtemp/session_info.Rmd")}
+```

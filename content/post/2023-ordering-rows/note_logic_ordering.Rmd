@@ -1,0 +1,34 @@
+---
+Title: The logic of ordering rows in base R
+---
+How does the above syntax work? Lets look at a three-column `data.frame`
+```{r, attr.source =".numberLines"}
+dat <- data.frame(x = c(100, 1, 10), y = c("a", "c", "b"), z = c(TRUE, FALSE, TRUE))
+dat
+```
+The output of `order(dat$x)` shows us the row numbers in which we would have to order our `data.frame` to make the values in `dat$x` run from smallest to highest.
+```{r, attr.source =".numberLines"}
+order(dat$x)
+```
+We can read this as: "The second row should come first, the third row should come second, and the first row should come last". To actually order the rows according to this logic, we subset the `data.frame` by its rows according to the logic `df[row_index, ]`:
+```{r, attr.source =".numberLines"}
+dat <- dat[order(dat$x), ]
+dat
+```
+Now the rows are in the desired order, but note, that the row indices still correspond to the original indices. This makes it (relatively) easy to restore the old ordering:
+```{r, attr.source =".numberLines"}
+dat <- dat[order(as.numeric(rownames(dat))), ]
+dat
+```
+Note hat the logic of ordering is the same for the most common data types. `order()` sorts the values from smallest to largest. For `integer` and `double` vectors (including `Date`s and date times, like `POSIXct`) this is pretty straightforward. Also for `character` vectors the logic is simple: `"a"` is "smaller" than `"b"`, so the ascending order goes from A to Z, with small coming before capital letters. We can always verify how character values relate:
+```{r}
+"a" > "A"
+```
+For `logical` vectors `FALSE` can be read as `0` and `TRUE` as `1` which is the ascending order in which the values will be sorted. Although this makes perfectly sense, given that this is the way logical vectors are coerced to numeric, we will see later that this might be confusing when specifying explict values to sort by. 
+
+Finally, the only special case are `factor` variables. Here the sorting follows the factor `levels()`:
+```{r}
+dat$y <- factor(dat$y, levels = c("b", "a", "c"))
+dat[order(dat$y), ]
+```
+

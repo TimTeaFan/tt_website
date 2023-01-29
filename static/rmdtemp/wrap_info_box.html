@@ -1,0 +1,36 @@
+<script>
+  function create_info_box(title, content) {
+    let summary = document.createElement("summary");
+    summary.classList.add("note-header");
+    summary.setAttribute("markdown", "1");
+
+    let summary_title = document.createTextNode(title)
+    let summary_icon = document.createElement('i');
+    summary_icon.classList.add("fas", "fa-info-circle");
+    summary.append(summary_title, summary_icon);
+
+    let div_note_details = document.createElement("div");
+    div_note_details.classList.add('note-details');
+    div_note_details.append(...content)
+
+    let details = document.createElement('details');
+    details.append(summary, div_note_details);
+
+    let div_note = document.createElement("div");
+    div_note.classList.add('note');
+    div_note.setAttribute("markdown", "1");
+    div_note.append(details);
+    return(div_note)
+  };
+
+  function info_box() {
+    let childs = document.querySelectorAll("div.info-box");
+    childs.forEach(el => {
+      let title = el.title
+      let info_box = create_info_box(title, el.childNodes);
+      el.append(info_box)
+    });
+  };
+
+  window.onload = info_box();
+</script>
