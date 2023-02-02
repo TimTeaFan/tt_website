@@ -132,7 +132,7 @@ str(mycars_base)
 Although this approach is not very verbose, it does require some serious thinking about matching, extracting and indexing. It feels like there should be a cleaner solution for a common problem like this, so lets have a look how we can tackle this problem using 'data.table' and 'dplyr'.
 
 
-## data.table
+## data․table
 
 The 'data.table' package sometimes has the reputation for offering a cryptic, arcane syntax, but many users don't know that the package also contains many helpful functions which are pretty straight-forward to use. In our case we can apply `data.table::setnames()` out of the box. It takes a `data.table`, a vector of old and new column names and finally all we have to do is to set the `skip_absent` argument to `TRUE`, to prevent 'data.table' from raising an error, since not all of the names in our lookup table are present in the data. 
 

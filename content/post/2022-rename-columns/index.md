@@ -29,14 +29,14 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 4b33892e83424ca1
+rmd_hash: e8c580ac5f0b45ea
 
 ---
 
 -   <a href="#intro" id="toc-intro">Intro</a>
 -   <a href="#setup" id="toc-setup">Setup</a>
 -   <a href="#base-r" id="toc-base-r">base R</a>
--   <a href="#data.table" id="toc-data.table">data.table</a>
+-   <a href="#datatable" id="toc-datatable">data․table</a>
 -   <a href="#dplyr-tidyverse" id="toc-dplyr-tidyverse">dplyr (tidyverse)</a>
 -   <a href="#python-pandas" id="toc-python-pandas">Python pandas</a>
 
@@ -164,7 +164,7 @@ However, slightly modifying [this answer on SO](https://stackoverflow.com/a/3473
 
 Although this approach is not very verbose, it does require some serious thinking about matching, extracting and indexing. It feels like there should be a cleaner solution for a common problem like this, so lets have a look how we can tackle this problem using 'data.table' and 'dplyr'.
 
-## data.table
+## data․table
 
 The 'data.table' package sometimes has the reputation for offering a cryptic, arcane syntax, but many users don't know that the package also contains many helpful functions which are pretty straight-forward to use. In our case we can apply [`data.table::setnames()`](https://Rdatatable.gitlab.io/data.table/reference/setattr.html) out of the box. It takes a `data.table`, a vector of old and new column names and finally all we have to do is to set the `skip_absent` argument to `TRUE`, to prevent 'data.table' from raising an error, since not all of the names in our lookup table are present in the data.
 
@@ -344,7 +344,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-01-22</span></span>
+<span><span class='c'>#&gt;  date     2023-02-03</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
