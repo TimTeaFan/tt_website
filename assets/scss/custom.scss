@@ -166,6 +166,32 @@ h3.article-title > a {
   color: #69afff !important;
 }
 
+/* badges */
+
+.article-tags {
+  margin-bottom: 15px;
+}
+
+.dark .badge-light {
+  color: #69afff;
+  background: transparent;
+}
+
+.dark .badge-light[href]:focus,
+.dark .badge-light[href]:hover {
+  background: #69afff;
+}
+
+.dark a.badge:focus, .dark a.badge:hover {
+  color: #ffffff;
+}
+
+.badge-light {
+  border: 1px dotted #69afff;
+}
+
+
+
 /* posts: toc */
 
 @media screen and (max-width: 768px) {
@@ -274,7 +300,7 @@ summary.warn-header,
   padding: 0;
   margin-left: 0px;
   margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 
 summary.session-header {
