@@ -1,0 +1,34 @@
+---
+Title: How arrange works on grouped data
+---
+Although somewhat counterintuitive `dplyr::arrange()` does ignore (but preserve) groupings of a `data.frame`:
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(dplyr)
+mycols <- c("cyl", "vs", "gear", "mpg", "disp")
+myrows <- which(rownames(mtcars) %in% c("Cadillac Fleetwood", "Honda Civic"))
+mycars <- mtcars[c(1:10, myrows), mycols]
+
+mycars <- data.frame(model = rownames(mycars),
+                     data.frame(mycars, row.names=NULL))
+
+mycars[mycars$model %in% c("Cadillac Fleetwood", "Honda Civic"), c("mpg", "disp")] <- NA
+
+mycars_tbl <- as_tibble(mycars)
+```
+
+```{r}
+mycars_tbl %>% 
+  group_by(cyl) %>% 
+  arrange(mpg)
+```
+Here we'd probably expected the data to be sorted by `mpg` in ascending order within each group of `cyl`:
+```{r}
+mycars_tbl %>%  
+  arrange(cyl, mpg)
+```
+However, `arrange()` has an argument `.by_group` which is set to `FALSE` as default. Changing this to `TRUE` will make `arrange` work in the way we expected it:
+```{r}
+mycars_tbl %>% 
+  group_by(cyl) %>% 
+  arrange(mpg, .by_group = TRUE)
+```
