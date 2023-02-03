@@ -8,7 +8,7 @@ title: "Partially renaming columns using a lookup table"
 subtitle: ""
 summary: "This blog post shows how to partially rename columns with a lookup table using four different approaches: base R, data.table, dplyr, and pandas."
 authors: []
-tags: ["R", "Python"]
+tags: ["R", "Python", "base R", "dplyr", "data.table", "pandas"]
 categories: ["R", "Python", "base R", "dplyr", "data.table", "pandas"]
 date: 2022-12-23
 lastmod: 2022-12-23

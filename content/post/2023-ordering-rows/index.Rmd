@@ -11,7 +11,7 @@ subtitle: ""
 summary: "This blog post shows how to order rows in a dataframe using four different approaches: base R, data.table, dplyr, and python's pandas."
 authors: []
 tags: ["R", "python", "dplyr", "base R", "data.table", "pandas"]
-categories: []
+categories: ["R", "Python", "base R", "dplyr", "data.table", "pandas"]
 date: 2023-02-02
 lastmod: 2023-02-02
 featured: false
@@ -167,7 +167,7 @@ In this case we can supply `mycars$vs` as first argument to `order()` followed b
 mycars[order(mycars$vs, ifelse(mycars$vs == 1, -mycars$mpg, mycars$mpg)), ]
 ```
 
-The reason why this ordering operation is runs so soomthly, is because  `mycars$mpg` is a numeric variable that only contains positive values, so we can reverse the values within the `ifelse` clause by just prefixing `mpg` with a minus symbol `-`. 
+The reason why this ordering operation yields the desired output, is because  `mycars$mpg` is a numeric variable that only contains positive values, so we can reverse the values within the `ifelse` clause by just prefixing `mpg` with a minus symbol `-`. 
 
 So basically we are sorting by this vector which we generate on the fly:
 ```{r}
@@ -258,18 +258,18 @@ mycars[do.call("order", idx_ls), ]
 
 Ordering in base R boils down to subsetting a `data.frame` by itself in a different order. We create this new order either by applying `order()` directly to one or several variables or expressions, or by wrapping it in a `do.call()` together with a list of arguments.
 
-While the former can be considered an easy, straightforward operation, the later requires quite some knowledge about constructing calls with `do.call()` and the possible pitfalls we might encounter (think of: `unname()`). Nevertheless, once useRs have understood the advanced concept of `do.call()` and how to use it, more advanced ordering operations can be tackled easily well.
+While the former can be considered an easy, straightforward operation, the later requires quite some knowledge about constructing calls with `do.call()` and the possible pitfalls we might encounter - think of: `unname()`. Nevertheless, once useRs have understood the advanced concept of `do.call()` and how to use it, more advanced ordering operations can be tackled easily well.
 
 
 ## 'data․table'
 
-When it comes to orderings rows 'data.table' is not much different than base R. Most of the ordering operations introduced above can be applied almost identically on a `data.table`. While the syntax resembles base R, 'data.table' is using its own implementation of `order()` under the hood (`data.table:::forder()`), which is optimized and much faster compared to base R.
+When it comes to orderings rows 'data.table' is not much different than base R. Most of the ordering operations introduced above can be applied almost identically on a `data.table`. While the syntax resembles base R, 'data.table' is using its own implementation of `order()` under the hood, `data.table:::forder()`, which is optimized and much faster compared to base R.
 
-In this section we will first look at how to use `data.table::order()` on the seven examples from above. The aim is to stay close to base R, but account for 'data.table's syntax specific features.
+In this section we will first look at how to use `order()` on the seven examples from above. The aim is to stay close to base R, but account for 'data.table's syntax specific features.
 
-Apart from `order()` 'data.table' comes with its two own ordering functions, `setorder()` and `setorderv()`, which modify a data.table object by reference (that is without making a copy). This makes them more memory efficient compared to the already optimized implementation of `data.table::forder()`.
+Apart from `order()`, 'data.table' comes with its two own ordering functions, `setorder()` and `setorderv()`, which modify a data.table object by reference - that is without making a copy. This makes them more memory efficient compared to the already optimized implementation of `data.table:::forder()`.
 
-The following code chucnks use a `data.table` version of our data:
+The following code chucks use a `data.table` version of our data:
 
 ```{r, results = "hide"}
 library(data.table)
@@ -328,7 +328,7 @@ sort_df <- unname(mycarsDT[, ..mycols])
 mycarsDT[do.call("order", sort_df)]
 ```
 
-However, our base R example was a bit more complex, since we also provided a logical vector to `order()`s `decreasing` argument. 'data.table's implementation of `order()` (`data.table:::forder()`) does only allow vectors of length one, which is why we can't reproduce the full example from above using `do.call()` inside `mycarsDT`:
+However, our base R example was a bit more complex, since we also provided a logical vector to `order()`s `decreasing` argument. 'data.table's implementation of `order()`, `data.table:::forder()`, does only allow vectors of length one, which is why we can't reproduce the full example from above using `do.call()` inside `mycarsDT`:
 
 ```{r, error = TRUE}
 desc_ls <- list(decreasing = c(TRUE, FALSE))
@@ -390,7 +390,7 @@ We can, however, come up with a workaround to harness 'data.table's power of mem
 
 In all four example the workaround is the same. We use `setorder()` and pass a modified `data.table` to it in which we create a new (or several) column(s) by reference. This new column contains the ordering logic. We use the extraction function `[` right after `setorder()` to again delete the newly created column(s).
 
-Let's take a look at example 3., ordering by a simple expression with `ifelse()`.
+Let's take a look at example 3., ordering by a simple logicl expression.
 ```{r}
 # 3. Ordering by a simple expression
 setorder(
@@ -437,9 +437,9 @@ Apart from `order()` 'data.table' has two special ordering functions `setorder()
 
 To order rows of a `tibble` or `data.frame` we use `dplyr::arrange()`. The first argument is the `data.frame` we want to order, and the second argument is the ellipsis `...` allowing us to provide one or several expressions to order by.
 
-As default `dplyr::arrange()` orders columns in ascending order. To reverse this, we can wrap column names in `dplyr::desc()`. `NA` are always sorted last, and there is not argument to change this behavior. Finally, `arrange()` is one of the few one-table verbs that ignores groupings of a `data.frame`, but this behavior can be changed (see info box below).
+As default `dplyr::arrange()` orders columns in ascending order. To reverse this, we can wrap column names in `dplyr::desc()`. `NA` are always sorted last, and there is no argument to change this behavior. Finally, `arrange()` is one of the few one-table verbs that ignores groupings of a `data.frame`, but this behavior can be changed (see info box below).
 
-::: {.info-box title="arranging grouped data"}
+::: {.info-box title="Arranging grouped data"}
 ```{r, child="arrange_on_groups.Rmd"}
 ```
 :::
@@ -575,7 +575,7 @@ mycars_tbl %>%
 #### Summing up: Ordering rows with 'dplyr' 
 
 The examples above show that 'dplyr' offers a very intuitive API for ordering rows. In most cases a call to `arrange` is enough to get our desired result. When ordering rows programmatically, 'dplyr' has us covered with `across()` and  'tidyselect' helper functions, like `all_of()`, which can be used inside `arrange`.
-'dplyr' feels definitely more beginner friendly than base R, since `arrange()` covers more common use cases, and `across()` seems to have less conceptional overhead compared to base's `do.call`. However, this holds true only up to a certain grade of complexity. For the more advanced examples splicing `!!!` and subsetting with `cur_colum()` were needed, which do not differ much in terms of conceptional overhead.
+'dplyr' feels definitely more beginner-friendly than base R, since `arrange()` covers more common use cases, and `across()` seems to have less conceptional overhead compared to base's `do.call`. However, this holds true only up to a certain grade of complexity. For the more advanced examples splicing `!!!` and subsetting with `cur_colum()` were needed, which do not differ much in terms of conceptional overhead.
 
 
 ## pandas
@@ -646,11 +646,12 @@ A different way of tackling this problem is to set the `model` column as index (
  reindex(cat_ls).
  reset_index()
 )
+# output as above
 ```
 
 This is probably the 'pandas' way to go about this problem, but it is important that we know about the `key` argument and how to use it. If an expression is related to values of a column, like in example no. 3, where we want to sort one value to the top, applying a simple `lambda` function is probably the easiest approach. 
 
-```{python, message=FALSE, results="hide"}
+```{python, message=FALSE}
 # 3. order by a simple logical expression
 (mycars.
  sort_values(by='model',
@@ -659,7 +660,7 @@ This is probably the 'pandas' way to go about this problem, but it is important 
 )
 ```
 
-Also example no 7., ordering by a list of matching patterns, can be solved by using the `key` argument. However, this case is quite complex.
+Also example no. 7, ordering by a list of matching patterns, can be solved by using the `key` argument. However, this case is quite complex.
 
 Apart from the pattern we want to sort by, `my_pattern`, we need a dictionary to bring the patterns into an order, `custom_dict`. We then order `by` `model`, use the string `replace` method to replace the full model name with the name of the pattern, and finally `map` this transformed column over our custom dictionary. All values which are not matched by the dictionary are `NaN` and are automatically sorted last.
 
@@ -680,9 +681,9 @@ custom_dict = {k: v for v, k in enumerate(my_pattern)}
 )
 ```
 
-Finally, the most troublesome challenge in 'pandas' is no. 4: ordering by a complex expression. In this example we wanted to sort the model names in descending order when the engine is v-shaped, `vs == 0`, and in ascending order if its normally shaped, `vs == 1`.
+Finally, the most troublesome challenge in 'pandas' is no. 4: ordering by a complex expression. In this example we wanted to sort the model names in descending order when the engine is v-shaped, `vs == 0`, and in ascending order if it's normally shaped, `vs == 1`.
 
-Inspired by this <a href="https://stackoverflow.com/a/71189275/9349302" role="highlight">answer</a> on StackOverflow, the idea is to first create an empty output `DataFrame`, below `mycars2`. We then loop over `mycars` grouped by `vs` and create a `True` or `False` variable, `orderg`, that checks if the group name `grp_name` is `0` or not. We then sort each group `by='model'` and pass the `orderg` flag to the `ascending` argument before appending the data to our output object. Finally, we `drop` and reset the index of `mycars2` to restore the format of our inital data, but now newly ordered:
+Inspired by this <a href="https://stackoverflow.com/a/71189275/9349302" role="highlight">answer</a> on StackOverflow, the idea is to first create an empty output `DataFrame`, below `mycars2`. We then loop over `mycars` grouped by `vs` and create a `True` or `False` variable, `orderg`, that checks if the group name `grp_name` is `0` or not. We then sort each group `by='model'` and pass the `orderg` flag to the `ascending` argument before appending the data to our output object. Finally, we `drop` and reset the index of `mycars2` to restore the format of our inital data:
 
 ```{python, message=FALSE}
 # 4. order by a complex expression
@@ -696,7 +697,7 @@ for grp_name, grp_dat in mycars.groupby(['vs']):
                           sort_values(by='model', ascending=orderg)]
                         )
  
-# final tweeks        
+# final tweaks        
 mycars2 = (mycars2.
  drop('index', axis=1).
  reset_index(drop=True)
@@ -710,7 +711,7 @@ mycars2
 
 ## Wrap-up
 
-This post turned out to be almost a book chapter on ordering rows. I hope you enjoyed it. If you have a better approach to one of the examples above or if you have a special ordering challenge that I haven't considered let me know via Twitter, Mastodon or Github.
+This post turned out to be almost a book chapter on ordering rows. I hope you enjoyed it. If you have a better approach to one of the examples above or if you have a special ordering challenge that I haven't considered, let me know via Twitter, Mastodon or Github.
 
 ```{r, child = here::here("static/rmdtemp/session_info.Rmd")}
 ```
