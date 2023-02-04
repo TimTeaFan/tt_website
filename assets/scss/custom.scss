@@ -401,6 +401,16 @@ details.sess > div > pre > code > span > span > span > span.hljs-comment {
   border-radius: 5px;
 }
 
+.outer-share-box.tea {
+  text-align: center;
+  border: 1px dotted #33c09b;
+}
+
+.share-box.tea > a {
+  color: #33c09b;
+}
+
+
 ul.share > li > a {
   color: #69afff !important;
 }
