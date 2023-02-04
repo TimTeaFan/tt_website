@@ -410,6 +410,11 @@ details.sess > div > pre > code > span > span > span > span.hljs-comment {
   color: #33c09b;
 }
 
+.share-box.tea > a:hover,
+.share-box.tea > a:focus,{
+  text-decoration: none;
+  font-weight: 600;
+}
 
 ul.share > li > a {
   color: #69afff !important;
