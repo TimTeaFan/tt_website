@@ -293,6 +293,10 @@ summary.warn-header,
   font-size: 0.8335rem;
 }
 
+.warn-header > i {
+  margin-left: 5px;
+}
+
 
 .session {
   border:1px solid #b2b2b2;
@@ -318,19 +322,22 @@ summary.session-header {
 }
 
 details > div > pre.chroma,
-details > div.note-details > div.highlight > pre.chroma{
+details > div.note-details > div.highlight > pre.chroma,
+details > div.warn-details > div.highlight > pre.chroma {
   border-width: 0px;
   margin-left: 0px;
 
   margin-bottom: 0px;
 }
 
-details > div.note-details > div.highlight > pre.chroma{
+details > div.note-details > div.highlight > pre.chroma,
+details > div.warn-details > div.highlight > pre.chroma {
   padding: 0;
   margin-top: -20px;
 }
 
-details > div.note-details > div.highlight > pre.chroma > code {
+details > div.note-details > div.highlight > pre.chroma > code,
+details > div.warn-details > div.highlight > pre.chroma > code {
   background: #383b49;
   border-radius: 3px;
 }
