@@ -1,8 +1,7 @@
 ---
 output:
-  hugodown::md_document:
-    includes:
-      after_body: ./../../../static/rmdtemp/wrap_info_box.html
+  hugodownplus::md_document:
+    use_boxes: TRUE
     toc: TRUE
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
@@ -31,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 4c3db31cd3daba7c
+rmd_hash: e3fc4871924730e6
 
 ---
 
@@ -1096,7 +1095,7 @@ Finally, the last example of ordering by a vector of matching patterns, is actua
 
 'dplyr' offers us two ways of doing this.
 
-1․ Pack all the magic in one pipe:<br> We can take our base R approach with [`lapply()`](https://rdrr.io/r/base/lapply.html) and [`grepl()`](https://rdrr.io/r/base/grep.html) use [`purrr::map()`](https://purrr.tidyverse.org/reference/map.html) with a lambda function `~` instead and pipe the result into [`dplyr::bind_cols()`](https://dplyr.tidyverse.org/reference/bind.html). This last part is needed, since [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) accepts `data.frame`s in the ellipsis argument, but not a `list`.
+1․ Pack all the magic in one pipe:<br> We can take our base R approach with [`lapply()`](https://rdrr.io/r/base/lapply.html) and [`grepl()`](https://rdrr.io/r/base/grep.html) use [`purrr::map()`](https://purrr.tidyverse.org/reference/map.html) with a lambda function `~` instead and pipe the result into [`dplyr::bind_cols()`](https://dplyr.tidyverse.org/reference/bind_cols.html). This last part is needed, since [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) accepts `data.frame`s in the ellipsis argument, but not a `list`.
 
 <div class="highlight">
 
@@ -1107,7 +1106,7 @@ Finally, the last example of ordering by a vector of matching patterns, is actua
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='o'>(</span></span>
 <span>    <span class='nf'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='o'>(</span><span class='nv'>my_pattern</span>,</span>
 <span>        <span class='o'>~</span> <span class='o'>!</span><span class='nf'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='o'>(</span><span class='s'>"^"</span>, <span class='nv'>.x</span><span class='o'>)</span>, <span class='nv'>model</span><span class='o'>)</span></span>
-<span>        <span class='o'>)</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='nf'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span>        <span class='o'>)</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='nf'><a href='https://dplyr.tidyverse.org/reference/bind_cols.html'>bind_cols</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span>    <span class='o'>)</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 12 × 6</span></span></span>
 <span><span class='c'>#&gt;    model                cyl    vs  gear   mpg  disp</span></span>
@@ -1380,13 +1379,13 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-02-03</span></span>
+<span><span class='c'>#&gt;  date     2023-02-04</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class='c'>#&gt;  <span style='color: #555555; font-style: italic;'>package   </span> <span style='color: #555555; font-style: italic;'>*</span> <span style='color: #555555; font-style: italic;'>version</span> <span style='color: #555555; font-style: italic;'>date (UTC)</span> <span style='color: #555555; font-style: italic;'>lib</span> <span style='color: #555555; font-style: italic;'>source</span></span></span>
 <span><span class='c'>#&gt;  data.table * 1.14.2  <span style='color: #555555;'>2021-09-27</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
-<span><span class='c'>#&gt;  dplyr      * 1.0.10  <span style='color: #555555;'>2022-09-01</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  dplyr      * 1.1.0   <span style='color: #555555;'>2023-01-29</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  purrr      * 1.0.1   <span style='color: #555555;'>2023-01-10</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  reticulate * 1.26    <span style='color: #555555;'>2022-08-31</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt; </span></span>

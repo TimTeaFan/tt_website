@@ -1,6 +1,6 @@
 ---
 output:
-  hugodown::md_document:
+  hugodownplus::md_document:
     toc: TRUE
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
@@ -234,5 +234,4 @@ When it comes to renaming columns, we can see that 'pandas' is pretty similar to
 
 That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know via Twitter, Mastodon or Github.
 
-```{r, child = here::here("static/rmdtemp/session_info.Rmd")}
-```
+`r hugodownplus::child_session_info()`
