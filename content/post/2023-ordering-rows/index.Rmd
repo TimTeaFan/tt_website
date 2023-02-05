@@ -103,14 +103,14 @@ mycars[order(-mycars$cyl, mycars$mpg), ]
 
 Important to note is that, as default, `NA`s are sorted to bottom of the `data.frame` (read more about sorting `NA` values below).
 
-::: {.info-box title="Ordering rows containing NAs"}
+::: {.info-box title="Expand: Ordering rows containing NAs"}
 ```{r, child="note_ordering_na.Rmd"}
 ```
 :::
 
 How different vector types are sorted and some more information about what exactly happens, when we call `df[order(variable), ]` can be found in the info box below.
 
-::: {.info-box title="The logic of ordering rows in base R"}
+::: {.info-box title="Expand: The logic of ordering rows in base R"}
 ```{r, child="note_logic_ordering.Rmd"}
 ```
 :::
@@ -208,7 +208,12 @@ In our case the list of vectors to sort by is the `mycars` `data.frame` itself e
 mycars[do.call("order", unname(mycars[, -1])), ]
 ```
 
-Forgetting to `unname()` our list of vectors will cause trouble if one of the column names corresponds to an argument of `order()`: `na.last`, `decreasing` and `method`. In this case `do.call` will pass the values of this column to the corresponding argument, throwing an error in the best case, or doing something we don't expect (and notice) in the worst.
+Forgetting to `unname()` our list of vectors can lead to problems, which will be elaborated in the warning box below.
+
+::: {.warn-box title='Expand: Passing a data.frame to do.call("order", ...)'}
+```{r, child="warn_unname_df.Rmd"}
+```
+:::
 
 
 #### 6. Ordering by a list or vector of column names
@@ -438,7 +443,7 @@ To order rows of a `tibble` or `data.frame` we use `dplyr::arrange()`. The first
 
 As default `dplyr::arrange()` orders columns in ascending order. To reverse this, we can wrap column names in `dplyr::desc()`. `NA` are always sorted last, and there is no argument to change this behavior. Finally, `arrange()` is one of the few one-table verbs that ignores groupings of a `data.frame`, but this behavior can be changed (see info box below).
 
-::: {.info-box title="Arranging grouped data"}
+::: {.info-box title="Expand: Arranging grouped data"}
 ```{r, child="arrange_on_groups.Rmd"}
 ```
 :::
@@ -710,6 +715,6 @@ mycars2
 
 ## Wrap-up
 
-This post turned out to be almost a book chapter on ordering rows. I hope you enjoyed it. If you have a better approach to one of the examples above or if you have a special ordering challenge that I haven't considered, let me know via Twitter, Mastodon or Github.
+This post turned out to be almost a book chapter on ordering rows. I hope you enjoyed it. If you have a better approach to one of the examples above or if you have a special ordering challenge that I haven't considered, let me know in the comments below or via Twitter, Mastodon or Github.
 
 `r hugodownplus::child_session_info()`

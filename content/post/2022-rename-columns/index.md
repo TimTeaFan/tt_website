@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: ad9144d7fde773e8
+rmd_hash: 7da8061aac80eb49
 
 ---
 
@@ -323,7 +323,7 @@ mycars.info()
 
 When it comes to renaming columns, we can see that 'pandas' is pretty similar to 'dplyr', even more so when we write our Python code according to the <a href="https://store.metasnake.com/effective-pandas-book" role="highlight">"Effective Pandas"</a> style. However, it also resembles 'data.table' in two aspects. First, when setting the `inplace` argument to `True` the `DataFrame` is modified in place, no copy is made, and we don't need to assign the result back to a variable. Second, `rename` has an argument `errors` which is set to `'ignore'` by default. If we want pandas to throw an error if not all columns are present in our data, we can set it to `'raise'`.
 
-That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know via Twitter, Mastodon or Github.
+That's it. I hope you enjoyed reading about renaming columns in R and Python. If you have a better way of renaming columns (especially in base R) let me know in the comments below or via Twitter, Mastodon or Github.
 
 <div class="session" markdown="1">
 
@@ -344,7 +344,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-02-04</span></span>
+<span><span class='c'>#&gt;  date     2023-02-05</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>

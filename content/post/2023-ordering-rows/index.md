@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: e3fc4871924730e6
+rmd_hash: b1f5c7557b2340fd
 
 ---
 
@@ -152,7 +152,7 @@ Ordering rows of a `data.frame` in base R is simple: we subset the rows of a `da
 
 Important to note is that, as default, `NA`s are sorted to bottom of the `data.frame` (read more about sorting `NA` values below).
 
-<div class="info-box" title="Ordering rows containing NAs">
+<div class="info-box" title="Expand: Ordering rows containing NAs">
 
 Base R's [`order()`](https://rdrr.io/r/base/order.html) has an argument `na.last` which is set to `TRUE` by default and sorts `NA` to the bottom:
 
@@ -248,7 +248,7 @@ This is especially relevant for users coming from 'dplyr' or 'data.table'. [`dpl
 
 How different vector types are sorted and some more information about what exactly happens, when we call `df[order(variable), ]` can be found in the info box below.
 
-<div class="info-box" title="The logic of ordering rows in base R">
+<div class="info-box" title="Expand: The logic of ordering rows in base R">
 
 How does the above syntax work? Lets look at a three-column `data.frame`
 
@@ -521,7 +521,78 @@ In our case the list of vectors to sort by is the `mycars` `data.frame` itself e
 
 </div>
 
-Forgetting to [`unname()`](https://rdrr.io/r/base/unname.html) our list of vectors will cause trouble if one of the column names corresponds to an argument of [`order()`](https://rdrr.io/r/base/order.html): `na.last`, `decreasing` and `method`. In this case `do.call` will pass the values of this column to the corresponding argument, throwing an error in the best case, or doing something we don't expect (and notice) in the worst.
+Forgetting to [`unname()`](https://rdrr.io/r/base/unname.html) our list of vectors can lead to problems, which will be elaborated in the warning box below.
+
+<div class="warn-box" title="Expand: Passing a data.frame to do.call(&quot;order&quot;, ...)">
+
+The documentation of [`order()`](https://rdrr.io/r/base/order.html) explicitly contains a warning, reminding us to [`unname()`](https://rdrr.io/r/base/unname.html) `data.frame`s that we pass to `do.call("order", df)`.
+
+In most cases, forgetting to [`unname()`](https://rdrr.io/r/base/unname.html) a `data.frame` won't get us in trouble. If, however, one of the column names corresponds to an argument of [`order()`](https://rdrr.io/r/base/order.html), that is `na.last`, `decreasing` or `method`, forgetting to [`unname()`](https://rdrr.io/r/base/unname.html) the `data.frame` will in most cases do something we don't expect, and probably even notice.
+
+Let's create a small toy `data.frame` with three columns, `x`, `y` and `decreasing`, the latter indicating whether `x - y` is greater or less than zero:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>dat</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='o'>(</span>x <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='m'>3</span>, <span class='m'>3</span>, <span class='m'>6</span><span class='o'>)</span>,</span>
+<span>                  y <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='m'>5</span>, <span class='m'>2</span>, <span class='m'>4</span><span class='o'>)</span>,</span>
+<span>                  decreasing <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='kc'>FALSE</span>, <span class='kc'>TRUE</span>, <span class='kc'>TRUE</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='nv'>dat</span></span>
+<span><span class='c'>#&gt;   x y decreasing</span></span>
+<span><span class='c'>#&gt; 1 3 5      FALSE</span></span>
+<span><span class='c'>#&gt; 2 3 2       TRUE</span></span>
+<span><span class='c'>#&gt; 3 6 4       TRUE</span></span>
+<span></span></code></pre>
+
+</div>
+
+When we want to order by all columns in ascending order, using the [`do.call()`](https://rdrr.io/r/base/do.call.html) approach showed above, we get the following result:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>dat</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='o'>(</span><span class='s'>"order"</span>, <span class='nv'>dat</span><span class='o'>)</span>, <span class='o'>]</span></span>
+<span><span class='c'>#&gt;   x y decreasing</span></span>
+<span><span class='c'>#&gt; 1 3 5      FALSE</span></span>
+<span><span class='c'>#&gt; 2 3 2       TRUE</span></span>
+<span><span class='c'>#&gt; 3 6 4       TRUE</span></span>
+<span></span></code></pre>
+
+</div>
+
+When [`do.call()`](https://rdrr.io/r/base/do.call.html) is constructing the call, it is actually evaluating this call:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'>#&gt; order(list(x = c(3, 3, 6), y = c(5, 2, 4), decreasing = c(FALSE, </span></span>
+<span><span class='c'>#&gt; TRUE, TRUE)))</span></span>
+<span></span></code></pre>
+
+</div>
+
+As we can see, the third column is passed to [`order()`](https://rdrr.io/r/base/order.html)s `decreasing` argument. It is interesting to note that this doesn't seem to throw an error, although we order by two vectors and pass three Boolean values to `decreasing`.
+
+When we [`unname()`](https://rdrr.io/r/base/unname.html) our `data.frame` before passing it to [`do.call()`](https://rdrr.io/r/base/do.call.html), we get the correct (and slightly different) result:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>dat</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='o'>(</span><span class='s'>"order"</span>, <span class='nf'><a href='https://rdrr.io/r/base/unname.html'>unname</a></span><span class='o'>(</span><span class='nv'>dat</span><span class='o'>)</span><span class='o'>)</span>, <span class='o'>]</span></span>
+<span><span class='c'>#&gt;   x y decreasing</span></span>
+<span><span class='c'>#&gt; 2 3 2       TRUE</span></span>
+<span><span class='c'>#&gt; 1 3 5      FALSE</span></span>
+<span><span class='c'>#&gt; 3 6 4       TRUE</span></span>
+<span></span></code></pre>
+
+</div>
+
+Under the hood, this evaluates to the correct call:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'>#&gt; order(list(c(3, 3, 6), c(5, 2, 4), c(FALSE, TRUE, TRUE)))</span></span>
+<span></span></code></pre>
+
+</div>
+
+</div>
 
 #### 6. Ordering by a list or vector of column names
 
@@ -835,7 +906,7 @@ To order rows of a `tibble` or `data.frame` we use [`dplyr::arrange()`](https://
 
 As default [`dplyr::arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) orders columns in ascending order. To reverse this, we can wrap column names in [`dplyr::desc()`](https://dplyr.tidyverse.org/reference/desc.html). `NA` are always sorted last, and there is no argument to change this behavior. Finally, [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) is one of the few one-table verbs that ignores groupings of a `data.frame`, but this behavior can be changed (see info box below).
 
-<div class="info-box" title="Arranging grouped data">
+<div class="info-box" title="Expand: Arranging grouped data">
 
 Although somewhat counterintuitive [`dplyr::arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) does ignore (but preserve) groupings of a `data.frame`:
 
@@ -1358,7 +1429,7 @@ mycars2
 
 ## Wrap-up
 
-This post turned out to be almost a book chapter on ordering rows. I hope you enjoyed it. If you have a better approach to one of the examples above or if you have a special ordering challenge that I haven't considered, let me know via Twitter, Mastodon or Github.
+This post turned out to be almost a book chapter on ordering rows. I hope you enjoyed it. If you have a better approach to one of the examples above or if you have a special ordering challenge that I haven't considered, let me know in the comments below or via Twitter, Mastodon or Github.
 
 <div class="session" markdown="1">
 

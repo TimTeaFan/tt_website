@@ -1,0 +1,44 @@
+---
+Title: 'Expand: Passing a named list or data.frame to do.call'
+---
+The documentation of `order()` explicitly contains a warning, reminding us to `unname()` `data.frame`s 
+that we pass to `do.call("order", df)`.
+
+In most cases, forgetting to `unname()` a `data.frame` won't get us in trouble. If, however, one of
+the column names corresponds to an argument of `order()`, that is `na.last`, `decreasing` or `method`, 
+forgetting to `unname()` the `data.frame` will in most cases do something we don't expect, and 
+probably even notice.
+
+Let's create a small toy `data.frame` with three columns, `x`, `y` and `decreasing`, the latter indicating whether `x - y` is greater or less than zero:
+```{r}
+dat <- data.frame(x = c(3, 3, 6),
+                  y = c(5, 2, 4),
+                  decreasing = c(FALSE, TRUE, TRUE))
+dat
+```
+
+When we want to order by all columns in ascending order, using the `do.call()` approach showed above,
+we get the following result:
+```{r}
+dat[do.call("order", dat), ]
+```
+
+When `do.call()` is constructing the call, it is actually evaluating this call:
+```{r, echo = FALSE}
+call("order", dat)
+```
+
+As we can see, the third column is passed to `order()`s `decreasing` argument. It is interesting to
+note that this doesn't seem to throw an error, although we order by two vectors and pass three Boolean 
+values to `decreasing`.
+
+When we `unname()` our `data.frame` before passing it to `do.call()`, we get the correct (and
+slightly different) result:
+```{r}
+dat[do.call("order", unname(dat)), ]
+```
+
+Under the hood, this evaluates to the correct call:
+```{r, echo = FALSE}
+call("order", unname(dat))
+```
