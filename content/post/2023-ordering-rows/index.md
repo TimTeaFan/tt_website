@@ -1379,7 +1379,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-02-04</span></span>
+<span><span class='c'>#&gt;  date     2023-02-05</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -1435,6 +1435,30 @@ Session Info <i class="fas fa-tools"></i>
     return(div_note)
   };
 
+  function create_warn_box(title, content) {
+    let summary = document.createElement("summary");
+    summary.classList.add("warn-header");
+    summary.setAttribute("markdown", "1");
+
+    let summary_title = document.createTextNode(title)
+    let summary_icon = document.createElement('i');
+    summary_icon.classList.add("fas", "fa-exclamation-circle");
+    summary.append(summary_title, summary_icon);
+
+    let div_warn_details = document.createElement("div");
+    div_warn_details.classList.add('warn-details');
+    div_warn_details.append(...content)
+
+    let details = document.createElement('details');
+    details.append(summary, div_warn_details);
+
+    let div_warn = document.createElement("div");
+    div_warn.classList.add('warn');
+    div_warn.setAttribute("markdown", "1");
+    div_warn.append(details);
+    return(div_warn)
+  };
+
   function info_box() {
     let childs = document.querySelectorAll("div.info-box");
     childs.forEach(el => {
@@ -1444,6 +1468,16 @@ Session Info <i class="fas fa-tools"></i>
     });
   };
 
+  function warn_box() {
+    let childs = document.querySelectorAll("div.warn-box");
+    childs.forEach(el => {
+      let title = el.title
+      let warn_box = create_warn_box(title, el.childNodes);
+      el.append(warn_box)
+    });
+  };
+
   window.onload = info_box();
+  window.onload = warn_box();
 </script>
 
