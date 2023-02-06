@@ -210,7 +210,7 @@ mycars[do.call("order", unname(mycars[, -1])), ]
 
 Forgetting to `unname()` our list of vectors can lead to problems, which will be elaborated in the warning box below.
 
-::: {.warn-box title='Expand: Passing a data.frame to do.call("order", ...)'}
+::: {.warn-box title='Expand: Passing a df to do.call("order", ...)'}
 ```{r, child="warn_unname_df.Rmd"}
 ```
 :::

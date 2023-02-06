@@ -10,6 +10,7 @@ forgetting to `unname()` the `data.frame` will in most cases do something we don
 probably even notice.
 
 Let's create a small toy `data.frame` with three columns, `x`, `y` and `decreasing`, the latter indicating whether `x - y` is greater or less than zero:
+
 ```{r}
 dat <- data.frame(x = c(3, 3, 6),
                   y = c(5, 2, 4),
@@ -19,11 +20,13 @@ dat
 
 When we want to order by all columns in ascending order, using the `do.call()` approach showed above,
 we get the following result:
+
 ```{r}
 dat[do.call("order", dat), ]
 ```
 
 When `do.call()` is constructing the call, it is actually evaluating this call:
+
 ```{r, echo = FALSE}
 call("order", dat)
 ```
@@ -34,11 +37,15 @@ values to `decreasing`.
 
 When we `unname()` our `data.frame` before passing it to `do.call()`, we get the correct (and
 slightly different) result:
+
 ```{r}
 dat[do.call("order", unname(dat)), ]
 ```
 
 Under the hood, this evaluates to the correct call:
+
 ```{r, echo = FALSE}
 call("order", unname(dat))
 ```
+
+To sum-up: it is good practice to `unname()` `data.frame`s when passing them to `do.call()`.

@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: b1f5c7557b2340fd
+rmd_hash: 76c57887bc259c03
 
 ---
 
@@ -523,7 +523,7 @@ In our case the list of vectors to sort by is the `mycars` `data.frame` itself e
 
 Forgetting to [`unname()`](https://rdrr.io/r/base/unname.html) our list of vectors can lead to problems, which will be elaborated in the warning box below.
 
-<div class="warn-box" title="Expand: Passing a data.frame to do.call(&quot;order&quot;, ...)">
+<div class="warn-box" title="Expand: Passing a df to do.call(&quot;order&quot;, ...)">
 
 The documentation of [`order()`](https://rdrr.io/r/base/order.html) explicitly contains a warning, reminding us to [`unname()`](https://rdrr.io/r/base/unname.html) `data.frame`s that we pass to `do.call("order", df)`.
 
@@ -591,6 +591,8 @@ Under the hood, this evaluates to the correct call:
 <span></span></code></pre>
 
 </div>
+
+To sum-up: it is good practice to [`unname()`](https://rdrr.io/r/base/unname.html) `data.frame`s when passing them to [`do.call()`](https://rdrr.io/r/base/do.call.html).
 
 </div>
 
@@ -1450,7 +1452,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-02-05</span></span>
+<span><span class='c'>#&gt;  date     2023-02-06</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
