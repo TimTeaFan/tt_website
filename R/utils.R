@@ -1,7 +1,8 @@
 use_tt_post <- function (slug, site = ".", open = rlang::is_interactive())
 {
   hugodown:::check_slug(slug)
-  post_slug <- paste0("post/", tolower(slug))
+  Sys.Date()
+  post_slug <- paste0("post/", format(Sys.Date(), "%Y-"), tolower(slug))
   data <- list(pleased = hugodown:::tidy_pleased())
   pieces <- strsplit(slug, "-")[[1]]
   if (rlang::is_installed(pieces[[1]])) {
