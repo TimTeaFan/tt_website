@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 76c57887bc259c03
+rmd_hash: 8429d7be9ceca684
 
 ---
 
@@ -738,6 +738,124 @@ With the above syntax features in mind, we can rewrite the first five ordering e
 
 </div>
 
+<div class="output-box" title="Expand to show output">
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># 1. Ordering by one or several variables</span></span>
+<span><span class='nv'>mycarsDT</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='o'>(</span><span class='nv'>mpg</span><span class='o'>)</span><span class='o'>]</span></span>
+<span><span class='c'>#&gt;                  model cyl vs gear  mpg  disp</span></span>
+<span><span class='c'>#&gt;  1:         Duster 360   8  0    3 14.3 360.0</span></span>
+<span><span class='c'>#&gt;  2:            Valiant   6  1    3 18.1 225.0</span></span>
+<span><span class='c'>#&gt;  3:  Hornet Sportabout   8  0    3 18.7 360.0</span></span>
+<span><span class='c'>#&gt;  4:           Merc 280   6  1    4 19.2 167.6</span></span>
+<span><span class='c'>#&gt;  5:          Mazda RX4   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  6:      Mazda RX4 Wag   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  7:     Hornet 4 Drive   6  1    3 21.4 258.0</span></span>
+<span><span class='c'>#&gt;  8:         Datsun 710   4  1    4 22.8 108.0</span></span>
+<span><span class='c'>#&gt;  9:           Merc 230   4  1    4 22.8 140.8</span></span>
+<span><span class='c'>#&gt; 10:          Merc 240D   4  1    4 24.4 146.7</span></span>
+<span><span class='c'>#&gt; 11: Cadillac Fleetwood   8  0    3   NA    NA</span></span>
+<span><span class='c'>#&gt; 12:        Honda Civic   4  1    4   NA    NA</span></span>
+<span></span><span><span class='nv'>mycarsDT</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='o'>(</span><span class='o'>-</span><span class='nv'>cyl</span>, <span class='nv'>mpg</span><span class='o'>)</span><span class='o'>]</span></span>
+<span><span class='c'>#&gt;                  model cyl vs gear  mpg  disp</span></span>
+<span><span class='c'>#&gt;  1:         Duster 360   8  0    3 14.3 360.0</span></span>
+<span><span class='c'>#&gt;  2:  Hornet Sportabout   8  0    3 18.7 360.0</span></span>
+<span><span class='c'>#&gt;  3: Cadillac Fleetwood   8  0    3   NA    NA</span></span>
+<span><span class='c'>#&gt;  4:            Valiant   6  1    3 18.1 225.0</span></span>
+<span><span class='c'>#&gt;  5:           Merc 280   6  1    4 19.2 167.6</span></span>
+<span><span class='c'>#&gt;  6:          Mazda RX4   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  7:      Mazda RX4 Wag   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  8:     Hornet 4 Drive   6  1    3 21.4 258.0</span></span>
+<span><span class='c'>#&gt;  9:         Datsun 710   4  1    4 22.8 108.0</span></span>
+<span><span class='c'>#&gt; 10:           Merc 230   4  1    4 22.8 140.8</span></span>
+<span><span class='c'>#&gt; 11:          Merc 240D   4  1    4 24.4 146.7</span></span>
+<span><span class='c'>#&gt; 12:        Honda Civic   4  1    4   NA    NA</span></span>
+<span></span><span></span>
+<span><span class='c'># 2. Ordering by a character vector with matching names</span></span>
+<span><span class='nv'>mycarsDT</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='o'>(</span><span class='nv'>model</span>, levels <span class='o'>=</span> <span class='nv'>my_vec</span><span class='o'>)</span><span class='o'>)</span><span class='o'>]</span></span>
+<span><span class='c'>#&gt;                  model cyl vs gear  mpg  disp</span></span>
+<span><span class='c'>#&gt;  1:  Hornet Sportabout   8  0    3 18.7 360.0</span></span>
+<span><span class='c'>#&gt;  2: Cadillac Fleetwood   8  0    3   NA    NA</span></span>
+<span><span class='c'>#&gt;  3:            Valiant   6  1    3 18.1 225.0</span></span>
+<span><span class='c'>#&gt;  4:     Hornet 4 Drive   6  1    3 21.4 258.0</span></span>
+<span><span class='c'>#&gt;  5:          Mazda RX4   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  6:      Mazda RX4 Wag   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  7:        Honda Civic   4  1    4   NA    NA</span></span>
+<span><span class='c'>#&gt;  8:         Datsun 710   4  1    4 22.8 108.0</span></span>
+<span><span class='c'>#&gt;  9:         Duster 360   8  0    3 14.3 360.0</span></span>
+<span><span class='c'>#&gt; 10:          Merc 240D   4  1    4 24.4 146.7</span></span>
+<span><span class='c'>#&gt; 11:           Merc 230   4  1    4 22.8 140.8</span></span>
+<span><span class='c'>#&gt; 12:           Merc 280   6  1    4 19.2 167.6</span></span>
+<span></span><span></span>
+<span><span class='c'># 3. Ordering by a simple expression</span></span>
+<span><span class='nv'>mycarsDT</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='o'>(</span><span class='nv'>model</span> <span class='o'>!=</span> <span class='s'>"Hornet Sportabout"</span><span class='o'>)</span><span class='o'>]</span></span>
+<span><span class='c'>#&gt;                  model cyl vs gear  mpg  disp</span></span>
+<span><span class='c'>#&gt;  1:  Hornet Sportabout   8  0    3 18.7 360.0</span></span>
+<span><span class='c'>#&gt;  2:          Mazda RX4   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  3:      Mazda RX4 Wag   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  4:         Datsun 710   4  1    4 22.8 108.0</span></span>
+<span><span class='c'>#&gt;  5:     Hornet 4 Drive   6  1    3 21.4 258.0</span></span>
+<span><span class='c'>#&gt;  6:            Valiant   6  1    3 18.1 225.0</span></span>
+<span><span class='c'>#&gt;  7:         Duster 360   8  0    3 14.3 360.0</span></span>
+<span><span class='c'>#&gt;  8:          Merc 240D   4  1    4 24.4 146.7</span></span>
+<span><span class='c'>#&gt;  9:           Merc 230   4  1    4 22.8 140.8</span></span>
+<span><span class='c'>#&gt; 10:           Merc 280   6  1    4 19.2 167.6</span></span>
+<span><span class='c'>#&gt; 11: Cadillac Fleetwood   8  0    3   NA    NA</span></span>
+<span><span class='c'>#&gt; 12:        Honda Civic   4  1    4   NA    NA</span></span>
+<span></span><span></span>
+<span><span class='c'># 4. Ordering by a complex expression (positive numeric column)</span></span>
+<span><span class='nv'>mycarsDT</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='o'>(</span><span class='nv'>vs</span>, <span class='nf'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='o'>(</span><span class='nv'>vs</span> <span class='o'>==</span> <span class='m'>1</span>, <span class='o'>-</span><span class='nv'>mpg</span>, <span class='nv'>mpg</span><span class='o'>)</span><span class='o'>)</span><span class='o'>]</span></span>
+<span><span class='c'>#&gt;                  model cyl vs gear  mpg  disp</span></span>
+<span><span class='c'>#&gt;  1:         Duster 360   8  0    3 14.3 360.0</span></span>
+<span><span class='c'>#&gt;  2:  Hornet Sportabout   8  0    3 18.7 360.0</span></span>
+<span><span class='c'>#&gt;  3:          Mazda RX4   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  4:      Mazda RX4 Wag   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  5: Cadillac Fleetwood   8  0    3   NA    NA</span></span>
+<span><span class='c'>#&gt;  6:          Merc 240D   4  1    4 24.4 146.7</span></span>
+<span><span class='c'>#&gt;  7:         Datsun 710   4  1    4 22.8 108.0</span></span>
+<span><span class='c'>#&gt;  8:           Merc 230   4  1    4 22.8 140.8</span></span>
+<span><span class='c'>#&gt;  9:     Hornet 4 Drive   6  1    3 21.4 258.0</span></span>
+<span><span class='c'>#&gt; 10:           Merc 280   6  1    4 19.2 167.6</span></span>
+<span><span class='c'>#&gt; 11:            Valiant   6  1    3 18.1 225.0</span></span>
+<span><span class='c'>#&gt; 12:        Honda Civic   4  1    4   NA    NA</span></span>
+<span></span><span><span class='c'># 4. Ordering by a complex expression (character column)</span></span>
+<span><span class='nv'>mycarsDT</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='o'>(</span><span class='nv'>vs</span>, <span class='nf'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='o'>(</span><span class='nv'>vs</span> <span class='o'>==</span> <span class='m'>1</span>, <span class='o'>-</span><span class='nf'><a href='https://rdrr.io/r/base/xtfrm.html'>xtfrm</a></span><span class='o'>(</span><span class='nv'>model</span><span class='o'>)</span>, <span class='nf'><a href='https://rdrr.io/r/base/xtfrm.html'>xtfrm</a></span><span class='o'>(</span><span class='nv'>model</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span><span class='o'>]</span></span>
+<span><span class='c'>#&gt;                  model cyl vs gear  mpg  disp</span></span>
+<span><span class='c'>#&gt;  1: Cadillac Fleetwood   8  0    3   NA    NA</span></span>
+<span><span class='c'>#&gt;  2:         Duster 360   8  0    3 14.3 360.0</span></span>
+<span><span class='c'>#&gt;  3:  Hornet Sportabout   8  0    3 18.7 360.0</span></span>
+<span><span class='c'>#&gt;  4:          Mazda RX4   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  5:      Mazda RX4 Wag   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  6:            Valiant   6  1    3 18.1 225.0</span></span>
+<span><span class='c'>#&gt;  7:           Merc 280   6  1    4 19.2 167.6</span></span>
+<span><span class='c'>#&gt;  8:          Merc 240D   4  1    4 24.4 146.7</span></span>
+<span><span class='c'>#&gt;  9:           Merc 230   4  1    4 22.8 140.8</span></span>
+<span><span class='c'>#&gt; 10:     Hornet 4 Drive   6  1    3 21.4 258.0</span></span>
+<span><span class='c'>#&gt; 11:        Honda Civic   4  1    4   NA    NA</span></span>
+<span><span class='c'>#&gt; 12:         Datsun 710   4  1    4 22.8 108.0</span></span>
+<span></span><span></span>
+<span><span class='c'># 5. Ordering by all columns of a data.frame</span></span>
+<span><span class='nv'>mycarsDT</span><span class='o'>[</span><span class='nf'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='o'>(</span><span class='s'>"order"</span>, <span class='nf'><a href='https://rdrr.io/r/base/unname.html'>unname</a></span><span class='o'>(</span><span class='nv'>mycarsDT</span><span class='o'>[</span>, <span class='o'>-</span><span class='m'>1</span><span class='o'>]</span><span class='o'>)</span><span class='o'>)</span><span class='o'>]</span></span>
+<span><span class='c'>#&gt;                  model cyl vs gear  mpg  disp</span></span>
+<span><span class='c'>#&gt;  1:         Datsun 710   4  1    4 22.8 108.0</span></span>
+<span><span class='c'>#&gt;  2:           Merc 230   4  1    4 22.8 140.8</span></span>
+<span><span class='c'>#&gt;  3:          Merc 240D   4  1    4 24.4 146.7</span></span>
+<span><span class='c'>#&gt;  4:        Honda Civic   4  1    4   NA    NA</span></span>
+<span><span class='c'>#&gt;  5:          Mazda RX4   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  6:      Mazda RX4 Wag   6  0    4 21.0 160.0</span></span>
+<span><span class='c'>#&gt;  7:            Valiant   6  1    3 18.1 225.0</span></span>
+<span><span class='c'>#&gt;  8:     Hornet 4 Drive   6  1    3 21.4 258.0</span></span>
+<span><span class='c'>#&gt;  9:           Merc 280   6  1    4 19.2 167.6</span></span>
+<span><span class='c'>#&gt; 10:         Duster 360   8  0    3 14.3 360.0</span></span>
+<span><span class='c'>#&gt; 11:  Hornet Sportabout   8  0    3 18.7 360.0</span></span>
+<span><span class='c'>#&gt; 12: Cadillac Fleetwood   8  0    3   NA    NA</span></span>
+<span></span></code></pre>
+
+</div>
+
+</div>
+
 Note that the code chunk above shows only the ordering operation without assignment. To actually transform the `data.table` object we would need to assign the calls above to a new (or the same) object name.
 
 When using a vector of column names to subset a `data.table`, as we did in the sixth example, we need to precede the vector containing the column names (here: `mycol`) with a double dot `..` to tell 'data.table' that we are looking for an external vector and not a column named `mycol` inside our `data.table`.
@@ -1042,6 +1160,76 @@ Since [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) accepts 
 
 </div>
 
+<div class="output-box" title="Expand to show output">
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># 2. Ordering by a character vector with matching names</span></span>
+<span><span class='nv'>my_vec</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"Hornet Sportabout"</span>, <span class='s'>"Cadillac Fleetwood"</span>, <span class='s'>"Valiant"</span>,</span>
+<span>             <span class='s'>"Hornet 4 Drive"</span>, <span class='s'>"Mazda RX4"</span>, <span class='s'>"Mazda RX4 Wag"</span>, <span class='s'>"Honda Civic"</span>,</span>
+<span>             <span class='s'>"Datsun 710"</span>, <span class='s'>"Duster 360"</span>, <span class='s'>"Merc 240D"</span>, <span class='s'>"Merc 230"</span>, <span class='s'>"Merc 280"</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='nv'>mycars_tbl</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='o'>(</span><span class='nv'>model</span>, levels <span class='o'>=</span> <span class='nv'>my_vec</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 12 × 6</span></span></span>
+<span><span class='c'>#&gt;    model                cyl    vs  gear   mpg  disp</span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> Hornet Sportabout      8     0     3  18.7  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> Cadillac Fleetwood     8     0     3  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span> </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> Valiant                6     1     3  18.1  225 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> Hornet 4 Drive         6     1     3  21.4  258 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> Mazda RX4              6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> Mazda RX4 Wag          6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> Honda Civic            4     1     4  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span> </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> Datsun 710             4     1     4  22.8  108 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> Duster 360             8     0     3  14.3  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> Merc 240D              4     1     4  24.4  147.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>11</span> Merc 230               4     1     4  22.8  141.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>12</span> Merc 280               6     1     4  19.2  168.</span></span>
+<span></span><span></span>
+<span><span class='c'># 3. Ordering by a simple expression</span></span>
+<span><span class='nv'>mycars_tbl</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='o'>(</span><span class='nv'>model</span> <span class='o'>!=</span> <span class='s'>"Hornet Sportabout"</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 12 × 6</span></span></span>
+<span><span class='c'>#&gt;    model                cyl    vs  gear   mpg  disp</span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> Hornet Sportabout      8     0     3  18.7  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> Mazda RX4              6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> Mazda RX4 Wag          6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> Datsun 710             4     1     4  22.8  108 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> Hornet 4 Drive         6     1     3  21.4  258 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> Valiant                6     1     3  18.1  225 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> Duster 360             8     0     3  14.3  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> Merc 240D              4     1     4  24.4  147.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> Merc 230               4     1     4  22.8  141.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> Merc 280               6     1     4  19.2  168.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>11</span> Cadillac Fleetwood     8     0     3  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span> </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>12</span> Honda Civic            4     1     4  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span></span></span>
+<span></span><span></span>
+<span><span class='c'># 4. Ordering by a complex expression (positive numeric column)</span></span>
+<span><span class='nv'>mycars_tbl</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='o'>(</span><span class='nv'>vs</span>, <span class='nf'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='o'>(</span><span class='nv'>vs</span> <span class='o'>==</span> <span class='m'>1</span>, <span class='nf'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='o'>(</span><span class='nv'>mpg</span><span class='o'>)</span>, <span class='nv'>mpg</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 12 × 6</span></span></span>
+<span><span class='c'>#&gt;    model                cyl    vs  gear   mpg  disp</span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> Duster 360             8     0     3  14.3  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> Hornet Sportabout      8     0     3  18.7  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> Mazda RX4              6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> Mazda RX4 Wag          6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> Cadillac Fleetwood     8     0     3  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span> </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> Merc 240D              4     1     4  24.4  147.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> Datsun 710             4     1     4  22.8  108 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> Merc 230               4     1     4  22.8  141.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> Hornet 4 Drive         6     1     3  21.4  258 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> Merc 280               6     1     4  19.2  168.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>11</span> Valiant                6     1     3  18.1  225 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>12</span> Honda Civic            4     1     4  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span></span></span>
+<span></span></code></pre>
+
+</div>
+
+</div>
+
 Similarly to what we have seen in base R and 'data.table', the case of ordering by a complex `ifelse` condition which is applied to a character column (or a numeric column that contains positive and negative values) is also in 'dplyr' a bit trickier.
 
 Just using [`desc()`](https://dplyr.tidyverse.org/reference/desc.html) on one part of the `ifelse` condition will not yield the desired result:
@@ -1120,6 +1308,31 @@ When programmatically ordering rows with 'dplyr' we can use [`across()`](https:/
 
 </div>
 
+<div class="output-box" title="Expand to show output">
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 12 × 6</span></span></span>
+<span><span class='c'>#&gt;    model                cyl    vs  gear   mpg  disp</span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> Datsun 710             4     1     4  22.8  108 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> Merc 230               4     1     4  22.8  141.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> Merc 240D              4     1     4  24.4  147.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> Honda Civic            4     1     4  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span> </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> Mazda RX4              6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> Mazda RX4 Wag          6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> Valiant                6     1     3  18.1  225 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> Hornet 4 Drive         6     1     3  21.4  258 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> Merc 280               6     1     4  19.2  168.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> Duster 360             8     0     3  14.3  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>11</span> Hornet Sportabout      8     0     3  18.7  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>12</span> Cadillac Fleetwood     8     0     3  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span></span></span>
+<span></span></code></pre>
+
+</div>
+
+</div>
+
 Another option that [`across()`](https://dplyr.tidyverse.org/reference/across.html) offers is to use tidy-select helper functions, like [`all_of()`](https://tidyselect.r-lib.org/reference/all_of.html), which allows us to pass a character vector of column names to order by:
 
 <div class="highlight">
@@ -1129,6 +1342,31 @@ Another option that [`across()`](https://dplyr.tidyverse.org/reference/across.ht
 <span></span>
 <span><span class='nv'>mycars_tbl</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='o'>(</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='o'>(</span><span class='nf'><a href='https://tidyselect.r-lib.org/reference/all_of.html'>all_of</a></span><span class='o'>(</span><span class='nv'>mycols</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span></code></pre>
+
+</div>
+
+<div class="output-box" title="Expand to show output">
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 12 × 6</span></span></span>
+<span><span class='c'>#&gt;    model                cyl    vs  gear   mpg  disp</span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> Duster 360             8     0     3  14.3  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> Valiant                6     1     3  18.1  225 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> Hornet Sportabout      8     0     3  18.7  360 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> Merc 280               6     1     4  19.2  168.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> Mazda RX4              6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> Mazda RX4 Wag          6     0     4  21    160 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> Hornet 4 Drive         6     1     3  21.4  258 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> Datsun 710             4     1     4  22.8  108 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> Merc 230               4     1     4  22.8  141.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> Merc 240D              4     1     4  24.4  147.</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>11</span> Honda Civic            4     1     4  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span> </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>12</span> Cadillac Fleetwood     8     0     3  <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span></span></span>
+<span></span></code></pre>
+
+</div>
 
 </div>
 
@@ -1265,6 +1503,95 @@ my_order = [False, True]
              ascending = my_order)
 )
 </code></pre>
+
+</div>
+
+<div class="output-box" title="Expand to show output">
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'># 1. sort one or several columns in ascending or descending order
+mycars.sort_values(by='mpg')
+
+#>                  model  cyl  vs  gear   mpg   disp
+#> 7           Duster 360    8   0     3  14.3  360.0
+#> 6              Valiant    6   1     3  18.1  225.0
+#> 5    Hornet Sportabout    8   0     3  18.7  360.0
+#> 10            Merc 280    6   1     4  19.2  167.6
+#> 1            Mazda RX4    6   0     4  21.0  160.0
+#> 2        Mazda RX4 Wag    6   0     4  21.0  160.0
+#> 4       Hornet 4 Drive    6   1     3  21.4  258.0
+#> 3           Datsun 710    4   1     4  22.8  108.0
+#> 9             Merc 230    4   1     4  22.8  140.8
+#> 8            Merc 240D    4   1     4  24.4  146.7
+#> 11  Cadillac Fleetwood    8   0     3   NaN    NaN
+#> 12         Honda Civic    4   1     4   NaN    NaN
+
+(mycars.
+ sort_values(by=['cyl', 'mpg'],
+             ascending=[False, True])
+)
+
+# 5. order by all columns of a df
+
+#>                  model  cyl  vs  gear   mpg   disp
+#> 7           Duster 360    8   0     3  14.3  360.0
+#> 5    Hornet Sportabout    8   0     3  18.7  360.0
+#> 11  Cadillac Fleetwood    8   0     3   NaN    NaN
+#> 6              Valiant    6   1     3  18.1  225.0
+#> 10            Merc 280    6   1     4  19.2  167.6
+#> 1            Mazda RX4    6   0     4  21.0  160.0
+#> 2        Mazda RX4 Wag    6   0     4  21.0  160.0
+#> 4       Hornet 4 Drive    6   1     3  21.4  258.0
+#> 3           Datsun 710    4   1     4  22.8  108.0
+#> 9             Merc 230    4   1     4  22.8  140.8
+#> 8            Merc 240D    4   1     4  24.4  146.7
+#> 12         Honda Civic    4   1     4   NaN    NaN
+
+(mycars.
+ sort_values(by = list(mycars.columns)[1:])
+)
+
+# 6. order by list of string column names
+
+#>                  model  cyl  vs  gear   mpg   disp
+#> 3           Datsun 710    4   1     4  22.8  108.0
+#> 9             Merc 230    4   1     4  22.8  140.8
+#> 8            Merc 240D    4   1     4  24.4  146.7
+#> 12         Honda Civic    4   1     4   NaN    NaN
+#> 1            Mazda RX4    6   0     4  21.0  160.0
+#> 2        Mazda RX4 Wag    6   0     4  21.0  160.0
+#> 6              Valiant    6   1     3  18.1  225.0
+#> 4       Hornet 4 Drive    6   1     3  21.4  258.0
+#> 10            Merc 280    6   1     4  19.2  167.6
+#> 7           Duster 360    8   0     3  14.3  360.0
+#> 5    Hornet Sportabout    8   0     3  18.7  360.0
+#> 11  Cadillac Fleetwood    8   0     3   NaN    NaN
+
+my_cols = ['mpg', 'disp']
+my_order = [False, True]
+ 
+(mycars.
+ sort_values(by = my_cols,
+             ascending = my_order)
+)
+
+#>                  model  cyl  vs  gear   mpg   disp
+#> 8            Merc 240D    4   1     4  24.4  146.7
+#> 3           Datsun 710    4   1     4  22.8  108.0
+#> 9             Merc 230    4   1     4  22.8  140.8
+#> 4       Hornet 4 Drive    6   1     3  21.4  258.0
+#> 1            Mazda RX4    6   0     4  21.0  160.0
+#> 2        Mazda RX4 Wag    6   0     4  21.0  160.0
+#> 10            Merc 280    6   1     4  19.2  167.6
+#> 5    Hornet Sportabout    8   0     3  18.7  360.0
+#> 6              Valiant    6   1     3  18.1  225.0
+#> 7           Duster 360    8   0     3  14.3  360.0
+#> 11  Cadillac Fleetwood    8   0     3   NaN    NaN
+#> 12         Honda Civic    4   1     4   NaN    NaN
+</code></pre>
+
+</div>
 
 </div>
 
@@ -1452,7 +1779,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-02-06</span></span>
+<span><span class='c'>#&gt;  date     2023-02-10</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -1532,6 +1859,30 @@ Session Info <i class="fas fa-tools"></i>
     return(div_warn)
   };
 
+  function create_output_box(title, content) {
+    let summary = document.createElement("summary");
+    summary.classList.add("output-header");
+    summary.setAttribute("markdown", "1");
+
+    let summary_title = document.createTextNode(title)
+    let summary_icon = document.createElement('i');
+    summary_icon.classList.add("fas", "fa-laptop-code");
+    summary.append(summary_title, summary_icon);
+
+    let div_output_details = document.createElement("div");
+    div_output_details.classList.add('output-details');
+    div_output_details.append(...content)
+
+    let details = document.createElement('details');
+    details.append(summary, div_output_details);
+
+    let div_output = document.createElement("div");
+    div_output.classList.add('output');
+    div_output.setAttribute("markdown", "1");
+    div_output.append(details);
+    return(div_output)
+  };
+
   function info_box() {
     let childs = document.querySelectorAll("div.info-box");
     childs.forEach(el => {
@@ -1550,7 +1901,20 @@ Session Info <i class="fas fa-tools"></i>
     });
   };
 
-  window.onload = info_box();
-  window.onload = warn_box();
+  function output_box() {
+    let childs = document.querySelectorAll("div.output-box");
+    childs.forEach(el => {
+      let title = el.title
+      let output_box = create_output_box(title, el.childNodes);
+      el.append(output_box)
+    });
+  };
+
+ function load_boxes() {
+     info_box();
+     warn_box();
+     output_box();
+   }
+  window.onload = load_boxes();
 </script>
 

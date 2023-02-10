@@ -321,6 +321,28 @@ mycarsDT[order(vs, ifelse(vs == 1, -xtfrm(model), xtfrm(model)))]
 mycarsDT[do.call("order", unname(mycarsDT[, -1]))]
 ```
 
+::: {.output-box title="Expand to show output"}
+```{r}
+# 1. Ordering by one or several variables
+mycarsDT[order(mpg)]
+mycarsDT[order(-cyl, mpg)]
+
+# 2. Ordering by a character vector with matching names
+mycarsDT[order(factor(model, levels = my_vec))]
+
+# 3. Ordering by a simple expression
+mycarsDT[order(model != "Hornet Sportabout")]
+
+# 4. Ordering by a complex expression (positive numeric column)
+mycarsDT[order(vs, ifelse(vs == 1, -mpg, mpg))]
+# 4. Ordering by a complex expression (character column)
+mycarsDT[order(vs, ifelse(vs == 1, -xtfrm(model), xtfrm(model)))]
+
+# 5. Ordering by all columns of a data.frame
+mycarsDT[do.call("order", unname(mycarsDT[, -1]))]
+```
+:::
+
 Note that the code chunk above shows only the ordering operation without assignment. To actually transform the `data.table` object we would need to assign the calls above to a new (or the same) object name.
 
 When using a vector of column names to subset a `data.table`, as we did in the sixth example, we need to precede the vector containing the column names (here: `mycol`) with a double dot `..` to tell 'data.table' that we are looking for an external vector and not a column named `mycol` inside our `data.table`.
@@ -489,6 +511,26 @@ mycars_tbl %>%
   arrange(vs, ifelse(vs == 1, desc(mpg), mpg))
 ```
 
+::: {.output-box title="Expand to show output"}
+```{r}
+# 2. Ordering by a character vector with matching names
+my_vec <- c("Hornet Sportabout", "Cadillac Fleetwood", "Valiant",
+             "Hornet 4 Drive", "Mazda RX4", "Mazda RX4 Wag", "Honda Civic",
+             "Datsun 710", "Duster 360", "Merc 240D", "Merc 230", "Merc 280")
+
+mycars_tbl %>% 
+  arrange(factor(model, levels = my_vec))
+
+# 3. Ordering by a simple expression
+mycars_tbl %>% 
+  arrange(model != "Hornet Sportabout")
+
+# 4. Ordering by a complex expression (positive numeric column)
+mycars_tbl %>% 
+  arrange(vs, ifelse(vs == 1, desc(mpg), mpg))
+```
+:::
+
 Similarly to what we have seen in base R and 'data.table', the case of ordering by a complex `ifelse` condition which is applied to a character column (or a numeric column that contains positive and negative values) is also in 'dplyr' a bit trickier.
 
 Just using `desc()` on one part of the `ifelse` condition will not yield the desired result:
@@ -520,6 +562,14 @@ mycars_tbl %>%
   arrange(across(!model))
 ```
 
+::: {.output-box title="Expand to show output"}
+```{r, echo = FALSE}
+# 5. Ordering by all columns of a data.frame
+mycars_tbl %>% 
+  arrange(across(!model))
+```
+:::
+
 Another option that `across()` offers is to use tidy-select helper functions, like `all_of()`, which allows us to pass a character vector of column names to order by:
 
 ```{r, results = "hide"}
@@ -529,6 +579,16 @@ mycols <- c("mpg", "cyl")
 mycars_tbl %>% 
   arrange(across(all_of(mycols)))
 ```
+
+::: {.output-box title="Expand to show output"}
+```{r, echo = FALSE}
+# 6. Ordering by a list or vector of column names
+mycols <- c("mpg", "cyl")
+
+mycars_tbl %>% 
+  arrange(across(all_of(mycols)))
+```
+:::
 
 The usability of working programmatically with `arrange()` stops with the option to provide a character vector of column names. When we further want to specify which columns should be sorted in ascending or descending order, things get a little bit more complicated.
 
@@ -622,6 +682,32 @@ my_order = [False, True]
              ascending = my_order)
 )
 ```
+
+::: {.output-box title="Expand to show output"}
+```{python, message=FALSE}
+# 1. sort one or several columns in ascending or descending order
+mycars.sort_values(by='mpg')
+
+(mycars.
+ sort_values(by=['cyl', 'mpg'],
+             ascending=[False, True])
+)
+
+# 5. order by all columns of a df
+(mycars.
+ sort_values(by = list(mycars.columns)[1:])
+)
+
+# 6. order by list of string column names
+my_cols = ['mpg', 'disp']
+my_order = [False, True]
+ 
+(mycars.
+ sort_values(by = my_cols,
+             ascending = my_order)
+)
+```
+:::
 
 Things get more complicated when we want to order by an expression which is not a column name. In our second example we want to order by a list of matching string names, ideally without transforming the data itself.
 
