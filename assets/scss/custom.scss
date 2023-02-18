@@ -248,7 +248,7 @@ a.seeall-button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 4px 2px;
+  margin: 4px 0px;
   cursor: pointer;
   border-radius: 5px;
   font-family: Open Sans,Lucida Sans Unicode,Lucida Grande,sansSerif;
@@ -271,7 +271,7 @@ a.seeall-button:focus {
   display: flex;
   width: 100%;
   margin: 0px auto !important;
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .seeall-content {
