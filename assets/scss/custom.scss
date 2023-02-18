@@ -228,12 +228,13 @@ h3.article-title > a {
 
 .media.stream-item img {
   border-radius: 3px;
-  max-width: 150px;
+  max-width: 265px !important;
+  display: none;
 }
 
 @media screen and (min-width: 768px) {
   .media.stream-item img {
-    max-width: 265px !important;
+    display: inline !important;
   }
 }
 
@@ -270,19 +271,32 @@ a.seeall-button:focus {
   display: flex;
   width: 100%;
   margin: 0px auto !important;
+  text-align: center;
 }
 
 .seeall-content {
-
+  display:inline-block;
   width: 100%;
   margin: 0px auto !important;
 }
 
-.seeall-side {
-
-  width: 100%;
+.media.stream-item img {
+  border-radius: 3px;
+  max-width: 265px !important;
+  display: none;
 }
 
+.seeall-side {
+  width: 100%;
+  max-width: 265px;
+  display: inline;
+}
+
+@media screen and (max-width: 768px) {
+  .seeall-side {
+    display: none !important;
+  }
+}
 
 
 
