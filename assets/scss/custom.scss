@@ -225,10 +225,18 @@ h3.article-title > a {
 }
 
 /* blog post list */
-.media.stream-item img{
+
+.media.stream-item img {
   border-radius: 3px;
-  max-width: 265px !important;
+  max-width: 150px;
 }
+
+@media screen and (min-width: 768px) {
+  .media.stream-item img {
+    max-width: 265px !important;
+  }
+}
+
 
 a.seeall-button {
   background: rgb(97,173,252);
@@ -268,14 +276,14 @@ a.seeall-button:focus {
 
   width: 100%;
   margin: 0px auto !important;
-  max-width:265px;
 }
 
 .seeall-side {
 
   width: 100%;
-  max-width:265px;
 }
+
+
 
 
 /* post header image */
