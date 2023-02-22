@@ -803,4 +803,4 @@ mycars2
 
 This post turned out to be almost a book chapter on ordering rows. I hope you enjoyed it. If you have a better approach to one of the examples above or if you have a special ordering challenge that I haven't considered, let me know in the comments below or via Twitter, Mastodon or Github.
 
-`r hugodownplus::child_session_info()`
+`r hugodownplus::child_session_info(pkgs = "attached")`
