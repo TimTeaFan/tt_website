@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: b78be47736794ecb
+rmd_hash: bfe27e3bc403f37a
 
 ---
 
@@ -41,7 +41,7 @@ rmd_hash: b78be47736794ecb
 
 ## Intro
 
-In the last weeks I have put together a small R package {hugodownplus} which extends {hugodown} - the package which powers the blog posts of this and other #RStats Hugo websites.
+In the last weeks I have put together a small R package <a href="https://timteafan.github.io/hugodownplus/" role="highlight">{hugodownplus}</a> which extends {hugodown} - the package which powers the blog posts of this and other #RStats Hugo websites.
 
 {hugodownplus} offers a drop-in replacement for the rather minimalistic `hugodown::md_markdown()` output format.
 
