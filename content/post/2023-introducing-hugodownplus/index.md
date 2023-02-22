@@ -12,8 +12,8 @@ tags: ["R", "Rmarkdown", "hugodown", "package"]
 categories: ["R", "Rmarkdown", "hugodown", "package"]
 date: 2023-02-22
 lastmod: 2023-02-22
-featured: true
-draft: true
+featured: false
+draft: false
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder.
@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 329daf25ef1f822e
+rmd_hash: b78be47736794ecb
 
 ---
 
