@@ -533,12 +533,29 @@ details.sess > div > pre > code > span > span > span > span.hljs-comment {
   border: 1px dotted #33c09b;
 }
 
-.share-box.tea > a {
-  color: #33c09b;
+.outer-share-box.rbloggers {
+  font-size: smaller;
+  height: 30px;
+  color: #b2b2b2;
+  text-align: center;
+  border-width: 0px;
+  margin-top: 20px;
 }
 
-.share-box.tea > a:hover,
-.share-box.tea > a:focus,{
+.tea > a {
+  color: #33c09b;
+}
+.share-box.rbloggers {
+  margin-top: 0px !important;
+}
+
+.share-box.rbloggers > a  {
+  color: #b2b2b2;
+  text-decoration-style: dotted !important;
+}
+
+.tea > a:hover,
+.tea > a:focus,{
   text-decoration: none;
   font-weight: 600;
 }
