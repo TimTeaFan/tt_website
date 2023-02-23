@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: bfe27e3bc403f37a
+rmd_hash: 37d37c1d91ebd405
 
 ---
 
@@ -178,7 +178,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-02-22</span></span>
+<span><span class='c'>#&gt;  date     2023-02-23</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -282,7 +282,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-02-22</span></span>
+<span><span class='c'>#&gt;  date     2023-02-23</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -531,7 +531,7 @@ The code that generates the info boxes is shown below. To make sense of it, it h
 
 When the page is is loaded `window.onload` the `info_box()` function is executed. The `info_box()` function selects all `<div class="info-box">` elements. For each element `el` that it is found, it executes the `create_info_box()` function, which is defined at the very top of the script. Without going into details here, this function basically creates all the single parts, the `<summary>` and `<details>` tags the classes and attributes and it wraps the `...content` in the middle of all this.
 
-So where does the `<div class="info-box">` come from? We create those on the fly by wrapping a section of our Rmarkdown document in a fenced pandoc div: `::: {.info-box} content goes here :::`. When the document is knitted the HTML file below will be executed and will render our boxes accordingly.
+So where does the `<div class="info-box">` come from? We create those on the fly by wrapping a section of our Rmarkdown document in a fenced pandoc div: `::: {.info-box} content goes here :::`. When the document is knitted the HTML code above will be executed and will render our boxes accordingly.
 
 Although it now sounds pretty simple, I'd never figured this out alone.
 

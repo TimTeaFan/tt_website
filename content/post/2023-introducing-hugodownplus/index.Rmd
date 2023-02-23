@@ -426,7 +426,7 @@ The code that generates the info boxes is shown below. To make sense of it, it h
 
 When the page is is loaded `window.onload` the `info_box()` function is executed. The `info_box()` function selects all `<div class="info-box">` elements. For each element `el` that it is found, it executes the `create_info_box()` function, which is defined at the very top of the script. Without going into details here, this function basically creates all the single parts, the `<summary>` and `<details>` tags the classes and attributes and it wraps the `...content` in the middle of all this.
 
-So where does the `<div class="info-box">` come from? We create those on the fly by wrapping a section of our Rmarkdown document in a fenced pandoc div: `::: {.info-box} content goes here :::`. When the document is knitted the HTML file below will be executed and will render our boxes accordingly.
+So where does the `<div class="info-box">` come from? We create those on the fly by wrapping a section of our Rmarkdown document in a fenced pandoc div: `::: {.info-box} content goes here :::`. When the document is knitted the HTML code above will be executed and will render our boxes accordingly.
 
 Although it now sounds pretty simple, I'd never figured this out alone.
 
