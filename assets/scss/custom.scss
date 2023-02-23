@@ -73,10 +73,26 @@
        url('../fonts/ibm-plex-mono-v15-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
-/*
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Raleway&display=swap');
-.nav > li:not(.active) > a
-*/
+/* scroll bars */
+
+/* Firefox */
+html {
+  scrollbar-color: #757575 #2e2e2e;
+  scrollbar-width: thin;
+}
+
+/* WebKit and Chromiums */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #2e2e2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #757575;
+  border-radius: 5px;
+}
+
 
 body, body.dark, .dark .docs-toc-link, .dark .docs-sidebar, .dark .modal button.close, .dark input, .dark .form-control, .dark .form-control:focus {
 /*  background: #1f2229 !important;
