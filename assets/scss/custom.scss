@@ -727,7 +727,8 @@ ul.ul-edu li .description p.year {
 
 p.intro a,
 li.intro a,
-div.article-style > p > a[role="highlight"] {
+div.article-style > p > a[role="highlight"],
+li > p > a[role="highlight"] {
     color: #f8f8f2 !important;
     display: inline-block;
     position: relative;
@@ -746,7 +747,8 @@ p.intro  {
 
 p.intro a:after,
 li.intro a:after,
-div.article-style > p > a[role="highlight"]:after {
+div.article-style > p > a[role="highlight"]:after,
+li > p > a[role="highlight"]:after {
     content: '';
     display: block;
     position: absolute;
@@ -762,7 +764,8 @@ div.article-style > p > a[role="highlight"]:after {
 @media screen and (min-width: 768px) {
   p.intro a:after,
   li.intro a:after,
-  div.article-style > p > a[role="highlight"]:after {
+  div.article-style > p > a[role="highlight"]:after,
+  li > p > a[role="highlight"]:after{
       content: '';
       display: block;
       position: absolute;
@@ -778,13 +781,15 @@ div.article-style > p > a[role="highlight"]:after {
 
 p.intro a:hover,
 li.intro a:hover,
-div.article-style > p > a[role="highlight"]:hover {
+div.article-style > p > a[role="highlight"]:hover,
+li > p > a[role="highlight"]:hover {
     color:#fff;
 }
 
 p.intro a:hover:after,
 li.intro a:hover:after,
-div.article-style > p > a[role="highlight"]:hover:after {
+div.article-style > p > a[role="highlight"]:hover:after,
+li > p > a[role="highlight"]:hover:after {
     height: -webkit-calc(100% - 9px);
     height: calc(100% - 9px);
     -webkit-transition: height, .15s;
@@ -1127,4 +1132,34 @@ a.cc-btn.cc-dismiss:hover,
 a.cc-btn.cc-dismiss:focus, {
   background: #3b414f;
   color: #fff;
+}
+
+/* e3c */
+
+e-frame {
+  margin: auto;
+  background-color: #1f2229;
+  font-size: smaller;
+  border-radius: 10px;
+  padding: 1px 20px 1px 20px;
+}
+
+.e3c-switch {
+  margin-bottom: 0px;
+}
+
+.e3c-fineprint {
+  font-size: smaller;
+}
+
+.e3c-switch-container {
+  margin-top: 10px;
+}
+
+.e3c-slider:before {
+  background-color: #292f3d !important;
+}
+
+input:checked + .e3c-slider {
+  background-color: #69afff !important;
 }
