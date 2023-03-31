@@ -65,7 +65,7 @@ subtitle = ""
 <li class="intro">an overview of my programming <a href="/myprojects">projects</a></li>
 <li class="intro">my major  <a href="/mypublications">publications</a></li>
 <li class="intro">a list of <a href="/mytalks">talks</a></li>
-<li class="intro">my attempt to writing a <a href="/mostly_counting">blog</a></li>
+<li class="intro">my attempt to writing a <a href="/mostly_counting">blog</a> which is part of <a href"https://www.r-bloggers.com" target="_blank">R-bloggers.com</a></li>
 </div>
 </div>
 
