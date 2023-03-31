@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 59395ef9ca121800
+rmd_hash: efb38dcdb6de133a
 
 ---
 
@@ -174,7 +174,7 @@ First, let's define the relationship between our dependent and independent varia
 
 </div>
 
-Next, we use `mutate` to create new columns. We'll start by creating a column called `mod` containing our model. We'll apply the [`lm()`](https://rdrr.io/r/stats/lm.html) function with the previously defined formula and supply the `data` column to it. Since we are working with a `rowwise` `data.frame`, the [`lm()`](https://rdrr.io/r/stats/lm.html) function is executed three times, one time for each row, each time using a different `data.frame` of the list-column `data`. s the result of each call is not an atomic vector but an `lm` object of type `list`, we need to wrap the function call in [`list()`](https://rdrr.io/r/base/list.html). This results in a new list-column, `mod`, which holds an `lm` object in each row.
+Next, we use `mutate` to create new columns. We'll start by creating a column called `mod` containing our model. We'll apply the [`lm()`](https://rdrr.io/r/stats/lm.html) function with the previously defined formula and supply the `data` column to it. Since we are working with a `rowwise` `data.frame`, the [`lm()`](https://rdrr.io/r/stats/lm.html) function is executed three times, one time for each row, each time using a different `data.frame` of the list-column `data`. As the result of each call is not an atomic vector but an `lm` object of type `list`, we need to wrap the function call in [`list()`](https://rdrr.io/r/base/list.html). This results in a new list-column, `mod`, which holds an `lm` object in each row.
 
 <div class="highlight">
 
@@ -199,7 +199,7 @@ To make the results of this model more accessible, we'll use two functions from 
 
 [`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html) returns a `data.frame` with all regression terms, their estimates, p-values and other statistics.
 
-Again, we'll wrap both functions in [`list()`](https://rdrr.io/r/base/list.html) and call them on the model in the new `mod` column. This yields a final, nested `data.frame`. The rows represent the three product subgroups, while the columns contain the input `data`, the model `mod`, and the results `modstat` and `res`. Each of these columns is a list of `data.frame`s:
+Again, we'll wrap both functions in [`list()`](https://rdrr.io/r/base/list.html) and call them on the model in the new `mod` column. This yields a final, nested `data.frame`. The rows represent the three product subgroups, while the columns contain the input `data`, the model `mod`, and the results `modstat` and `res`. Beside `mod`, each of these columns is a list of `data.frame`s:
 
 <div class="highlight">
 
@@ -458,7 +458,7 @@ To achieve this, we'll follow three steps:
 
     </div>
 
-    We use `mutate` to apply [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) to each `data.frame` in the `data` column in each row. As filter expression we use the column `filter_ls` and evaluate it. Since we no longer need this column, we set the .keep argument in `mutate` to "unused" to eventually drop `filter_ls` after it has been used.
+    We use `mutate` to apply [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) to each `data.frame` in the `data` column in each row. As filter expression we use the column `filter_ls` and evaluate it. Since we no longer need this column, we set the `.keep` argument in `mutate` to "unused" to eventually drop `filter_ls` after it has been used.
 
 From this point, we could continue applying our model and then calculating and extracting the results, but we'll omit this for the sake of brevity.
 
@@ -515,7 +515,7 @@ Although this example is relatively simple, it demonstrates how this approach ca
 
 So far, we've wrapped the results of our `rowwise` operations in [`list()`](https://rdrr.io/r/base/list.html) when they produced non-atomic vectors.
 
-A common issue when inspecting the results is that these list-columns are often unnamed, making it difficult to determine which element we're examining. For instance, suppose that we want to double-check the output of our call to `broom::glance(mod)` stored in the `modstat` column\`. Let's look at the fourth element:
+A common issue when inspecting the results is that these list-columns are often unnamed, making it difficult to determine which element we're examining. For instance, suppose that we want to double-check the output of our call to `broom::glance(mod)` stored in the `modstat` column. Let's look at the fourth element:
 
 <div class="highlight">
 
@@ -531,13 +531,11 @@ A common issue when inspecting the results is that these list-columns are often 
 
 </div>
 
-The result prints nicely, but it's unclear which data subset they belong to.
+The result prints nicely, but it's unclear which subset of the data it belongs to.
 
-Here `rlang::list2()` comes to the rescue. `list2()` is more or less equivalent to `list()`, but has a few additional features. A helpful feature is that we can unquote the names on the right-hand side of the walrus operator. This concept is easier to understand with an example.
+Here [`rlang::list2()`](https://rlang.r-lib.org/reference/list2.html) comes to the rescue. Although it resembles [`list()`](https://rdrr.io/r/base/list.html), it provides some extra functionality. Specifically, it allows us to unquote names on the right-hand side of the walrus operator. To better grasp this idea, let's look at an example.
 
-In this scenario, `rlang::list2()` offers a practical solution. Although it resembles `list()`, it provides some extra functionalities. Specifically, it allows us to unquote names on the right-hand side of the walrus operator. To better grasp this idea, let's examine an example.
-
-We wrap our calls to `lm()`, `tidy()` and `glance()` in `list2()` and name each element using the walrus operator `:=`. On the right-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
+We wrap our calls to [`lm()`](https://rdrr.io/r/stats/lm.html), `tidy()` and `glance()` in [`list2()`](https://rlang.r-lib.org/reference/list2.html) and name each element using the walrus operator `:=`. On the right-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in the `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
 
 <div class="highlight">
 
@@ -563,7 +561,7 @@ We wrap our calls to `lm()`, `tidy()` and `glance()` in `list2()` and name each 
 
 Using the methods described above, we can easily construct nested `data.frame`s with several dozen subgroups. However, this approach can be inefficient in terms of memory usage, as we create a copy of our data for every single subgroup. To make this approach more memory-efficient, we can use what I call a "data-less grid", which is similar to our original nested `data.frame`, but without the data column.
 
-Instead of nesting our data with `nest_by()`, we manually create the combinations of subgroups to which we want to apply our model. We start with a vector of all unique values in the `product` column and add an overall category "All" to it. Then, we supply this vector along with our list of filter expressions `filter_ls` to `expand_grid()`. Finally, we place the names of the elements in `filter_ls` in a separate column: `type`.
+Instead of nesting our data with [`nest_by()`](https://dplyr.tidyverse.org/reference/nest_by.html), we manually create the combinations of subgroups to which we want to apply our model. We start with a vector of all unique values in the `product` column and add an overall category "All" to it. Then, we supply this vector along with our list of filter expressions `filter_ls` to [`expand_grid()`](https://tidyr.tidyverse.org/reference/expand_grid.html). Finally, we place the names of the elements in `filter_ls` in a separate column: `type`.
 
 This results in an initial grid `all_grps_grid` of combinations between `product` and `type`, with an additional column of filter expressions.
 
@@ -579,7 +577,7 @@ This results in an initial grid `all_grps_grid` of combinations between `product
 
 </div>
 
-The challenging aspect here is generating each data subset on the fly in the call to `lm()`. To accomplish this, we `filter()` our initial data `csat_named` on two conditions:
+The challenging aspect here is generating each data subset on the fly in the call to [`lm()`](https://rdrr.io/r/stats/lm.html). To accomplish this, we [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) our initial data `csat_named` on two conditions:
 
 1.  Firstly, we filter for different `product` types using an advanced filter expression:
 
@@ -587,7 +585,7 @@ The challenging aspect here is generating each data subset on the fly in the cal
 
     This expression may appear somewhat obscure, so let's break it down:
 
-    The issue here is that both our original data `csat_named` and our grid `all_grps_grid` contain a column named `product`. By default, `product`, in the `filter()` call below, refers to the column in `csat_named`. To tell 'dyplr' to use the column in our grid `all_grps_grid` we use the `.env` <a href="https://rlang.r-lib.org/reference/dot-data.html" role="highlight" target="_blank">pronoun</a>.
+    The issue here is that both our original data `csat_named` and our grid `all_grps_grid` contain a column named `product`. By default, `product`, in the [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) call below, refers to the column in `csat_named`. To tell 'dyplr' to use the column in our grid `all_grps_grid` we use the `.env` <a href="https://rlang.r-lib.org/reference/dot-data.html" role="highlight" target="_blank">pronoun</a>.
 
     So, the filter expression above essentially states: If the product category in our grid `.env$product` is "All", then select all rows. This works because when the left side of the or-condition `.env$product == "All"` evaluates to `TRUE`, `filter` selects all rows. If the first part of our condition is not true, then the `product` column in `csat_named` should match the value of the `product` column of our data-less grid `.env$product`.
 
@@ -663,15 +661,15 @@ The remaining steps do not significantly differ from our initial approach, so we
 
 #### Build formulas programmatically with 'reformulate'
 
-The final building block that essentially completes the many models approach is actually a base R function: `reformulate()`.
+The final building block that essentially completes the many models approach is actually a base R function: [`reformulate()`](https://rdrr.io/r/stats/delete.response.html).
 
-I recently posted an #RStats meme on Twitter highlighting that `reformulate()` is one of the lesser-known base R functions, even among advanced users. The reactions to my post largely confirmed my impression.
+I recently posted an #RStats meme on Twitter highlighting that [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) is one of the lesser-known base R functions, even among advanced users. The reactions to my post largely confirmed my impression.
 
 <e-frame src="https://twitter.com/timteafan/status/1636839375672602624"></e-frame>
 
-Before applying it in the many models context, let's have a look at what `reformulate()` does. Instead of manuallycreating a formula object by typing `y ~ x1 + x2`, we can use `reformulate()` to generate a formula object based on character vectors.
+Before applying it in the many models context, let's have a look at what [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) does. Instead of manually creating a formula object by typing `y ~ x1 + x2`, we can use [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) to generate a formula object based on character vectors.
 
-Important is the order of the first two arguments. While we start writing a formula from the left-hand side `y`, `reformulate()` takes as first argument the right-hand side.
+Important is the order of the first two arguments. While we start writing a formula from the left-hand side `y`, [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) takes as first argument the right-hand side.
 
 <div class="highlight">
 
@@ -690,7 +688,7 @@ Important is the order of the first two arguments. While we start writing a form
 
 </div>
 
-How can we make use of `reformulate()` in the many models approach?
+How can we make use of [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) in the many models approach?
 
 Let's begin with a simple case and assume we want to construct a separate model for each independent variable, containing only our response variable and one independent variable at a time: `csat ~ indepedent_variable`. And of course, we want to do this for all of our subgroups of the previous approach.
 
@@ -765,7 +763,7 @@ We can now apply a similar approach as before, creating data subgroups on the fl
 
 </div>
 
-Although the example above is instructive, it isn't particularly useful. In most cases, we don't want to create a separate model for each independent variable. A much more powerful way to use `reformulate()` is to `update()` a baseline model with additional variables.
+Although the example above is instructive, it isn't particularly useful. In most cases, we don't want to create a separate model for each independent variable. A much more powerful way to use [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) is to [`update()`](https://rdrr.io/r/stats/update.html) a baseline model with additional variables.
 
 Let's say we have the following base-line model:
 
@@ -810,7 +808,7 @@ For our many subgroups from above, we want to check if adding `email_rating` or 
 
 </div>
 
-We could use `update()` directly in our call to `lm()`, but to avoid overcomplicating things, let's create a column holding our updated formula: `form`:
+We could use [`update()`](https://rdrr.io/r/stats/update.html) directly in our call to [`lm()`](https://rdrr.io/r/stats/lm.html), but to avoid overcomplicating things, let's create a column holding our updated formula: `form`:
 
 <div class="highlight">
 
@@ -826,7 +824,7 @@ We could use `update()` directly in our call to `lm()`, but to avoid overcomplic
 
 </div>
 
-`update()` takes two arguments, the formula we want to update, in this case `my_formula2`, and the formula we use to update the former. In our case, this is a call to `reformulate()` which says: "take all the original term labels `"."`, and add `c()` to them the variable in `update_vars`. Now its probably clear why we included `NULL` in `update_vars`. In cases where it is `NULL` the original formula won't be updated, which corresponds to our baseline model.
+[`update()`](https://rdrr.io/r/stats/update.html) takes two arguments, the formula we want to update, in this case `my_formula2`, and the formula we use to update the former. In our case, this is a call to [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) which says: "take all the original term labels `"."`, and add [`c()`](https://rdrr.io/r/base/c.html) to them the variable in `update_vars`. Now its probably clear why we included `NULL` in `update_vars`. In cases where it is `NULL` the original formula won't be updated, which corresponds to our baseline model.
 
 Checking the first three rows of our list-column containing the formulas shows that the approach works as intended:
 
