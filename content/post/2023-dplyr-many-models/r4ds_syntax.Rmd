@@ -1,0 +1,21 @@
+---
+Title: The original syntax
+---
+
+There are two main differences between the approach outlined above and the syntax which was originally introduced in R4DS.
+
+First, instead of `nest_by(product)`, the original syntax used `group_by(product) %>% nest()`. Both produce a nested `data.frame`. The later, however, returns a `data.frame` grouped by "product", while `nest_by()` returns a `rowwise` `data.frame`.
+
+While this difference seems negligible, it at has implications on how operations on the nested data are carried out, especially, since `rowwise` operations didn't exist in 2017. The original approach was using `purrr::map()` and friends instead to apply unvectorized functions, such as `lm()`, to list-columns. 
+
+```{r}
+csat_named |>
+  group_by(product) |>
+  nest() |>
+  ungroup() |>
+  mutate(mod     = map(data, ~ lm(my_formula, data = .x)),
+         res     = map(mod, broom::tidy),
+         modstat = map(mod, broom::glance))
+```
+
+While this approach saves us from wrapping the output in `list()`, it leads to code cluttering  especially with functions that take two or more arguments and which need to be wrapped in `pmap()`.

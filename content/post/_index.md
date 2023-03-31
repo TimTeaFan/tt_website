@@ -1,6 +1,6 @@
 ---
 title: Mostly Counting
-subtitle: A (soon to be) collection of posts on Data Science, Statistics, R, and Python
+subtitle: A collection of posts on Data Science, Statistics, R, and Python
 
 # View.
 #   1 = List
