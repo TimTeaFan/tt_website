@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: d0406939043c6f22
+rmd_hash: 59395ef9ca121800
 
 ---
 
@@ -49,7 +49,7 @@ The structure of this blog post also reflects my motivation for writing it. I th
 
 Lately, the tidyverse many models approach hasn't received much attention. One might expect this to change with the coming release of the <a href="http://r4ds.hadley.nz" role="highlight" target="_blank">second edition of R4DS</a>. However, the entire section on modeling has been omitted from this release. According to the authors, the reasons for this are twofold: First, there was never ample room to address the whole topic of modeling within R4DS. Second, the authors recommend the 'tidymodels' packages, which are well documented in <a href="https://www.tmwr.org" role="highlight" target="_blank">Tidy Modeling with R</a> which is filling the gap.
 
-While 'tidymodels' is a strong framework with definite advantages when working with various algorithms and model engines, it comes with considerable conceptual and syntactic overhead. For this reason, I believe there is still a lot of room (and use cases) for the "classic" tidyverse many models approach, which employs 'dplyr' syntax but utilizes base R, or alternatively package-specific, models.
+While 'tidymodels' is a strong framework with definite advantages when working with various algorithms and model engines, it comes with considerable conceptual and syntactic overhead. For this reason, I believe there is still a lot of room (and use cases) for the "classic" tidyverse many models approach, which is based on 'dplyr' syntax but utilizes base R, or alternatively package-specific, models.
 
 But before we delve into the use cases, let's begin with the setup.
 
@@ -96,7 +96,7 @@ Unlike the name suggests, we don't need all of the 'tidyverse' packages for the 
 
 </div>
 
-Every row is the response of a customer, `cust_id`, who owns a contract-base `product` available in different flavors: "basic", "advanced" or "premium". There are three different `type`s of customers: "existing", "new" and "reactivate". Our dependent variable is the customer satisfaction score, `csat`, which ranges from '1 = Very unsatisfied' to '5 = Very satisfied'. The independent variables are ratings on the same scale concerning the following touchpoints: "postal", "phone", "email", "website" and "shop". We've dropped all other variables, but interested reader can find both datasets well documented in the 'dplyover' package ([`?csat`](https://rdrr.io/pkg/dplyover/man/csat.html), [`?csatraw`](https://rdrr.io/pkg/dplyover/man/csatraw.html)).
+Every row is the response of a customer, `cust_id`, who owns a contract-base `product` available in different flavors: "basic", "advanced" or "premium". There are three different `type`s of customers: "existing", "new" and "reactivate". Our dependent variable is the customer satisfaction score, `csat`, which ranges from '1 = Very unsatisfied' to '5 = Very satisfied'. The independent variables are ratings on the same scale concerning the following touchpoints: "postal", "phone", "email", "website" and "shop". We've dropped all other variables, but interested readers can find both datasets well documented in the 'dplyover' package ([`?csat`](https://rdrr.io/pkg/dplyover/man/csat.html), [`?csatraw`](https://rdrr.io/pkg/dplyover/man/csatraw.html)).
 
 ## Fundamentals
 
@@ -113,7 +113,7 @@ If you're already familiar with these concepts, feel free to skip this section.
 
 The central idea of the many-models approach is to streamline the process of running models on various subsets of data. Let's say we want to perform a linear regression on each product type. In a traditional base R approach, we might have used a `for` loop to populate a list object with the results of each run. However, the tidyverse method begins with a nested `data.frame`.
 
-So, what is a nested data.frame? We can use `dplyr::nest_by(product)` to create a `data.frame` containing three rows, one for each product. The second column, `data`, is a 'list-column' that holds a list of `data.frame`'s---one for each row. These `data.frames` contain data for all customers within the corresponding product category. If you're unfamiliar with list-columns, I highly recommend reading a href="<https://r4ds.had.co.nz/many-models.html>" role="highlight" target="\_blank"\>chapter 25 of R4DS</a>. Although some parts may be outdated, it remains an excellent resource for understanding the essential components of this approach.
+So, what is a nested data.frame? We can use `dplyr::nest_by(product)` to create a `data.frame` containing three rows, one for each product. The second column, `data`, is a 'list-column' that holds a list of `data.frame`'s---one for each row. These `data.frame`s contain data for all customers within the corresponding product category. If you're unfamiliar with list-columns, I highly recommend reading <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">chapter 25 of R4DS</a>. Although some parts may be outdated, it remains an excellent resource for understanding the essential components of this approach.
 
 <div class="highlight">
 

@@ -50,7 +50,7 @@ The structure of this blog post also reflects my motivation for writing it. I th
 
 Lately, the tidyverse many models approach hasn't received much attention. One might expect this to change with the coming release of the <a href="http://r4ds.hadley.nz" role="highlight" target="_blank">second edition of R4DS</a>. However, the entire section on modeling has been omitted from this release. According to the authors, the reasons for this are twofold: First, there was never ample room to address the whole topic of modeling within R4DS. Second, the authors recommend the 'tidymodels' packages, which are well documented in <a href="https://www.tmwr.org" role="highlight" target="_blank">Tidy Modeling with R</a> which is filling the gap.
 
-While 'tidymodels' is a strong framework with definite advantages when working with various algorithms and model engines, it comes with considerable conceptual and syntactic overhead. For this reason, I believe there is still a lot of room (and use cases) for the "classic" tidyverse many models approach, which employs 'dplyr' syntax but utilizes base R, or alternatively package-specific, models.
+While 'tidymodels' is a strong framework with definite advantages when working with various algorithms and model engines, it comes with considerable conceptual and syntactic overhead. For this reason, I believe there is still a lot of room (and use cases) for the "classic" tidyverse many models approach, which is based on 'dplyr' syntax but utilizes base R, or alternatively package-specific, models.
 
 But before we delve into the use cases, let's begin with the setup.
 
@@ -81,7 +81,7 @@ csat_named <- csatraw |>
 glimpse(csat_named)
 ```
 
-Every row is the response of a customer, `cust_id`, who owns a contract-base `product` available in different flavors: "basic", "advanced" or "premium". There are three different `type`s of customers: "existing", "new" and "reactivate". Our dependent variable is the customer satisfaction score, `csat`, which ranges from '1 = Very unsatisfied' to '5 = Very satisfied'. The independent variables are ratings on the same scale concerning the following touchpoints: "postal", "phone", "email", "website" and "shop". We've dropped all other variables, but interested reader can find both datasets well documented in the 'dplyover' package (`?csat`, `?csatraw`).
+Every row is the response of a customer, `cust_id`, who owns a contract-base `product` available in different flavors: "basic", "advanced" or "premium". There are three different `type`s of customers: "existing", "new" and "reactivate". Our dependent variable is the customer satisfaction score, `csat`, which ranges from '1 = Very unsatisfied' to '5 = Very satisfied'. The independent variables are ratings on the same scale concerning the following touchpoints: "postal", "phone", "email", "website" and "shop". We've dropped all other variables, but interested readers can find both datasets well documented in the 'dplyover' package (`?csat`, `?csatraw`).
 
 ## Fundamentals
 
@@ -98,7 +98,7 @@ If you're already familiar with these concepts, feel free to skip this section.
 
 The central idea of the many-models approach is to streamline the process of running models on various subsets of data. Let's say we want to perform a linear regression on each product type. In a traditional base R approach, we might have used a `for` loop to populate a list object with the results of each run. However, the tidyverse method begins with a nested `data.frame`.
 
-So, what is a nested data.frame? We can use `dplyr::nest_by(product)` to create a `data.frame` containing three rows, one for each product. The second column, `data`, is a 'list-column' that holds a list of `data.frame`'s—one for each row. These `data.frames` contain data for all customers within the corresponding product category. If you're unfamiliar with list-columns, I highly recommend reading a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">chapter 25 of R4DS</a>. Although some parts may be outdated, it remains an excellent resource for understanding the essential components of this approach.
+So, what is a nested data.frame? We can use `dplyr::nest_by(product)` to create a `data.frame` containing three rows, one for each product. The second column, `data`, is a 'list-column' that holds a list of `data.frame`'s—one for each row. These `data.frame`s contain data for all customers within the corresponding product category. If you're unfamiliar with list-columns, I highly recommend reading <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">chapter 25 of R4DS</a>. Although some parts may be outdated, it remains an excellent resource for understanding the essential components of this approach.
 
 ```{r}
 csat_prod_nested <- csat_named |>
@@ -126,7 +126,7 @@ my_formula <- csat ~ postal_rating + phone_rating + email_rating +
 my_formula
 ```
 
-Next, we use `mutate` to create new columns.  We'll start by creating a column called `mod` containing our model. We'll apply the `lm()` function with the previously defined formula and supply the `data` column to it. Since we are working with a `rowwise` `data.frame`, the `lm()` function is executed three times, one time for each row, each time using a different `data.frame` of the list-column `data`. s the result of each call is not an atomic vector but an `lm` object of type `list`, we need to wrap the function call in `list()`. This results in a new list-column, `mod`, which holds an `lm` object in each row.
+Next, we use `mutate` to create new columns.  We'll start by creating a column called `mod` containing our model. We'll apply the `lm()` function with the previously defined formula and supply the `data` column to it. Since we are working with a `rowwise` `data.frame`, the `lm()` function is executed three times, one time for each row, each time using a different `data.frame` of the list-column `data`. As the result of each call is not an atomic vector but an `lm` object of type `list`, we need to wrap the function call in `list()`. This results in a new list-column, `mod`, which holds an `lm` object in each row.
 
 ```{r}
 csat_prod_nested |>
@@ -141,7 +141,7 @@ To make the results of this model more accessible, we'll use two functions from 
 
 `broom::tidy()` returns a `data.frame` with all regression terms, their estimates, p-values and other statistics.
 
-Again, we'll wrap both functions in `list()` and call them on the model in the new `mod` column. This yields a final, nested `data.frame`. The rows represent the three product subgroups, while the columns contain the input `data`, the model `mod`, and the results `modstat` and `res`. Each of these columns is a list of `data.frame`s:
+Again, we'll wrap both functions in `list()` and call them on the model in the new `mod` column. This yields a final, nested `data.frame`. The rows represent the three product subgroups, while the columns contain the input `data`, the model `mod`, and the results `modstat` and `res`. Beside `mod`, each of these columns is a list of `data.frame`s:
 
 ```{r}
 csat_prod_nested_res <- csat_prod_nested |>
@@ -274,7 +274,7 @@ To achieve this, we'll follow three steps:
     csat_all_grps_grid
     ```
 
-    We use `mutate` to apply `filter()` to each `data.frame` in the `data` column in each row. As filter expression we use the column `filter_ls` and evaluate it. Since we no longer need this column, we set the .keep argument in `mutate` to "unused" to eventually drop `filter_ls` after it has been used.
+    We use `mutate` to apply `filter()` to each `data.frame` in the `data` column in each row. As filter expression we use the column `filter_ls` and evaluate it. Since we no longer need this column, we set the `.keep` argument in `mutate` to "unused" to eventually drop `filter_ls` after it has been used.
 
 From this point, we could continue applying our model and then calculating and extracting the results, but we'll omit this for the sake of brevity.
 
@@ -304,19 +304,17 @@ Although this example is relatively simple, it demonstrates how this approach ca
 
 So far, we've wrapped the results of our `rowwise` operations in `list()` when they produced non-atomic vectors.
 
-A common issue when inspecting the results is that these list-columns are often unnamed, making it difficult to determine which element we're examining. For instance, suppose that we want to double-check the output of our call to `broom::glance(mod)` stored in the `modstat` column`. Let's look at the fourth element:
+A common issue when inspecting the results is that these list-columns are often unnamed, making it difficult to determine which element we're examining. For instance, suppose that we want to double-check the output of our call to `broom::glance(mod)` stored in the `modstat` column. Let's look at the fourth element:
 
 ```{r}
 csat_all_grps_grid$modstat[4]
 ```
 
-The result prints nicely, but it's unclear which data subset they belong to.
+The result prints nicely, but it's unclear which subset of the data it belongs to.
 
-Here `rlang::list2()` comes to the rescue. `list2()` is more or less equivalent to `list()`, but has a few additional features. A helpful feature is that we can unquote the names on the right-hand side of the walrus operator. This concept is easier to understand with an example.
+Here `rlang::list2()` comes to the rescue. Although it resembles `list()`, it provides some extra functionality. Specifically, it allows us to unquote names on the right-hand side of the walrus operator. To better grasp this idea, let's look at an example.
 
-In this scenario, `rlang::list2()` offers a practical solution. Although it resembles `list()`, it provides some extra functionalities. Specifically, it allows us to unquote names on the right-hand side of the walrus operator. To better grasp this idea, let's examine an example.
-
-We wrap our calls to `lm()`, `tidy()` and `glance()` in `list2()` and name each element using the walrus operator `:=`. On the right-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
+We wrap our calls to `lm()`, `tidy()` and `glance()` in `list2()` and name each element using the walrus operator `:=`. On the right-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in the `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
 
 ```{r}
 csat_all_grps_grid <- csat_all_grps |>
@@ -408,7 +406,7 @@ I recently posted an #RStats meme on Twitter highlighting that `reformulate()` i
 
 `r eframe(src="https://twitter.com/timteafan/status/1636839375672602624")`
 
-Before applying it in the many models context, let's have a look at what `reformulate()` does. Instead of manuallycreating a formula object by typing `y ~ x1 + x2`, we can use `reformulate()` to generate a formula object based on character vectors.
+Before applying it in the many models context, let's have a look at what `reformulate()` does. Instead of manually creating a formula object by typing `y ~ x1 + x2`, we can use `reformulate()` to generate a formula object based on character vectors.
 
 Important is the order of the first two arguments. While we start writing a formula from the left-hand side `y`, `reformulate()` takes as first argument the right-hand side.
 
