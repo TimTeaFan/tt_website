@@ -11,8 +11,8 @@ summary: "This blog post reviews the basic many models approach, updates it usin
 authors: []
 tags: ["R", "dplyr", "base R"]
 categories: ["R", "dplyr", "base R"]
-date: 2025-03-27
-lastmod: 2023-03-27
+date: 2025-03-31
+lastmod: 2023-03-31
 featured: false
 draft: false
 
@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: c9997dd828a48ebe
+rmd_hash: d0406939043c6f22
 
 ---
 
@@ -673,8 +673,6 @@ Before applying it in the many models context, let's have a look at what `reform
 
 Important is the order of the first two arguments. While we start writing a formula from the left-hand side `y`, `reformulate()` takes as first argument the right-hand side.
 
-How can we make use of `reformulate()` in the many models approach?
-
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>form1</span> <span class='o'>&lt;-</span> <span class='nv'>y</span> <span class='o'>~</span> <span class='nv'>x1</span> <span class='o'>+</span> <span class='nv'>x2</span></span>
@@ -691,6 +689,8 @@ How can we make use of `reformulate()` in the many models approach?
 <span></span></code></pre>
 
 </div>
+
+How can we make use of `reformulate()` in the many models approach?
 
 Let's begin with a simple case and assume we want to construct a separate model for each independent variable, containing only our response variable and one independent variable at a time: `csat ~ indepedent_variable`. And of course, we want to do this for all of our subgroups of the previous approach.
 
