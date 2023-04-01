@@ -49,3 +49,5 @@ subtitle = "A collection of posts on Data Science, Statistics, R, and Python"
  # CSS class.
  css_class = ""
 +++
+
+<p class="r-bloggers">This blog is part of <a href="https://www.r-bloggers.com" target="_blank">R-bloggers.com</a></p>

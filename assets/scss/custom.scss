@@ -728,7 +728,8 @@ ul.ul-edu li .description p.year {
 p.intro a,
 li.intro a,
 div.article-style > p > a[role="highlight"],
-li > p > a[role="highlight"] {
+li > p > a[role="highlight"],
+.r-bloggers > a {
     color: #f8f8f2 !important;
     display: inline-block;
     position: relative;
@@ -748,7 +749,8 @@ p.intro  {
 p.intro a:after,
 li.intro a:after,
 div.article-style > p > a[role="highlight"]:after,
-li > p > a[role="highlight"]:after {
+li > p > a[role="highlight"]:after,
+.r-bloggers > a:after{
     content: '';
     display: block;
     position: absolute;
@@ -765,7 +767,8 @@ li > p > a[role="highlight"]:after {
   p.intro a:after,
   li.intro a:after,
   div.article-style > p > a[role="highlight"]:after,
-  li > p > a[role="highlight"]:after{
+  li > p > a[role="highlight"]:after,
+  .r-bloggers > a:after {
       content: '';
       display: block;
       position: absolute;
@@ -782,14 +785,17 @@ li > p > a[role="highlight"]:after {
 p.intro a:hover,
 li.intro a:hover,
 div.article-style > p > a[role="highlight"]:hover,
-li > p > a[role="highlight"]:hover {
+li > p > a[role="highlight"]:hover,
+.r-bloggers > a:hover
+{
     color:#fff;
 }
 
 p.intro a:hover:after,
 li.intro a:hover:after,
 div.article-style > p > a[role="highlight"]:hover:after,
-li > p > a[role="highlight"]:hover:after {
+li > p > a[role="highlight"]:hover:after,
+.r-bloggers > a:hover:after {
     height: -webkit-calc(100% - 9px);
     height: calc(100% - 9px);
     -webkit-transition: height, .15s;
@@ -1162,4 +1168,10 @@ e-frame {
 
 input:checked + .e3c-slider {
   background-color: #69afff !important;
+}
+
+/* r-bloggers */
+
+.r-bloggers {
+  margin-top: -1rem;
 }
