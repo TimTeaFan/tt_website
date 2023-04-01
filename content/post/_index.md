@@ -15,4 +15,4 @@ header:
  
 ---
 
-
+<p class="r-bloggers" style="font-size:smaller;">This blog is part of <a href="https://www.r-bloggers.com" target="_blank">R-bloggers.com</a></p>
