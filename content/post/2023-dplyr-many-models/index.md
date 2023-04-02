@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: a95f94aa3ec1f214
+rmd_hash: fda2c6454ab0324e
 
 ---
 
@@ -923,7 +923,7 @@ The call to [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>out</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html'>modelsummary</a></span><span class='o'>(</span>models <span class='o'>=</span> <span class='nv'>all_grid_upd_vars_form</span><span class='o'>$</span><span class='nv'>mod</span><span class='o'>[</span><span class='m'>1</span><span class='o'>:</span><span class='m'>2</span><span class='o'>]</span>,</span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>out</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html'>modelsummary</a></span><span class='o'>(</span>models <span class='o'>=</span> <span class='nv'>all_grid_upd_vars_form</span><span class='o'>$</span><span class='nv'>mod</span>,</span>
 <span>                    output <span class='o'>=</span> <span class='s'>"data.frame"</span>,</span>
 <span>                    gof_omit <span class='o'>=</span> <span class='s'>"AIC|BIC|Log.Lik|RMSE"</span>,</span>
 <span>                    coef_omit <span class='o'>=</span> <span class='s'>"(Intercept)"</span>,</span>

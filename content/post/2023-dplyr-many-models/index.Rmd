@@ -554,7 +554,7 @@ The call to `modelsummary()` above gives us a quick and compact overview of our 
 
 ::: {.output-box title="Expand to show code"}
 ```{r, eval=FALSE}
-out <- modelsummary(models = all_grid_upd_vars_form$mod[1:2],
+out <- modelsummary(models = all_grid_upd_vars_form$mod,
                     output = "data.frame",
                     gof_omit = "AIC|BIC|Log.Lik|RMSE",
                     coef_omit = "(Intercept)",
