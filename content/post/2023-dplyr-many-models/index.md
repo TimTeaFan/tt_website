@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 72e61dc0ccc8dec0
+rmd_hash: a95f94aa3ec1f214
 
 ---
 
@@ -59,11 +59,13 @@ Unlike the name suggests, we don't need all of the 'tidyverse' packages for the 
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='o'>)</span>    <span class='c'># &lt;- necessary</span></span>
-<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://tidyr.tidyverse.org'>tidyr</a></span><span class='o'>)</span>    <span class='c'># &lt;- necessary</span></span>
-<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://rlang.r-lib.org'>rlang</a></span><span class='o'>)</span>    <span class='c'># &lt;- nice to have</span></span>
-<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://purrr.tidyverse.org/'>purrr</a></span><span class='o'>)</span>    <span class='c'># &lt;- nice to have</span></span>
-<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://github.com/TimTeaFan/dplyover'>dplyover</a></span><span class='o'>)</span> <span class='c'># &lt;- only for the data</span></span></code></pre>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='o'>)</span>        <span class='c'># &lt;- necessary</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://tidyr.tidyverse.org'>tidyr</a></span><span class='o'>)</span>        <span class='c'># &lt;- necessary</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='o'>)</span>        <span class='c'># &lt;- necessary</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://rlang.r-lib.org'>rlang</a></span><span class='o'>)</span>        <span class='c'># &lt;- nice to have</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://vincentarelbundock.github.io/modelsummary/'>modelsummary</a></span><span class='o'>)</span> <span class='c'># &lt;- for output</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://purrr.tidyverse.org/'>purrr</a></span><span class='o'>)</span>        <span class='c'># &lt;- not really needed</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://github.com/TimTeaFan/dplyover'>dplyover</a></span><span class='o'>)</span>     <span class='c'># &lt;- only for the data</span></span></code></pre>
 
 </div>
 
@@ -535,7 +537,7 @@ The result prints nicely, but it's unclear which subset of the data it belongs t
 
 Here [`rlang::list2()`](https://rlang.r-lib.org/reference/list2.html) comes to the rescue. Although it resembles [`list()`](https://rdrr.io/r/base/list.html), it provides some extra functionality. Specifically, it allows us to unquote names on the right-hand side of the walrus operator. To better grasp this idea, let's look at an example.
 
-We wrap our calls to [`lm()`](https://rdrr.io/r/stats/lm.html), `tidy()` and `glance()` in [`list2()`](https://rlang.r-lib.org/reference/list2.html) and name each element using the walrus operator `:=`. On the right-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in the `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
+We wrap our calls to [`lm()`](https://rdrr.io/r/stats/lm.html), [`tidy()`](https://generics.r-lib.org/reference/tidy.html) and [`glance()`](https://generics.r-lib.org/reference/glance.html) in [`list2()`](https://rlang.r-lib.org/reference/list2.html) and name each element using the walrus operator `:=`. On the right-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in the `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
 
 <div class="highlight">
 
@@ -661,7 +663,7 @@ The remaining steps do not significantly differ from our initial approach, so we
 
 #### Build formulas programmatically with 'reformulate'
 
-The final building block that essentially completes the many models approach is actually a base R function: [`reformulate()`](https://rdrr.io/r/stats/delete.response.html).
+One final building block that essentially completes the many models approach is actually a base R function: [`reformulate()`](https://rdrr.io/r/stats/delete.response.html).
 
 I recently posted an #RStats meme on Twitter highlighting that [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) is one of the lesser-known base R functions, even among advanced users. The reactions to my post largely confirmed my impression.
 
@@ -808,7 +810,7 @@ For our many subgroups from above, we want to check if adding `email_rating` or 
 
 </div>
 
-We could use [`update()`](https://rdrr.io/r/stats/update.html) directly in our call to [`lm()`](https://rdrr.io/r/stats/lm.html), but to avoid overcomplicating things, let's create a column holding our updated formula: `form`:
+We could use [`update()`](https://rdrr.io/r/stats/update.html) directly in our call to [`lm()`](https://rdrr.io/r/stats/lm.html), but to avoid overcomplicating things, let's create a column holding our updated formula, `form`, and use that in our call to [`lm()`](https://rdrr.io/r/stats/lm.html):
 
 <div class="highlight">
 
@@ -816,9 +818,18 @@ We could use [`update()`](https://rdrr.io/r/stats/update.html) directly in our c
 <span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span></span>
-<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>form <span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span> <span class='s'>"&#123;product&#125;_&#123;type&#125;_&#123;model_spec&#125;"</span> <span class='o'>:=</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>form <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span></span>
 <span>    <span class='nf'><a href='https://rdrr.io/r/stats/update.html'>update</a></span><span class='o'>(</span><span class='nv'>my_formula2</span>, <span class='c'># old formula</span></span>
 <span>           <span class='nf'><a href='https://rdrr.io/r/stats/delete.response.html'>reformulate</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"."</span>, <span class='nv'>update_vars</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span> <span class='c'># changes to formula</span></span>
+<span>    <span class='o'>)</span>,</span>
+<span>    </span>
+<span>    mod<span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span> <span class='s'>"&#123;product&#125;_&#123;type&#125;_&#123;model_spec&#125;"</span> <span class='o'>:=</span></span>
+<span>    <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>form</span>,</span>
+<span>       data <span class='o'>=</span> <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='o'>(</span><span class='nv'>csat_named</span>,</span>
+<span>                     <span class='nv'>.env</span><span class='o'>$</span><span class='nv'>product</span> <span class='o'>==</span> <span class='s'>"All"</span> <span class='o'>|</span> <span class='nv'>.env</span><span class='o'>$</span><span class='nv'>product</span> <span class='o'>==</span> <span class='nv'>product</span>,</span>
+<span>                     <span class='nf'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='o'>(</span><span class='nv'>filter_ls</span><span class='o'>)</span></span>
+<span>                     <span class='o'>)</span></span>
+<span>       <span class='o'>)</span></span>
 <span>    <span class='o'>)</span></span>
 <span>  <span class='o'>)</span></span></code></pre>
 
@@ -826,20 +837,106 @@ We could use [`update()`](https://rdrr.io/r/stats/update.html) directly in our c
 
 [`update()`](https://rdrr.io/r/stats/update.html) takes two arguments, the formula we want to update, in this case `my_formula2`, and the formula we use to update the former. In our case, this is a call to [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) which says: "take all the original term labels `"."`, and add [`c()`](https://rdrr.io/r/base/c.html) to them the variable in `update_vars`. Now its probably clear why we included `NULL` in `update_vars`. In cases where it is `NULL` the original formula won't be updated, which corresponds to our baseline model.
 
-Checking the first three rows of our list-column containing the formulas shows that the approach works as intended:
+Checking the first three rows of our list-column containing the model shows that the approach works as intended:
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='o'>(</span><span class='nv'>all_grid_upd_vars_form</span><span class='o'>$</span><span class='nv'>form</span>, <span class='m'>3</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; $All_All_base</span></span>
-<span><span class='c'>#&gt; csat ~ postal_rating + phone_rating + shop_rating</span></span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='o'>(</span><span class='nv'>all_grid_upd_vars_form</span><span class='o'>$</span><span class='nv'>mod</span>, <span class='m'>3</span><span class='o'>)</span></span></code></pre>
+
+</div>
+
+<div class="output-box" title="Expand to show code">
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'>#&gt; $All_All_base</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Call:</span></span>
+<span><span class='c'>#&gt; lm(formula = form, data = filter(csat_named, .env$product == </span></span>
+<span><span class='c'>#&gt;     "All" | .env$product == product, eval(filter_ls)))</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Coefficients:</span></span>
+<span><span class='c'>#&gt;   (Intercept)  postal_rating   phone_rating    shop_rating  </span></span>
+<span><span class='c'>#&gt;       4.08357        0.02305       -0.26742       -0.11736  </span></span>
+<span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; $All_All_email</span></span>
-<span><span class='c'>#&gt; csat ~ postal_rating + phone_rating + shop_rating + email_rating</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Call:</span></span>
+<span><span class='c'>#&gt; lm(formula = form, data = filter(csat_named, .env$product == </span></span>
+<span><span class='c'>#&gt;     "All" | .env$product == product, eval(filter_ls)))</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Coefficients:</span></span>
+<span><span class='c'>#&gt;   (Intercept)  postal_rating   phone_rating    shop_rating   email_rating  </span></span>
+<span><span class='c'>#&gt;       4.21064       -0.01306       -0.35218       -0.01432        0.01203  </span></span>
+<span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; $All_All_website</span></span>
-<span><span class='c'>#&gt; csat ~ postal_rating + phone_rating + shop_rating + website_rating</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Call:</span></span>
+<span><span class='c'>#&gt; lm(formula = form, data = filter(csat_named, .env$product == </span></span>
+<span><span class='c'>#&gt;     "All" | .env$product == product, eval(filter_ls)))</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Coefficients:</span></span>
+<span><span class='c'>#&gt;    (Intercept)   postal_rating    phone_rating     shop_rating  website_rating  </span></span>
+<span><span class='c'>#&gt;        3.59965        -0.03583        -0.22622        -0.04578         0.13008</span></span>
 <span></span></code></pre>
+
+</div>
+
+</div>
+
+#### Save model output to Excel with 'modelsummary()'
+
+Although we previously used the 'broom' package to create tidy `data.frame`s containing the model statistics, `modstat` created with [`broom::glance()`](https://generics.r-lib.org/reference/glance.html), and the model results, `res` created with [`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html), we ideally need both pieces of information when exporting the model output to Excel (or any other spreadsheet).
+
+In this case, the [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html) function from the package of the same name proves extremely helpful. It creates an Excel file that includes both model statistics and estimator results, which is convenient when reporting our model findings to a non-R-user audience.
+
+The great feature of [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html) is that it accepts list-columns of model objects, such as our `mod` column containing many `lm` objects, as input. We can specify various output formats - below we choose `".xlsx"`. Numerous other arguments allow us to trim the results for a more compact table. Here, we opt to omit the AIC, BIC, RMSE and log likelihood model statistics, as well as the coefficient size of the intercept. Setting the `stars` argument to `TRUE` adds the typical p-value stars to the estimators.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># this saves the results to a `data.frame` in `out` and ...</span></span>
+<span><span class='c'># at the same time creates an .xlsx file</span></span>
+<span><span class='nv'>out</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html'>modelsummary</a></span><span class='o'>(</span>models <span class='o'>=</span> <span class='nv'>all_grid_upd_vars_form</span><span class='o'>$</span><span class='nv'>mod</span>,</span>
+<span>                    output <span class='o'>=</span> <span class='s'>"model_results.xlsx"</span>,</span>
+<span>                    gof_omit <span class='o'>=</span> <span class='s'>"AIC|BIC|Log.Lik|RMSE"</span>,</span>
+<span>                    coef_omit <span class='o'>=</span> <span class='s'>"(Intercept)"</span>,</span>
+<span>                    stars <span class='o'>=</span> <span class='kc'>TRUE</span>,</span>
+<span>                    statistic <span class='o'>=</span> <span class='kc'>NULL</span><span class='o'>)</span></span></code></pre>
+
+</div>
+
+The following screenshot shows the resulting Excel table:
+
+<div class="highlight">
+
+<img src="excel_screenshot.png" width="700px" style="display: block; margin: auto;" />
+
+</div>
+
+Examining the first few columns shows that not only the results print nicely, but they also include model names indicating the subgroups of each [`lm()`](https://rdrr.io/r/stats/lm.html) call. Accepting a named list-columns of model objects is indeed a fantastic feature of the [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html) function.
+
+The call to [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html) above gives us a quick and compact overview of our results in Excel. However, one minor issue is that the p-value stars appear in the same column as the model coefficients. For a better presentation and reporting, I prefer having the stars in a separate column. To achieve this, we can set the `output` argument to `"data.frame"`, add the stars as `statistic`, convert the results to long format with [`pivot_wider()`](https://tidyr.tidyverse.org/reference/pivot_wider.html) and save the resulting `data.frame` to Excel with [`openxlsx::write.xlsx()`](https://rdrr.io/pkg/openxlsx/man/write.xlsx.html). Since this is a minor issue, I leave the code for the interested reader in the output box below.
+
+<div class="output-box" title="Expand to show code">
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>out</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html'>modelsummary</a></span><span class='o'>(</span>models <span class='o'>=</span> <span class='nv'>all_grid_upd_vars_form</span><span class='o'>$</span><span class='nv'>mod</span><span class='o'>[</span><span class='m'>1</span><span class='o'>:</span><span class='m'>2</span><span class='o'>]</span>,</span>
+<span>                    output <span class='o'>=</span> <span class='s'>"data.frame"</span>,</span>
+<span>                    gof_omit <span class='o'>=</span> <span class='s'>"AIC|BIC|Log.Lik|RMSE"</span>,</span>
+<span>                    coef_omit <span class='o'>=</span> <span class='s'>"(Intercept)"</span>,</span>
+<span>                    statistic <span class='o'>=</span> <span class='s'>"stars"</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>statistic <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='o'>(</span><span class='nv'>statistic</span> <span class='o'>==</span> <span class='s'>""</span>, <span class='s'>"estimate"</span>, <span class='nv'>statistic</span><span class='o'>)</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='o'>(</span><span class='o'>-</span><span class='nv'>part</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='o'>(</span>names_from <span class='o'>=</span> <span class='nv'>statistic</span>,</span>
+<span>              values_from <span class='o'>=</span> <span class='o'>-</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='nv'>term</span>, <span class='nv'>statistic</span><span class='o'>)</span>,</span>
+<span>              values_fn <span class='o'>=</span> <span class='nv'>as.numeric</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='nf'>openxlsx</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>write.xlsx</a></span><span class='o'>(</span><span class='nv'>out</span>, <span class='s'>"model_results2.xlsx"</span><span class='o'>)</span></span></code></pre>
+
+</div>
 
 </div>
 
@@ -979,13 +1076,13 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-04-01</span></span>
+<span><span class='c'>#&gt;  date     2023-04-03</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class='c'>#&gt;  <span style='color: #555555; font-style: italic;'>package     </span> <span style='color: #555555; font-style: italic;'>*</span> <span style='color: #555555; font-style: italic;'>version   </span> <span style='color: #555555; font-style: italic;'>date (UTC)</span> <span style='color: #555555; font-style: italic;'>lib</span> <span style='color: #555555; font-style: italic;'>source</span></span></span>
 <span><span class='c'>#&gt;  backports      1.4.1      <span style='color: #555555;'>2021-12-13</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
-<span><span class='c'>#&gt;  broom          1.0.1      <span style='color: #555555;'>2022-08-29</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  broom        * 1.0.1      <span style='color: #555555;'>2022-08-29</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  cachem         1.0.6      <span style='color: #555555;'>2021-08-19</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  cli            3.6.0      <span style='color: #555555;'>2023-01-09</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  digest         0.6.31     <span style='color: #555555;'>2022-12-11</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
@@ -999,22 +1096,27 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  fs             1.5.2      <span style='color: #555555;'>2021-12-08</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  generics       0.1.3      <span style='color: #555555;'>2022-07-05</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  glue           1.6.2      <span style='color: #555555;'>2022-02-24</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  highr          0.10       <span style='color: #555555;'>2022-12-22</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  htmltools      0.5.4      <span style='color: #555555;'>2022-12-07</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  hugodownplus   <span style='color: #BB00BB; font-weight: bold;'>0.0.0.9000</span> <span style='color: #555555;'>2023-02-19</span> <span style='color: #555555;'>[1]</span> <span style='color: #BB00BB; font-weight: bold;'>Github (timteafan/hugodownplus@d79c4c0)</span></span></span>
 <span><span class='c'>#&gt;  knitr          1.41       <span style='color: #555555;'>2022-11-18</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  lifecycle      1.0.3      <span style='color: #555555;'>2022-10-07</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  magrittr       2.0.3      <span style='color: #555555;'>2022-03-30</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  memoise        2.0.1      <span style='color: #555555;'>2021-11-26</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  modelsummary * 1.3.0      <span style='color: #555555;'>2023-01-05</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  openxlsx       4.2.5.2    <span style='color: #555555;'>2023-02-06</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  pillar         1.8.1      <span style='color: #555555;'>2022-08-19</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  pkgconfig      2.0.3      <span style='color: #555555;'>2019-09-22</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  purrr        * 1.0.1      <span style='color: #555555;'>2023-01-10</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  R6             2.5.1      <span style='color: #555555;'>2021-08-19</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  Rcpp           1.0.9      <span style='color: #555555;'>2022-07-08</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  rlang        * 1.0.6      <span style='color: #555555;'>2022-09-24</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  rmarkdown      2.19       <span style='color: #555555;'>2022-12-15</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  rstudioapi     0.14       <span style='color: #555555;'>2022-08-22</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  sessioninfo    1.2.2      <span style='color: #555555;'>2021-12-06</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  stringi        1.7.8      <span style='color: #555555;'>2022-07-11</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  stringr        1.5.0      <span style='color: #555555;'>2022-12-02</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  tables         0.9.10     <span style='color: #555555;'>2022-10-17</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  tibble         3.1.8      <span style='color: #555555;'>2022-07-22</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  tidyr        * 1.2.1      <span style='color: #555555;'>2022-09-08</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  tidyselect     1.2.0      <span style='color: #555555;'>2022-10-10</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
@@ -1023,6 +1125,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  withr          2.5.0      <span style='color: #555555;'>2022-03-03</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  xfun           0.36       <span style='color: #555555;'>2022-12-21</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt;  yaml           2.3.6      <span style='color: #555555;'>2022-10-18</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
+<span><span class='c'>#&gt;  zip            2.2.2      <span style='color: #555555;'>2022-10-26</span> <span style='color: #555555;'>[1]</span> <span style='color: #555555;'>CRAN (R 4.2.0)</span></span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'> [1] /Library/Frameworks/R.framework/Versions/4.2/Resources/library</span></span></span>
 <span><span class='c'>#&gt; </span></span>

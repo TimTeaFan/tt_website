@@ -59,11 +59,13 @@ But before we delve into the use cases, let's begin with the setup.
 Unlike the name suggests, we don't need all of the 'tidyverse' packages for the tidyverse many models approach. The heavy lifting is done by 'dplyr' and 'tidyr'. Additionally, we use 'rlang' and 'purrr' for some extra functionality. In this post we'll be using the `csat` and `csatraw` data from my own package 'dplyover'.
 
 ```{r, warning=FALSE, message=FALSE}
-library(dplyr)    # <- necessary
-library(tidyr)    # <- necessary
-library(rlang)    # <- nice to have
-library(purrr)    # <- nice to have
-library(dplyover) # <- only for the data
+library(dplyr)        # <- necessary
+library(tidyr)        # <- necessary
+library(broom)        # <- necessary
+library(rlang)        # <- nice to have
+library(modelsummary) # <- for output
+library(purrr)        # <- not really needed
+library(dplyover)     # <- only for the data
 ```
 
 `csat` is a mock-up dataset resembling data from a customer survey. It comes in two forms: the labeled data, `csat`, with meaningful column names and factor levels, and the corresponding raw data, `csataw`, where each column is a survey item and responses are just numbers. Since our models will be using the numbers instead of the factor levels, we'll use the data from `csatraw`, but rename the columns according to `csat` (see my <a href="../2022-rename-columns/" role="highlight" target="_blank">earlier post</a> on how to rename variables). Additionally, we'll drop variables that we don't need. Let's take a `glimpse` at the resulting dataset `csat_named`:
@@ -400,7 +402,7 @@ all_grps_grid_res |>
 
 #### Build formulas programmatically with 'reformulate'
 
-The final building block that essentially completes the many models approach is actually a base R function: `reformulate()`.
+One final building block that essentially completes the many models approach is actually a base R function: `reformulate()`.
 
 I recently posted an #RStats meme on Twitter highlighting that `reformulate()` is one of the lesser-known base R functions, even among advanced users. The reactions to my post largely confirmed my impression.
 
@@ -485,28 +487,87 @@ all_grid_upd_vars <- all_grps_grid |>
 all_grid_upd_vars
 ```
 
-We could use `update()` directly in our call to `lm()`, but to avoid overcomplicating things, let's create a column holding our updated formula: `form`:
+We could use `update()` directly in our call to `lm()`, but to avoid overcomplicating things, let's create a column holding our updated formula, `form`, and use that in our call to `lm()`:
 
 ```{r}
 all_grid_upd_vars_form <- all_grid_upd_vars |>
 
   rowwise() |>
 
-  mutate(form = list2( "{product}_{type}_{model_spec}" :=
+  mutate(form = list(
     update(my_formula2, # old formula
            reformulate(c(".", update_vars))) # changes to formula
+    ),
+    
+    mod= list2( "{product}_{type}_{model_spec}" :=
+    lm(form,
+       data = filter(csat_named,
+                     .env$product == "All" | .env$product == product,
+                     eval(filter_ls)
+                     )
+       )
     )
   )
 ```
 
 `update()` takes two arguments, the formula we want to update, in this case `my_formula2`, and the formula we use to update the former. In our case, this is a call to `reformulate()` which says: "take all the original term labels `"."`, and add `c()` to them the variable in `update_vars`. Now its probably clear why we included `NULL` in `update_vars`. In cases where it is `NULL` the original formula won't be updated, which corresponds to our baseline model.
 
-Checking the first three rows of our list-column containing the formulas shows that the approach works as intended: 
+Checking the first three rows of our list-column containing the model shows that the approach works as intended: 
 
-```{r}
-head(all_grid_upd_vars_form$form, 3)
+```{r, eval=FALSE}
+head(all_grid_upd_vars_form$mod, 3)
 ```
 
+::: {.output-box title="Expand to show code"}
+```{r, echo=FALSE}
+head(all_grid_upd_vars_form$mod, 3)
+```
+:::
+
+#### Save model output to Excel with 'modelsummary()'
+
+Although we previously used the 'broom' package to create tidy `data.frame`s containing the model statistics, `modstat` created with `broom::glance()`, and the model results, `res` created with `broom::tidy()`, we ideally need both pieces of information when exporting the model output to Excel (or any other spreadsheet).
+
+In this case, the `modelsummary()` function from the package of the same name proves extremely helpful. It creates an Excel file that includes both model statistics and estimator results, which is convenient when reporting our model findings to a non-R-user audience.
+
+The great feature of `modelsummary()` is that it accepts list-columns of model objects, such as our `mod` column containing many `lm` objects, as input. We can specify various output formats - below we choose `".xlsx"`. Numerous other arguments allow us to trim the results for a more compact table. Here, we opt to omit the AIC, BIC, RMSE and log likelihood model statistics, as well as the coefficient size of the intercept. Setting the `stars` argument to `TRUE` adds the typical p-value stars to the estimators.
+
+```{r, eval=FALSE}
+# this saves the results to a `data.frame` in `out` and ...
+# at the same time creates an .xlsx file
+out <- modelsummary(models = all_grid_upd_vars_form$mod,
+                    output = "model_results.xlsx",
+                    gof_omit = "AIC|BIC|Log.Lik|RMSE",
+                    coef_omit = "(Intercept)",
+                    stars = TRUE,
+                    statistic = NULL)
+```
+
+The following screenshot shows the resulting Excel table:
+```{r, echo=FALSE}
+knitr::include_graphics("excel_screenshot.png")
+```
+
+Examining the first few columns shows that not only the results print nicely, but they also include model names indicating the subgroups of each `lm()` call. Accepting a named list-columns of model objects is indeed a fantastic feature of the `modelsummary()` function.
+
+The call to `modelsummary()` above gives us a quick and compact overview of our results in Excel. However, one minor issue is that the p-value stars appear in the same column as the model coefficients. For a better presentation and reporting, I prefer having the stars in a separate column. To achieve this, we can set the `output` argument to `"data.frame"`, add the stars as `statistic`, convert the results to long format with `pivot_wider()` and save the resulting `data.frame` to Excel with `openxlsx::write.xlsx()`. Since this is a minor issue, I leave the code for the interested reader in the output box below.
+
+::: {.output-box title="Expand to show code"}
+```{r, eval=FALSE}
+out <- modelsummary(models = all_grid_upd_vars_form$mod[1:2],
+                    output = "data.frame",
+                    gof_omit = "AIC|BIC|Log.Lik|RMSE",
+                    coef_omit = "(Intercept)",
+                    statistic = "stars") |>
+  mutate(statistic = ifelse(statistic == "", "estimate", statistic)) |>
+  select(-part) |>
+  pivot_wider(names_from = statistic,
+              values_from = -c(term, statistic),
+              values_fn = as.numeric)
+
+openxlsx::write.xlsx(out, "model_results2.xlsx")
+```
+:::
 
 ## Endgame
 
@@ -564,7 +625,6 @@ all_grps_grid_final_res <- all_grps_grid_final |>
 all_grps_grid_final_res
 ```
 
-
 Although we are not specifically interested in the results, below is one way to filter out those models that are statistically significant at the 10% level arranged by adjusted r-squared in descending order:
 
 ```{r}
@@ -580,3 +640,4 @@ all_grps_grid_final_res |>
 That's it. This post started out easy and got quite complex in the end. There's certainly room to refine this approach by encapsulating parts of those lengthy pipes in custom functions, but that's a story for another time. For now, I hope you enjoyed this post. If you use other helper functions or have a better approach for calculating many models, I'd love to hear your feedback. Feel free to share your thoughts in the comments below or via Twitter, Mastodon, or GitHub.
 
 `r hugodownplus::child_session_info()`
+
