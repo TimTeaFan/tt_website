@@ -7,7 +7,7 @@ output:
 
 title: "Mastering the Many Models Approach"
 subtitle: "A Comprehensive Guide to the Tidyverse Many Models Approach and its Extensions"
-summary: "This blog post reviews the basic many models approach, updates it using the current tidyverse syntax, and  expands upon the original approach by introducing new building blocks and helper functions."
+summary: "This blog post reviews the original many models approach, updates it using the current tidyverse syntax, and expands upon the original approach by introducing new building blocks and helper functions."
 authors: []
 tags: ["R", "dplyr", "base R"]
 categories: ["R", "dplyr", "base R"]
@@ -187,13 +187,14 @@ To wrap up this section, the info box below highlights how the approach above de
 
 ## Extensions
 
-Building on the basic approach outlined above, we'll introduce five advanced building blocks that help to tackle more complex use cases.
+Building on the basic approach outlined above, we'll introduce six advanced building blocks that help to tackle more complex use cases.
 
 1.  create an overall category with `bind_rows()`
 1.  add subgroups through filters with `expand_grid()`
 1.  dynamically name list elements with `rlang::list2()`
 1.  use data-less grids
 1.  build formulas programmatically with `reformulate()`
+1.  save model output to Excel with `modelsummary()`
 
 #### Create an overall category with 'bind_rows()'
 

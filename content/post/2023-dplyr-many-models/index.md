@@ -7,7 +7,7 @@ output:
 
 title: "Mastering the Many Models Approach"
 subtitle: "A Comprehensive Guide to the Tidyverse Many Models Approach and its Extensions"
-summary: "This blog post reviews the basic many models approach, updates it using the current tidyverse syntax, and  expands upon the original approach by introducing new building blocks and helper functions."
+summary: "This blog post reviews the original many models approach, updates it using the current tidyverse syntax, and expands upon the original approach by introducing new building blocks and helper functions."
 authors: []
 tags: ["R", "dplyr", "base R"]
 categories: ["R", "dplyr", "base R"]
@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: fda2c6454ab0324e
+rmd_hash: b012f3789fd86a03
 
 ---
 
@@ -314,13 +314,14 @@ While this approach saves us from wrapping the output in [`list()`](https://rdrr
 
 ## Extensions
 
-Building on the basic approach outlined above, we'll introduce five advanced building blocks that help to tackle more complex use cases.
+Building on the basic approach outlined above, we'll introduce six advanced building blocks that help to tackle more complex use cases.
 
 1.  create an overall category with [`bind_rows()`](https://dplyr.tidyverse.org/reference/bind_rows.html)
 2.  add subgroups through filters with [`expand_grid()`](https://tidyr.tidyverse.org/reference/expand_grid.html)
 3.  dynamically name list elements with [`rlang::list2()`](https://rlang.r-lib.org/reference/list2.html)
 4.  use data-less grids
 5.  build formulas programmatically with [`reformulate()`](https://rdrr.io/r/stats/delete.response.html)
+6.  save model output to Excel with [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html)
 
 #### Create an overall category with 'bind_rows()'
 
