@@ -1,0 +1,495 @@
+---
+output:
+  hugodownplus::md_document:
+    toc: TRUE
+# Documentation: https://sourcethemes.com/academic/docs/managing-content/
+
+title: "Static and Dynamic Web Scraping with R"
+subtitle: ""
+summary: "This blog provides an instructive guide to web scraping in R, starting with basic techniques and advancing to complex tasks. It covers scraping static and dynamic websites, string manipulation and recursive functions."
+authors: []
+tags: ["R", "rvest", "RSelenium", "web scraping"]
+categories: ["R", "rvest", "RSelenium", "web scraping"]
+date: 2023-05-31
+lastmod: 2023-05-31
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Focal points: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight.
+image:
+  caption: ""
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Intro
+
+Welcome to this blog post where we're going to explore web scraping in R. So far, I've used R for
+some basic web scraping jobs, like pulling the list of all available R packages from CRAN. But recently,
+I faced a task that required a bit more advanced web scraping skills. As someone who tends to forget
+stuff quickly, I thought it would be a good idea to write down the approaches I used. Not only will it
+help my future me, but it might also help interested readers.
+
+We're going to start things off easy with a simple case of scraping content from one static website.
+Then, we'll raise the bar a bit and deal with a more advanced case. This involves gathering content
+from several similar pages, and to make matters more interesting, the links to those pages are displayed
+with dynamic loading.
+
+
+## Basic Web Scraping
+
+Beyond recreational experimentation, the first time I put web scraping to some real use was for the <a href="https://github.com/TimTeaFan/rstatspkgbot" role="highlight" target="_blank">rstatspkgbot</a>. It's a bot for Twitter
+(and now also on Mastodon) that tweets about the R packages available on CRAN.
+
+On CRAN, there's a <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html" role="highlight" target="_blank">list of all available R packages</a>. This list has everything we need: the package name, description, and a link to its specific CRAN package website.
+
+How do we get this info? It's only two simple steps. First, we use the {rvest} package to access the package
+list and read the HTML. 
+
+```{r message=FALSE, warning=FALSE}
+library(rvest)
+library(dplyr)
+library(tidyr)
+
+# read in CRAN package list
+cran_url <- "https://cran.r-project.org/web/packages/available_packages_by_name.html"
+cran_pkg_by_name <- read_html(cran_url)
+```
+
+Next, we call `html_element("table")` to select the `<table>` tag which contains all the package infos.
+We then pipe the result into `html_table()` to convert the HTML table into a `tibble`. We use {dplyr}
+to change the column names `X1` and `X2` into `name` and `description`, drop all rows with `NA`,
+and add a `link` column with `mutate()`for all remaining packages.
+
+```{r}
+pkg_tbl <- cran_pkg_by_name |>
+  html_element("table") |>
+  html_table() |>
+  rename("name" = X1, "description" = X2) |>
+  drop_na() |> 
+  mutate(link = paste0("https://cran.r-project.org/web/packages/", name, "/index.html"))
+
+pkg_tbl
+```
+
+That was quite straightforward, but it was primarily because CRAN conveniently had all the info we
+needed on a single page, in a single table.
+
+But, let's not get too comfortable. Let's move to some more advanced web scraping.
+
+
+## Advanced Web Scraping
+
+The other day my wive wanted to compare different skincare serums from The Ordinary. However, the
+website lists 31 unique serums, each having its own product page with information scattered across various sections. Ideally, we wanted all this data in an Excel or CSV file, with each row representing a serum, and columns containing information such as product name, ingredients, usage instructions, and so on.
+
+We initially thought of using ChatGPT for this task, but unfortunately, neither its native web
+browsing extension nor third-party page reader plugins could scrape the required information. This was the perfect occasion to engage in some traditional web scraping. Here are the challenges we faced:
+
+* the content was spread across several pages
+* on each page, information was scattered across different sections
+* one piece of data was displayed in the value attribute of a hidden input
+* the links to each product page were displayed with dynamic loading
+
+We'll break this section into small parts, looking at collections of functions that solve specific
+problems. In the end we will piece everything together.
+
+
+#### Scraping content from one page
+
+Before we start to read in all different product pages, its a good idea to start with one page to test
+whether we can scrape the relevant information. Once this works, we can think about how to read in
+all the product pages.
+
+The setup is similar to our simple case from above. We load the {rvest} library and read in the URL
+using `read_html()`.
+
+```{r}
+library(rvest)
+
+url <- "https://theordinary.com/en-de/100-plant-derived-squalane-face-oil-100398.html"
+
+webpage <- read_html(url)
+```
+
+Then, we use the DOM inspector of our browser to determine the correct CSS selector for the information
+we're interested in. We begin with the `product_name`. The HTML looks as follows:
+
+```
+<h1 class="product-name">
+  <span class="sr-only">The Ordinary 100% Plant-Derived Squalane</span>
+  100% Plant-Derived Squalane
+</h1>
+```
+
+To extract the text within the `<span>` tag, we can use `html_element()` with the CSS selector `"h1.product-name>span.sr-only"`, which means "the `<span>` tag with class `"sr-only"` inside
+the `<h1>` tag with class `"product-name"`. We pipe the result into `html_text()` to extract the text of this
+element:
+
+```{r}
+product_name <- webpage |>
+  html_element("h1.product-name>span.sr-only") |>
+  html_text()
+
+product_name
+```
+
+This step was straightforward. Let's use the same approach for the next piece of information, labelled "Targets":
+
+```{r}
+skin_concern <- webpage |>
+  html_element("p.skin-concern.panel-item") |> 
+  html_text()
+
+skin_concern
+```
+
+While this does extract the data we're after, there are two issues. First, the output includes a lot of white spaces and line breaks that we need to remove. Second, the output begins with "Targets", which is the heading. We're interested only in the actual content, which begins after that.
+
+To address both problems, we use the {stringr} package. The `str_squish()` function eliminates white space
+at the start and end, and replaces all internal white space with a single space. We pipe the result into `str_replace()` to remove the leading heading "Targets".
+
+```{r}
+library(stringr)
+
+skin_concern <- webpage |>
+  html_element("p.skin-concern.panel-item") |> 
+  html_text() |> 
+  str_squish() |>
+  str_replace("^Targets ", "")
+
+skin_concern
+```
+
+As the subsequent pieces of information are structured similarly, we create a helper function `html_element_to_text()`, which accepts a webpage, a CSS selector, and a regex pattern as input.
+It targets and extracts the text at the specified webpage's CSS selector and replaces the regex
+pattern with an empty string `""`.
+
+```{r}
+html_element_to_text <- function(webpage, selector, pattern) {
+
+  webpage |>
+    html_element(selector) |>
+    html_text() |>
+    str_squish() |>
+    str_replace(pattern, "")
+
+}
+```
+
+Using this function, we can obtain most of the information we're interested in: the skin types the
+product is "suited to", its "format", "when to use" it, and with which other products it's "not to use".
+
+```{r}
+suited_to <- webpage |>
+  html_element_to_text("p.suitedTo.panel-item",
+                       "^Suited to ")
+suited_to
+
+format <- webpage |>
+  html_element_to_text("p.format.panel-item",
+                       "^Format ")
+format
+
+when_to_use_good_for <- webpage |>
+  html_element_to_text("div.content.when-to-use",
+                       "^When to use ")
+when_to_use_good_for
+
+do_not_use <- webpage |>
+  html_element_to_text("div.content.do-not-use",
+                       "^Do not use ")
+do_not_use
+```
+
+Note, that some sections might contain no text, like the "do not use with" section above. In this
+case an `NA` is shown which is not a problem for our purpose. 
+
+The only remaining issue is that the "when to use" section also includes information on until when
+the product is "good for". We can separate this information using a simple positive look ahead and look
+behind with the `str_extract()` function:
+
+```{r}
+# Positive look ahead: Extract everything before "Good for"
+when_to_use <- str_extract(when_to_use_good_for, ".*(?= Good for)")
+when_to_use
+
+# Positive look behind: Extract everything after "Good for"
+good_for <- str_extract(when_to_use_good_for, "(?<=Good for ).*")
+good_for
+```
+
+
+#### Scraping content from the value attribute of a hidden input field
+
+While we've managed to get most of the info with our custom function, there's still a key piece of
+data that's not that easy to scrape.
+
+For reasons that I don't fully understand, the "About" section of the product page is tucked away in the value
+attribute of a hidden input. It looks something like this:
+
+```
+<input type="hidden" id="overview-about-text" value="%3Cp%3E100%25%20Plant-Derived%20Squalane%20hydrates%20your%20skin%20while%20supporting%20its%20natural%20moisture%20barrier.%20Squalane%20is%20an%20exceptional%20hydrator%20found%20naturally%20in%20the%20skin,%20and%20this%20formula%20uses%20100%25%20plant-derived%20squalane%20derived%20from%20sugar%20cane%20for%20a%20non-comedogenic%20solution%20that%20enhances%20surface-level%20hydration.%3Cbr%3E%3Cbr%3EOur%20100%25%20Plant-Derived%20Squalane%20formula%20can%20also%20be%20used%20in%20hair%20to%20increase%20heat%20protection,%20add%20shine,%20and%20reduce%20breakage.%3C/p%3E">
+```
+
+To scrape this data, we're going to use `html_element()` to target the id of the hidden input `"#overview-about-text"` and then `html_attr()` to get the value attribute. Since the text is URL
+encoded, we use the `URLdecode()` function from the base R {utils} package. This returns a character
+vector with HTML code. We'll then use the combination of  `read_html()` and `html_text()` again to
+clear out the HTML and to extract only the text:
+
+```{r}
+overview_text <- webpage |>
+  html_element("#overview-about-text") |>
+  html_attr("value") |>
+  URLdecode() |>
+  read_html() |>
+  html_text()
+
+overview_text
+```
+
+Although the above code does its job, it wasn't easy to figure out.
+
+So now we're ready for the next steps: (i) get the links to all product pages and (ii) iterate over all
+those pages to extract the relevant information, just like we did with our example page.
+
+
+#### Get the links to all product pages 
+
+To get the links to all the product pages, we'll first load the overview page that shows all the products.
+
+Then we'll use `html_nodes()` to pull out all elements with the "product-link" class and grab the "href" attribute with `html_attr("href")`.
+
+```{r}
+my_url <- "https://theordinary.com/en-de/category/skincare/serums"
+
+webpage <- read_html(my_url) 
+
+webpage |>
+  html_nodes(".product-link") |>
+  html_attr("href")
+```
+
+While this method does work, it only gets us 12 of the 31 skincare serums. 
+
+Turns out, the page uses dynamic loading. When we scroll to the bottom of the overview page, we need
+to hit the "load more" button to see more products. 
+
+To overcome this, we'll use the {RSelenium} package, which lets us "drive" a web browser right from
+within R, as if we were actually surfing the website.
+
+Let's start by loading the package and firing up a selenium browser with the `rsDriver()` function.
+I initially ran into some issues with Selenium, but setting the `chromever` attribute to `NULL` sorted
+it out as it stops adding the chrome browser to the Selenium Server.
+
+```{r}
+library(RSelenium)
+
+# Start a Selenium firefox browser
+driver <- rsDriver(browser = "firefox",
+                   port = 4555L,
+                   verbose = FALSE,
+                   chromever = NULL)
+```
+
+Next, we'll assign the client of our browser to an object, `remote_driver`, to make subsequent function
+calls easier to read. We set the URL to the overview page and head there with the `$navigate()` method.
+
+```{r}
+# extract the client for readability of the code to follow
+remote_driver <- driver[["client"]]
+
+# Set URL
+url <- "https://theordinary.com/en-de/category/skincare/serums"
+
+# Navigate to the webpage
+remote_driver$navigate(url)
+```
+
+Since we're going to use Javascript to scroll to the bottom of the page, it's a good idea to first
+close all pop-ups and banners like the cookie consent banner and the newsletter sticky note.
+
+To do this, we'll find the relevant button using the `$findElement()` method with a CSS selector
+and then click the button with the `$clickElement()` method.
+
+```{r}
+# find and click on cookie consent button
+cookie_button <- remote_driver$findElement(using = "css selector", "button.js-cookie_consent-btn")
+cookie_button$clickElement()
+
+# find and close newsletter sticky note
+close_sticknote_button <- remote_driver$findElement(using = "css selector", "button.page_footer_newsletter_sticky_close")
+close_sticknote_button$clickElement()
+```
+
+When manually scrolling through the page, we have to hit the "load more" button a few times. To automate this,
+we first create a function, `load_more()`, which uses Javascript to scroll to the end of the page with the `$executeScript` method. Then we find the "load more" button with `$findElement()` and click the button. Finally, we give the website a moment to respond.
+
+```{r}
+load_more <- function(rd) {
+  # scroll to end of page
+  rd$executeScript("window.scrollTo(0, document.body.scrollHeight);", args = list())
+  # Find the "Load more" button by its CSS selector and ...
+  load_more_button <- rd$findElement(using = "css selector", "button.btn-load.more")
+  # ... click it
+  load_more_button$clickElement()
+  # give the website a moment to respond
+  Sys.sleep(5)
+}
+```
+
+How many times do we need to scroll and hit "load more"? Basically, until the button is no longer displayed.
+If this happens, the `load_more()` function would throw an error, since `$findElement()` wouldn't find a
+button with the class `"btn-load.more"`.
+
+We can leverage this to create a recursive function `load_page_completely()`. Using `tryCatch()`,
+we "try" to load more content, and if this works, we call `load_page_completely()` again using `Recall()`.
+If `load_more()` throws an error we let `load_page_completely()` return nothing (`NULL`).
+
+```{r}
+load_page_completely <- function(rd) {
+  # load more content even if it throws an error
+  tryCatch({
+    # call load_more()
+    load_more(rd)
+    # if no error is thrown, call the load_page_completely() function again
+    Recall(rd)
+  }, error = function(e) {
+    # if an error is thrown return nothing / NULL
+  })
+}
+```
+
+To get this recursive function into action, we call it and provide our browser client `remote_driver`
+as an input:
+
+```{r error=FALSE, message=FALSE, warning=FALSE}
+load_page_completely(remote_driver)
+```
+
+Now the source code of the product overview page should feature all 31 serums. We use the `$getPageSource()` function, which produces a list where the first element `[[1]]` contains the HTML of the current page.
+We can resume the {rvest} workflow by reading in the html with `read_html()` and extracting the
+links of all element with the class "product-link". Since the links are relative we have to add the 
+full path with `paste0()`:
+
+```{r}
+# Now we get the page source and use rvest to parse it
+page_source <- remote_driver$getPageSource()[[1]]
+webpage <- read_html(page_source)
+
+# Use CSS selectors to scrape the links
+product_links <- webpage |>
+  html_nodes(".product-link") |>
+  html_attr("href")
+
+full_product_links <- paste0("https://theordinary.com", product_links)
+str(full_product_links)
+```
+
+We've been successful! The result is a character vector of links with 31 elements.
+
+#### Piecing everything together
+
+With all the elements in place, it's time to bring everything together. We have a couple of tasks
+to take care of.
+
+First, we'll wrap the content extraction from a single product page into a function we'll call
+`retrieve_info()`. This function extracts all relevant information from one product page and
+returns them in the form of a `tibble`.
+
+```{r}
+library(dplyr)
+
+retrieve_info <- function(url) {
+
+  webpage <- read_html(url)
+
+  product_name <- webpage |>
+    html_element("h1.product-name>span.sr-only") |>
+    html_text()
+
+  skin_concern <- webpage |>
+    html_element_to_text("p.skin-concern.panel-item",
+                         "^Targets ")
+
+  suited_to <- webpage |>
+    html_element_to_text("p.suitedTo.panel-item",
+                         "^Suited to ")
+
+  format <- webpage |>
+    html_element_to_text("p.format.panel-item",
+                         "^Format ")
+
+  when_to_use_good_for <- webpage |>
+    html_element_to_text("div.content.when-to-use",
+                         "^When to use ")
+
+  do_not_use <- webpage |>
+    html_element_to_text("div.content.do-not-use",
+                         "^Do not use ")
+
+  when_to_use <- str_extract(when_to_use_good_for, ".*(?= Good for)")
+  good_for <- str_extract(when_to_use_good_for, "(?<=Good for ).*")
+
+  overview_text <- webpage |>
+    html_element("#overview-about-text") |>
+    html_attr("value") |>
+    URLdecode() |>
+    read_html() |>
+    html_text()
+
+  tibble(product_name = product_name,
+         target = skin_concern,
+         suited_to = suited_to,
+         format = format,
+         about = overview_text,
+         when_to_use = when_to_use,
+         good_for = good_for,
+         do_not_use = do_not_use
+  )
+
+}
+```
+
+Next, we'll use the {purrr} package to iterate over all the product links, retrieve the info from each
+page, and bind the resulting list of tibbles into a single `tibble` using `list_rbind()`:
+
+```{r}
+library(purrr)
+
+final_tbl <- map(full_product_links, retrieve_info) |>
+  list_rbind()
+```
+
+Finally, we save the `tibble` as an Excel table with filters using `openxlsx::write.xlsx()`:
+
+```{r}
+openxlsx::write.xlsx(final_tbl, "ordinary_serums.xlsx",
+                     asTable = TRUE)
+```
+
+If you don't want to execute the code above, you can look at the results in this Excel file: <a href="ordinary_serums.xlsx" role="highlight" target="_blank">ordinary_serums.xlsx</a>
+
+## Wrap-up
+
+That's it. We started with some very basic static web scraping and moved on to more complex tasks
+involving reading URL-encoded hidden input fields and crafting recursive functions to load more
+content on dynamic websites.
+
+I hope you enjoyed the post. If you have a better approach to one of the examples above, or if you have
+any kind of feedback let me know in the comments below or via Twitter, Mastodon or Github.
+
+`r hugodownplus::child_session_info(pkgs = "attached")`
