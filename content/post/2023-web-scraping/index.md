@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: e56a7f88dc6c945e
+rmd_hash: 70f6698aa0c49df7
 
 ---
 
@@ -76,7 +76,7 @@ Next, we call `html_element("table")` to select the `<table>` tag which contains
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>link <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='o'>(</span><span class='s'>"https://cran.r-project.org/web/packages/"</span>, <span class='nv'>name</span>, <span class='s'>"/index.html"</span><span class='o'>)</span><span class='o'>)</span></span>
 <span></span>
 <span><span class='nv'>pkg_tbl</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 19,603 × 3</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 19,595 × 3</span></span></span>
 <span><span class='c'>#&gt;    name          description                                               link </span></span>
 <span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>                                                     <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> A3            <span style='color: #555555;'>"</span>Accurate, Adaptable, and Accessible Error Metrics for P… http…</span></span>
@@ -89,7 +89,7 @@ Next, we call `html_element("table")` to select the `<table>` tag which contains
 <span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> abc.data      <span style='color: #555555;'>"</span>Data Only: Tools for Approximate Bayesian Computation (… http…</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> ABC.RAP       <span style='color: #555555;'>"</span>Array Based CpG Region Analysis Pipeline<span style='color: #555555;'>"</span>                http…</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'>10</span> ABCanalysis   <span style='color: #555555;'>"</span>Computed ABC Analysis<span style='color: #555555;'>"</span>                                   http…</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># … with 19,593 more rows</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># … with 19,585 more rows</span></span></span>
 <span></span></code></pre>
 
 </div>
@@ -100,7 +100,7 @@ But, let's not get too comfortable. Let's move to some more advanced web scrapin
 
 ## Advanced Web Scraping
 
-The other day my wive wanted to compare different skincare serums from The Ordinary. However, the website lists 31 unique serums, each having its own product page with information scattered across various sections. Ideally, we wanted all this data in an Excel or CSV file, with each row representing a serum, and columns containing information such as product name, ingredients, usage instructions, and so on.
+The other day my wife wanted to compare different skincare serums from The Ordinary. However, the website lists 31 unique serums, each having its own product page with information scattered across various sections. Ideally, we wanted all this data in an Excel or CSV file, with each row representing a serum, and columns containing information such as product name, ingredients, usage instructions, and so on.
 
 We initially thought of using ChatGPT for this task, but unfortunately, neither its native web browsing extension nor third-party page reader plugins could scrape the required information. This was the perfect occasion to engage in some traditional web scraping. Here are the challenges we faced:
 
@@ -299,11 +299,11 @@ Then we'll use [`html_nodes()`](https://rvest.tidyverse.org/reference/rename.htm
 <span><span class='c'>#&gt;  [5] "/en-de/buffet-copper-peptides-1-serum-100411.html"         </span></span>
 <span><span class='c'>#&gt;  [6] "/en-de/argireline-solution-10-serum-100403.html"           </span></span>
 <span><span class='c'>#&gt;  [7] "/en-de/multi-peptide-lash-brow-serum-100111.html"          </span></span>
-<span><span class='c'>#&gt;  [8] "/en-de/marine-hyaluronics-serum-100430.html"               </span></span>
-<span><span class='c'>#&gt;  [9] "/en-de/azelaic-acid-suspension-10-exfoliator-100407.html"  </span></span>
-<span><span class='c'>#&gt; [10] "/en-de/granactive-retinoid-5-in-squalane-serum-100421.html"</span></span>
-<span><span class='c'>#&gt; [11] "/en-de/amino-acids-b5-serum-100402.html"                   </span></span>
-<span><span class='c'>#&gt; [12] "/en-de/granactive-retinoid-2-emulsion-serum-100419.html"</span></span>
+<span><span class='c'>#&gt;  [8] "/en-de/granactive-retinoid-5-in-squalane-serum-100421.html"</span></span>
+<span><span class='c'>#&gt;  [9] "/en-de/marine-hyaluronics-serum-100430.html"               </span></span>
+<span><span class='c'>#&gt; [10] "/en-de/azelaic-acid-suspension-10-exfoliator-100407.html"  </span></span>
+<span><span class='c'>#&gt; [11] "/en-de/granactive-retinoid-2-emulsion-serum-100419.html"   </span></span>
+<span><span class='c'>#&gt; [12] "/en-de/amino-acids-b5-serum-100402.html"</span></span>
 <span></span></code></pre>
 
 </div>
@@ -537,7 +537,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-05-31</span></span>
+<span><span class='c'>#&gt;  date     2023-06-01</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>

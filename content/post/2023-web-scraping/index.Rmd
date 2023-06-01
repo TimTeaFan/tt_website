@@ -93,7 +93,7 @@ But, let's not get too comfortable. Let's move to some more advanced web scrapin
 
 ## Advanced Web Scraping
 
-The other day my wive wanted to compare different skincare serums from The Ordinary. However, the
+The other day my wife wanted to compare different skincare serums from The Ordinary. However, the
 website lists 31 unique serums, each having its own product page with information scattered across various sections. Ideally, we wanted all this data in an Excel or CSV file, with each row representing a serum, and columns containing information such as product name, ingredients, usage instructions, and so on.
 
 We initially thought of using ChatGPT for this task, but unfortunately, neither its native web
