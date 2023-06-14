@@ -23,7 +23,7 @@ bio: I am a former Happiness Researcher turned Data Scientist with a passion for
 interests:
   - Statistical models 
   - Dataviz and dashboards
-  - Mashine learning
+  - Machine learning
   - Package development
   - Data wrangling
     
@@ -32,7 +32,7 @@ education:
   - course: (Senior) CX Data Scientist
     institution: R+V Insurance Group
     link: https://www.ruv.de
-    year: 5 years
+    year: 6 years
     work: true
   - course: Post-doc Researcher
     institution: DIJ Tokyo
