@@ -22,7 +22,7 @@
     {{- if .Scratch.Get "og_image" }}
     <image>
       <url>{{ .Scratch.Get "og_image" }}</url>
-      <title>{{ .Title | default site.Title }}</title>
+      <title>Mostly Counting | Tim Tiefenbach</title>
       <link>{{ .Permalink }}</link>
     </image>
     {{end -}}
