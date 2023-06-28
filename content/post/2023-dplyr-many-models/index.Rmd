@@ -44,7 +44,12 @@ eframe <- function (..., .noWS = NULL, .renderHook = NULL) {
 
 ## Intro
 
-The tidyverse "many models" approach was formally introduced in the first edition of <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">R for Data Science</a> (R4DS) in 2017. Since then, the tidyverse has evolved significantly, and along with it, the way we can harness the many models approach. This blog post aims to i) review the basic approach and update it using the latest tidyverse syntax, and ii) explore a range of use cases with increasing complexity while introducing new building blocks and helper functions.
+The tidyverse "many models" approach was formally introduced in the first edition of <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">R for Data Science</a> (R4DS) in 2017. The central idea of this approach is to streamline the process of running the same model on
+various subsets of data.
+
+Since 2017, the tidyverse has evolved significantly, and along with it, the way we can harness the many models approach. In this blog post we'll first review the basic approach and update it using the latest tidyverse syntax. We'll then explore a range of use cases with increasing complexity while introducing new building blocks and helper functions. This leads us finally up to the case where we not only run the same
+model on various subsets of our data, but where we also run slightly different models on various
+subsets simultaneously. 
 
 The structure of this blog post also reflects my motivation for writing it. I think that this is a powerful approach that should be more widely known. Those who are actually using it, often rely on an older syntax, which makes things more complicated than necessary. In addition to the original building blocks, there are several lesser-known functions that help apply this approach to more complex use cases.
 
@@ -56,14 +61,15 @@ But before we delve into the use cases, let's begin with the setup.
 
 ## Setup
 
-Unlike the name suggests, we don't need all of the 'tidyverse' packages for the tidyverse many models approach. The heavy lifting is done by 'dplyr' and 'tidyr'. Additionally, we use 'rlang' and 'purrr' for some extra functionality. In this post we'll be using the `csat` and `csatraw` data from my own package 'dplyover'.
+Unlike the name suggests, we don't need all of the 'tidyverse' packages for the tidyverse many models approach. The heavy lifting is done by 'dplyr' and 'tidyr'. Additionally, we use 'rlang' and 'purrr' for some extra functionality. In this post we'll be using the `csat` and `csatraw` data from my own package 'dplyover'. It is important to note, that this post was written using 'dplyr' version 1.1.0. Readers who
+want to reproduce the code below should use at least 'dplyr' version version 1.0 or greater.
 
 ```{r, warning=FALSE, message=FALSE}
 library(dplyr)        # <- necessary
 library(tidyr)        # <- necessary
 library(broom)        # <- necessary
 library(rlang)        # <- nice to have
-library(modelsummary) # <- for output
+library(modelsummary) # <- for saving output
 library(purrr)        # <- not really needed
 library(dplyover)     # <- only for the data
 ```
@@ -87,12 +93,16 @@ Every row is the response of a customer, `cust_id`, who owns a contract-base `pr
 
 ## Fundamentals
 
-Let's start with the basic approach as it was introduced in R4DS. Keep in mind that syntax and functions have evolved over the past five years, so we'll be refining the original ideas into a more canonical form. There are four essential components we'll be discussing:
+Let's start with the basic approach as it was introduced in R4DS. Keep in mind that syntax and functions have evolved over the past five years, so we'll be refining the original ideas into a more canonical form. 
+
+Before we dive into the details let's look at the whole workflow from a computational perspective.We start by breaking down our original data into small grouped subsets, where each data set is stored in a row of a so called "nested" `data.frame`. The model fitting function is applied iteratively to each row. The model fits are appended to a new column of the nested data frame, again, one summary per row. We further process and tidy the results by turning the original model output into a list of small `data.frame`s which can also be appended to a new column. Finally, we concatenate the small `data.frame`s in each row and turn them into one big unified `data.frame` holding the results of all subgroups.
+
+There are four essential components in the workflow above that we'll be discussing in detail below:
 
 1.  nested data
 2.  rowwise operations
 3.  tidy results
-4.  unesting results
+4.  unnesting results
 
 If you're already familiar with these concepts, feel free to skip this section.
 
@@ -128,12 +138,28 @@ my_formula <- csat ~ postal_rating + phone_rating + email_rating +
 my_formula
 ```
 
-Next, we use `mutate` to create new columns.  We'll start by creating a column called `mod` containing our model. We'll apply the `lm()` function with the previously defined formula and supply the `data` column to it. Since we are working with a `rowwise` `data.frame`, the `lm()` function is executed three times, one time for each row, each time using a different `data.frame` of the list-column `data`. As the result of each call is not an atomic vector but an `lm` object of type `list`, we need to wrap the function call in `list()`. This results in a new list-column, `mod`, which holds an `lm` object in each row.
+Next, we use `mutate` to create new columns.  We'll start by creating a column called `mod` containing our model. We'll apply the `lm()` function with the previously defined formula and supply the `data` column to it. Since we are working with a `rowwise` `data.frame`, the `lm()` function is executed three times, one time for each row, each time using a different `data.frame` of the list-column `data`. As the result of each call is not an atomic vector, but an `lm` object of type `list`, we need to wrap the function call in `list()`. This results in a new list-column, `mod`, which holds an `lm` object in each row.
 
 ```{r}
 csat_prod_nested |>
   mutate(mod = list(lm(my_formula, data = data)))
 ```
+
+...
+
+Two notes of caution when using `dplyr::rowwise()`:
+
+First, keep in mind that we need the wrapping `list()` call whenever the result is not an atomic vector.
+Since this is fairly often the case, it's good practice to resonate about the return type of a function
+when using `dplyr::rowwise()`.
+
+Second, once we call `rowwise()` on a `data.frame()`, all following operations will be applied row-by-row.
+We can revoke this by calling `ungroup()` on a rowwise `data.frame`. Sometimes we might forget to `ungroup()`.
+In most cases this will not lead to an error. However, it will lead to a degraded performance, since
+vectorized functions, which are supposed to work on whole columns, are now unnessarily applied row-by-row.
+
+
+
 
 #### Tidy results with broom
 
@@ -154,7 +180,7 @@ csat_prod_nested_res <- csat_prod_nested |>
 csat_prod_nested_res
 ```
 
-#### Nesting results
+#### Unnesting results
 
 With the groundwork laid, it is now easy to access the results. To do this, we'll use `tidyr::unnest()` to convert a list of `data.frame`s back into a regular `data.frame`. First, lets look at the model statistics. We'll select the `product` and `modstat` columns and `unnest` the latter. This produces a `data.frame` with different model statistics for the three product subgroups. In this case, we're interested in the r-squared, the p-value and the number of observations of each model:
 
