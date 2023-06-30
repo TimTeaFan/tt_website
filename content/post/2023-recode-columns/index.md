@@ -7,7 +7,7 @@ output:
 
 title: "Using a Data Dictionary to Recode Columns with dplyr"
 subtitle: ""
-summary: "This blog post provides an in-depth tutorial on using dplyr to recode and rename multiple columns according to a data dictionary."
+summary: "This blog post provides an in-depth tutorial on using dplyr to recode and rename multiple columns across several datasets according to a data dictionary."
 authors: []
 tags: ["R", "dplyr", "recode"]
 categories: ["R", "dplyr", "recode"]
@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 6664508ec189738f
+rmd_hash: 45c84a785e797f7b
 
 ---
 
