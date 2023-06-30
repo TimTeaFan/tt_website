@@ -1,0 +1,36 @@
+---
+Title: How to safely use external inputs 
+---
+
+If we want to make sure that our `recode_col()` function uses the correct dictionary then we can
+supply it as second argument:
+
+```{r}
+# recode function to be used within `dplyr::mutate(across(...))`
+recode_col_safe <- function(x, dict) {
+  
+  recode_vec <- dict |>
+    filter(col_nm == cur_column()) |>
+    pull(label, name = value)
+  
+  dplyr::recode(x, !!! recode_vec)
+}
+```
+
+In that case, it is not enough to only supply the bare function `recode_col` to `across`.
+We need to create an anonymous function `\(x, dic) ... ` that calls `recode_col`. Here we can use
+`.env$dat_dict` to tell dplyr to look for an object `dat_dict` in a parent environment (and not
+inside our data.frame). This would prevent an error in case our data would contain an column with
+the same name as our data dictionary `dat_dict`.
+
+```{r}
+# vector of columns to recode
+cols_vec <- unique(dat_dict$col_nm)
+
+# recoding defined columns
+dat |> 
+  mutate(across(all_of(cols_vec),
+                \(x, dic) recode_col_safe(x, .env$dat_dict))
+  )
+
+```

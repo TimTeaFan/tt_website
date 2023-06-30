@@ -1,0 +1,566 @@
+---
+output:
+  hugodownplus::md_document:
+    use_boxes: TRUE
+    toc: TRUE
+# Documentation: https://sourcethemes.com/academic/docs/managing-content/
+
+title: "Using a Data Dictionary to Recode Columns with dplyr"
+subtitle: ""
+summary: "This blog provides an in-depth tutorial on using dplyr to recode and rename multiple columns according to a data dictionary."
+authors: []
+tags: ["R", "dplyr", "recode"]
+categories: ["R", "dplyr", "recode"]
+date: 2023-06-30
+lastmod: 2023-06-30
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Focal points: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight.
+image:
+  caption: ""
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+eframe <- function (..., .noWS = NULL, .renderHook = NULL) {
+  htmltools:::validateNoWS(.noWS)
+  contents <- rlang::dots_list(...)
+  htmltools::tag("e-frame", contents, .noWS = .noWS, .renderHook = .renderHook)
+}
+```
+
+## Intro
+
+Today's blog post is all about recoding columns using a data dictionary and `dplyr::recode()`. 
+
+Many datasets, especially from surveys, come along with a proper documentation often in form of
+a so called "data dictionary". A data dictionary contains at least three pieces of information: 
+the (i) column names that are used in the dataset as well as corresponding (ii) numeric values
+and (iii) labels which translate those abstract numbers into meaningful terms.
+
+At times, you may need to transform the raw values into their associated labels for tasks like reporting
+or plotting. Here, `dplyr::recode()` serves as an efficient tool to programmatically recode, and also
+rename, columns according to a data dictionary. 
+
+Recently I revamped an old ETL script I had written, which recoded multiple datasets based on a
+data dictionary. This script was from the pre-dplyr 1.0 era, so updating it provided a great opportunity
+to revisit this task, this time armed with the latest dplyr version. The resulting approach was such a
+significant improvement over my original method, that I felt compelled to share it here, serving as both
+a personal reference and a resource for anyone confronted with similar challenges.
+
+We'll start with a straightforward example to demonstrate the basic workflow. We then look at a more
+advanced scenario involving multiple datasets and a comprehensive data dictionary. Lastly, this blog 
+concludes with some thoughts about the recent changes in dplyr version 1.1.0 and `recode`'s new successor `case_match()`.
+
+
+## Recoding one dataset
+
+#### Setup
+
+Lets start with a really simple dataset composed of three columms and fives rows:
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+
+# dataset
+dat <- tibble(a = 1:5,
+              b = c(10:14),
+              c = c(20:24))
+dat
+```
+
+Assume we have a data dictionary that looks like this:
+```{r}
+# dictionary
+dat_dict <- tibble(
+  
+  col_nm = c(
+    rep("b", 5),
+    rep("c", 5)
+  ),
+  
+  value = c(
+    10:14,
+    20:24
+  ),
+  
+  label = c(
+    letters[1:5],
+    letters[6:10]
+  )
+)
+
+dat_dict
+```
+
+The dictionary has three columns: `col_nm` records our dataset's column names, `value` holds the values,
+as seen in our raw data `dat`, and `label` stores the corresponding labels.
+
+Note, that our dataset contains a column `a` that is not part of the data dictionary, just to show
+that the dictionary doesn't need to hold value-label pairs for all columns.
+
+Typically, attached data dictionaries come in form of csv or xlsx files, but after reading them into 
+R, they should be in a similar form as our mock dictionary above.
+
+#### Preparations
+
+Next, we need to prepare two things: (i) a custom function to recode a **single** column according to
+the dictionary and (ii) a vector of columns names we want to recode. We will then use both inside
+`dplyr::mutate(across(...))`.
+
+Taking a closer look at our custom recode function, it accepts the column to recode, `x`, as its only
+argument. The function works in two steps. Initially, we create a named vector of matching
+label-value pairs. Next, we splice this vector as arguments into `dplyr::recode(x, ...)` using rlang's 
+triple bang operator `!!!`.
+
+```{r}
+# recode function to be used within `dplyr::mutate(across(...))`
+recode_col <- function(x) {
+  
+  recode_vec <- dat_dict |>
+    filter(col_nm == cur_column()) |>
+    pull(label, name = value)
+  
+  dplyr::recode(x, !!! recode_vec)
+}
+```
+
+To create a named vector of matching label-value pairs we start with our data dictionary `dat_dict`.
+We filter the current column using `cur_column()`, which is possible since we're going use this function
+inside `dplyr::across()` where `cur_column()` yields us the string name of the current column. Finally,
+we use `pull(label, name = value)` to get the labels as character vector, along with their matching 
+values as names.
+
+In the final step of our custom function, we "splice" this named vector of label-value pairs into 
+`dplyr::recode()`. Despite "splicing" sounding rather technical, it's essentially an early evaluation.
+We evaluate the vector `recode_vec` prior to processing the `dplyr::recode()` call. 
+Assume we want to recode column `b` in `dat` and `recode_vec` looks like this:
+
+```{r, eval=FALSE}
+recode_vec <- c("10" = "a", "11" = "b", "12" = "c", "13" = "d", "14" = "e")
+```
+
+Then ...
+```{r, eval=FALSE}
+dplyr::recode(x, !!! recode_vec)
+```
+
+... becomes:
+```{r, eval=FALSE}
+dplyr::recode(x, c("10" = "a", "11" = "b", "12" = "c", "13" = "d", "14" = "e"))
+```
+
+Keep in mind, we're presuming hat the data dictionary is available in the global environment, and that our dataset
+`dat` doesn't contain a column with an identical name as our data dictionary `dat_dict`. We can bolster
+the safety of our approach by supplying the data dictionary as a second argument to our `recode_col()` function. 
+For interested readers this is shown in the info box below.
+
+::: {.info-box title="Expand: External inputs to custom functions used in `across`"}
+```{r, child="external_inputs.Rmd"}
+```
+:::
+
+With our custom recode function ready, the next thing we need is a vector of column names
+that we want to apply this function to. A straightforward way to do this is to get all unique column
+names from our data dictionary.
+
+```{r}
+# vector of columns to recode
+cols_vec <- unique(dat_dict$col_nm)
+cols_vec
+```
+
+
+#### Recoding
+
+Now we are all set, and the only thing left to do is to call `across()` on all of the column names
+in our data dictionary `all_of(col_vec)` and let our custom recode function `recode_col()` do its job.
+
+```{r}
+# recoding defined columns
+dat |> 
+  mutate(across(all_of(cols_vec),
+                recode_col)
+  )
+```
+
+#### Renaming columns
+
+Occasionally, data dictionaries offer not just corresponding values and labels, but also new, typically
+more descriptive, column names.
+
+I've dedicated an entire <a href="../2022-rename-columns/" role="highlight" target="_blank">blog post</a>
+to the subject of renaming columns based on a lookup table. However, as the approach is slightly different
+when using a dictionary compared to a pure lookup table, and since this topic is quite relevant, let's
+take a brief look at it.
+
+Suppose our data dictionary, `dat_dict2` includes the original abbreviated column names `short_nm` and corresponding
+descriptive column names `long_nm`:
+
+```{r, echo=FALSE}
+# dictionary
+dat_dict2 <- tibble(
+  
+  short_nm = c(
+    rep("b", 5),
+    rep("c", 5)
+  ),
+  
+  long_nm = c(
+    rep("new_b", 5),
+    rep("new_c", 5)
+  ),
+  
+  value = c(
+    10:14,
+    20:24
+  ),
+  
+  label = c(
+    letters[1:5],
+    letters[6:10]
+  )
+)
+dat_dict2
+```
+
+::: {.output-box title="Expand to show code"}
+```{r, eval=FALSE}
+# dictionary
+dat_dict2 <- tibble(
+  
+  short_nm = c(
+    rep("b", 5),
+    rep("c", 5)
+  ),
+  
+  long_nm = c(
+    rep("new_b", 5),
+    rep("new_c", 5)
+  ),
+  
+  value = c(
+    10:14,
+    20:24
+  ),
+  
+  label = c(
+    letters[1:5],
+    letters[6:10]
+  )
+)
+```
+:::
+
+
+This time, we only require a named vector of corresponding old and new column names. To create that
+we use our data dictionary and filter it for distinct entries in `short_nm` and `long_nm`. Then we
+use again `pull()` together with its `name` argument, but note that the old and new values are in reverse 
+positions compared to `recode()`.
+
+```{r}
+rename_vec <- dat_dict2 |>
+  distinct(short_nm, long_nm) |>
+  pull(short_nm, name = long_nm)
+
+rename_vec
+```
+
+Once we have this named vector of corresponding short and long column names we use `all_of()` inside
+`rename()`:
+
+```{r}
+dat |>
+  rename(all_of(rename_vec))
+```
+
+As we've demonstrated above, it's remarkably straightforward to not just recode, but also rename columns
+according to a data dictionary. If your work solely involves single datasets, you can skip the next section,
+which will expand upon the previous approach, demonstrating how to recode a list of datasets. 
+
+## Recoding many datasets
+
+#### Setup and Reasoning
+
+Initially, the necessity of having a list of datasets and one comprehensive data dictionary may not
+be evident. A plausible scenario, for instance, could be a customer survey program composed of numerous
+surveys featuring similar, yet not identical, survey items. These survey results are stored in a generic
+table within a database, with columns simply labeled `item1`, `item2`, etc. The number of survey items may
+vary among surveys. Each row contains a respondent ID to identify a respondent and a survey ID to indicate
+the specific customer journey under which a respondent was surveyed. As the surveys are similar but not
+identical, the same column (e.g., `item1`) may contain different values across different surveys.
+Even if column values are consistent, they could correspond to different labels.
+
+Again, our objective is to recode—and while we're at it, also rename—all columns listed in the data
+dictionary across all surveys.
+
+To keep this example as straightforward as possible, we'll use a minimal setup. In addition to `dat` from
+before, let's construct another small toy dataset `dat2` and nest both within a `data.frame` consisting
+of two columns: the `id` of each dataset and the actual `data`.
+
+```{r}
+# another dataset
+dat2 <- tibble(a = 1:5,
+               d = 10:14,
+               e = 7:11)
+
+
+# a list of datasets
+dat_ls <- tibble(id = c("dat1", "dat2"),
+                 data = tibble::lst(dat, dat2))
+
+dat_ls
+```
+
+This is how the "data" list-column looks like:
+
+```{r}
+dat_ls$data
+```
+
+We assume once more that we have a data dictionary, `dat_dict3`, which contains old, short column
+names `short_nm`, new long column names `long_nm`, as well as a mapping between `value`s and `label`s.
+The only difference from the previous example is that we now have an additional `id` column, indicating
+to which dataset the value-label mappings belong.
+
+```{r, echo=FALSE}
+# a data dictionary containing codes for several datasets
+dat_dict3 <- tibble(
+  
+  id = c(
+    rep("dat1", 10),
+    rep("dat2", 10)
+  ),
+  
+  short_nm = c(
+    rep("b", 5),
+    rep("c", 5),
+    rep("d", 5),
+    rep("e", 5)
+  ),
+  
+  long_nm = c(
+    rep("new_b", 5),
+    rep("new_c", 5),
+    rep("new_d", 5),
+    rep("new_e", 5)
+  ),
+  
+  value = 
+    c(
+    10:14,
+    20:24,
+    10:14,
+    7:11
+  ),
+  
+  label = c(
+    letters[1:5],
+    letters[6:10],
+    letters[6:10],
+    17:21
+  )
+)
+dat_dict3
+```
+
+::: {.output-box title="Expand to show code"}
+```{r, eval=FALSE}
+# a data dictionary containing codes for several datasets
+dat_dict3 <- tibble(
+  
+  id = c(
+    rep("dat1", 10),
+    rep("dat2", 10)
+  ),
+  
+  short_nm = c(
+    rep("b", 5),
+    rep("c", 5),
+    rep("d", 5),
+    rep("e", 5)
+  ),
+  
+  long_nm = c(
+    rep("new_b", 5),
+    rep("new_c", 5),
+    rep("new_d", 5),
+    rep("new_e", 5)
+  ),
+  
+  value = 
+    c(
+    10:14,
+    20:24,
+    10:14,
+    7:11
+  ),
+  
+  label = c(
+    letters[1:5],
+    letters[6:10],
+    letters[6:10],
+    17:21
+  )
+)
+```
+:::
+
+#### Preparations
+
+Before the actual recoding can take place, we have to prepare two functions: 
+
+1. a custom function, `recode_col2()`, that recodes **one** column according to **a specified** dictionary and
+
+1. another custom function, `recode_df()`, which applies `recode_col2()` inside `across()` to 
+all specified columns.
+
+The first function is pretty similar to what we have seen earlier, with the only difference being the
+use of two arguments, the column to recode, `x` and the dictionary according to which the column should
+be recoded `dict`:
+```{r}
+# recode function
+recode_col2 <- function(x, dict) {
+  
+  col_nm <- cur_column()
+  
+  recode_vec <- dict |>
+    filter(short_nm == cur_column()) |>
+    pull(label, name = value)
+  
+  dplyr::recode(x, !!! recode_vec)
+}
+```
+
+The second function, `recode_df`,  basically wraps the actual recoding that we've used in the section
+above into a function. It takes two arguments: the dataset we want to recode, `dat`, and the `id` of
+the dataset as specified in the data dictionary (which should be the same as in our nested data.frame `dat_ls`).
+
+```{r}
+recode_df <- function(dat, dat_id) {
+  
+  # 1. get the current entries 
+  cur_dat_dict <- dat_dict3 |>
+    filter(id == dat_id) 
+  
+  # 2. vector of columns to recode
+  cols_vec <- unique(cur_dat_dict[["short_nm"]])
+  
+  # 3. use across with both inputs and recode_col2
+  dat |> 
+    mutate(across(all_of(cols_vec),
+                  \(x) recode_col2(x, cur_dat_dict))
+    )
+}
+```
+
+This function will be applied iteratively to each individual dataset in our list of data.frames `dat_ls`.
+The function consists of three steps:
+
+1. We subset our data dictionary with the supplied data ID to ensure only the value-label mappings
+of the current dataset remain. We call this subset of our dictionary `cur_dat_dict`.
+
+1. We then create a vector of column names, `cols_vec`, that we want to recode. These will consist of 
+all unique column names in the current dictionary `cur_dat_dict`.
+
+1. Finally, we use `dplyr::across()` on `all_of` the columns in `cols_vec` and supply the current column
+`x` and the current dictionary `cur_dat_dict` to `recode_col2()`.
+
+#### Recoding
+
+The last step is to iteratively apply our new function `recode_df()` to our nested data.frame `dat_ls`.
+This requires us first to call `rowwise()` on `dat_ls`, which applies all subsequent dplyr functions
+row-by-row. We then overwrite our column holding the `data` with `list(recode_df(data, id))`. 
+It's important to note that our custom function must be wrapped in `list()`, as it returns a non-atomic vector (a 
+list of `data.frames`).
+
+```{r}
+dat_ls |> 
+  rowwise() |> 
+  mutate(data = list(recode_df(data, id))) |>
+  pull(data) # <= for better printing
+```
+
+#### Rename many datasets based on a data dicitonary
+
+Analogous to `recode_df()`, we can create a function that renames all columns of a dataset, below called 
+`rename_df()`. The function works in two steps. Initially, we create vector of old and new name pairs
+based on the distinct entries of our data dictionary that are relevant for this dataset `filter(id == dat_id)`.
+Next, we use this named vector within `rename(all_of()`:
+
+```{r}
+rename_df <- function(data, dat_id) {
+  
+  # 1. create a vector of old and new name pairs ...
+  # ... based on the current dictionary
+  rename_vec <- dat_dict3 |>
+    filter(id == dat_id ) |>
+    distinct(short_nm, long_nm) |>
+    pull(short_nm, name = long_nm)
+
+  # 2. use this vector on the supplied data
+  data |>
+    rename(all_of(rename_vec))
+}
+```
+
+Applying this function to our nested `data.frame` of datasets is basically the same approach as 
+outlined above:
+
+```{r}
+dat_ls |> 
+  rowwise() |> 
+  mutate(data = list(rename_df(data, id))) |>
+  pull(data) # <= for betters printing
+```
+
+
+
+## Final Thoughts
+
+Readers who follow me on Twitter might know that, although being a dplyr fan-boy, my feelings towards
+`dplyr::recode()` were less enthusiastic. My main issue was the unconventional order of arguments,
+which diverges from what we know from `rename()` or `mutate()`.
+
+`r eframe(src="https://twitter.com/timteafan/status/1254898416402018310?s=61&t=i8eoMCFkLgkJKWoZHxVvOQ")`
+
+The order of arguments was in part a reason why `recode()` was flagged as "questioning" in dplyr version
+1.0. Since dplyr version 1.1.0 `recode()` moved one stage further in its life cycle and is now "superseded"
+by `dplyr::case_match()`.
+
+I'm not sure of the full implications of this development. If I understand the <a href="https://lifecycle.r-lib.org/articles/stages.html" role="highlight" target="_blank">life cycle stages</a> correctly, then "superseded" means that `dplyr::recode()` is not going away any time soon and will
+continue to be maintained, though it will not see new features.
+
+However, if there's a chance that `dplyr::recode()` might become deprecated in future major
+releases, we would need to think about a workaround, since `case_match()` doesn't
+support the splicing of named vectors as arguments that we have used above. In that case, I will 
+certainly update this blog post.
+
+Despite my initial skepticism towards `dplyr::recode()`, I have to concede that, particularly in
+combination with `across()`, it provides a clear and straight-forward workflow. With its ability to be
+used programmatically and to handel complex cases, I hope that this blog post has convincingly shown
+the benefits of this approach.
+
+My original dplyr workflow was much more convoluted. The curious reader can find it in the answers
+to my <a href="https://stackoverflow.com/questions/56636417/bunch-recoding-of-variables-in-the-tidyverse-functional-meta-programing" role="highlight" target="_blank">question on StackOverflow</a> from a couple of years
+ago. 
+
+But even outside of dplyr I haven't encountered a similarly seamless approach to recoding multiple
+columns across several datasets. If you are up for a challenge, I'd love to see what base R or
+data.table solutions you can come with to tackle this problem. Let me know in the comments or via 
+Twitter or Mastodon if you have an alternative approach.
+
+`r hugodownplus::child_session_info(pkgs = "attached")`
