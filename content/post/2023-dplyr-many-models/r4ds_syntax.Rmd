@@ -13,7 +13,7 @@ csat_named |>
   group_by(product) |>
   nest() |>
   ungroup() |>
-  mutate(mod     = map(data, ~ lm(my_formula, data = .x)),
+  mutate(mod     = map(data, ~ lm(base_formula, data = .x)),
          res     = map(mod, broom::tidy),
          modstat = map(mod, broom::glance))
 ```

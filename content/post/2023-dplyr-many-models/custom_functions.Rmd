@@ -1,0 +1,47 @@
+---
+Title: Using custom functions for cleaner code
+---
+
+In the code above our `mutate` call was spanning more than twenty lines of code. This makes it
+not only hard to see what's actually going on, it also makes debugging much more difficult.
+
+In this case it is helpful to tuck the more complex parts of our code away in custom function.
+Taking our last example, we could create two functions `update_min_form()`, that updates the model formula, and `lineaer_mod()`, that calculates a linear model and creates the data on th fly.
+
+```{r}
+# define custom functions
+update_min_form <- function(upvars, dpvars) { # update_vars, dep_vars
+    update(min_formula, # old formula
+           reformulate(c(".", upvars), dpvars) # changes to formula 
+           ) 
+}
+
+linear_mod <- function(form, prodvar, filter_inp) {
+      lm(form,
+  # create data on the fly
+       data = filter(csat_named_top,
+                     prodvar == "All" | .data$product == prodvar,
+                     eval(filter_inp)
+       )
+    )
+}
+```
+
+With both functions predefined, our original code becomes much clearer to read and easier to debug:
+
+```{r}
+all_grps_grid_final_res2 <- all_grps_grid_final |>
+  rowwise() |>
+  mutate(
+    form = list2("{product}_{type}_{model_spec}_{dep_vars}" := 
+                    update_min_form(update_vars, dep_vars)
+  
+    ),
+    mod = list(linear_mod(form, product, filter_ls)),
+    res = list(broom::tidy(mod)),
+    modstat = list(broom::glance(mod))
+  ) |>
+  select(product:model_spec, dep_vars, mod:modstat)
+
+all_grps_grid_final_res2
+```

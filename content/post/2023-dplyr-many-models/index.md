@@ -7,12 +7,12 @@ output:
 
 title: "Mastering the Many Models Approach"
 subtitle: "A Comprehensive Guide to the Tidyverse Many Models Approach and its Extensions"
-summary: "This blog post reviews the original many models approach, updates it using the current tidyverse syntax, and expands upon the original approach by introducing new building blocks and helper functions."
+summary: "This blog post reviews the original Many Models Approach, updates it using the current tidyverse syntax, and expands upon the original approach by introducing new building blocks and helper functions."
 authors: []
 tags: ["R", "dplyr", "base R"]
 categories: ["R", "dplyr", "base R"]
 date: 2023-03-31
-lastmod: 2023-03-31
+lastmod: 2023-07-12
 featured: false
 draft: false
 
@@ -30,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: b012f3789fd86a03
+rmd_hash: bb1882f764bc08d8
 
 ---
 
@@ -40,22 +40,25 @@ rmd_hash: b012f3789fd86a03
 -   <a href="#extensions" id="toc-extensions">Extensions</a>
 -   <a href="#endgame" id="toc-endgame">Endgame</a>
 -   <a href="#wrap-up" id="toc-wrap-up">Wrap-up</a>
+-   <a href="#acknowledgements" id="toc-acknowledgements">Acknowledgements</a>
 
 ## Intro
 
-The tidyverse "many models" approach was formally introduced in the first edition of <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">R for Data Science</a> (R4DS) in 2017. Since then, the tidyverse has evolved significantly, and along with it, the way we can harness the many models approach. This blog post aims to i) review the basic approach and update it using the latest tidyverse syntax, and ii) explore a range of use cases with increasing complexity while introducing new building blocks and helper functions.
+The tidyverse "many models" approach was formally introduced in the first edition of <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">R for Data Science</a> (R4DS) in 2017. The central idea of this approach is to streamline the process of running the same model on various distinct subsets of data.
+
+Since 2017, the tidyverse has evolved significantly, and along with it, the way we can harness the Many Models Approach. In this blog post we'll first review the basic approach and update it using the latest tidyverse syntax. We'll then explore a range of use cases with increasing complexity while introducing new building blocks and helper functions. This leads us finally up to the case where we not only run the same model on various, partly overlapping, subsets of our data, but where we also run slightly different models on those subsets simultaneously.
 
 The structure of this blog post also reflects my motivation for writing it. I think that this is a powerful approach that should be more widely known. Those who are actually using it, often rely on an older syntax, which makes things more complicated than necessary. In addition to the original building blocks, there are several lesser-known functions that help apply this approach to more complex use cases.
 
-Lately, the tidyverse many models approach hasn't received much attention. One might expect this to change with the coming release of the <a href="http://r4ds.hadley.nz" role="highlight" target="_blank">second edition of R4DS</a>. However, the entire section on modeling has been omitted from this release. According to the authors, the reasons for this are twofold: First, there was never ample room to address the whole topic of modeling within R4DS. Second, the authors recommend the 'tidymodels' packages, which are well documented in <a href="https://www.tmwr.org" role="highlight" target="_blank">Tidy Modeling with R</a> which is filling the gap.
+Lately, the tidyverse Many Models Approach hasn't received much attention. One might expect this to change with the release of the <a href="https://r4ds.hadley.nz" role="highlight" target="_blank">second edition of R4DS</a>. However, the entire section on modeling has been omitted from this release. According to the authors, the reasons for this are twofold: First, there was never ample room to address the whole topic of modeling within R4DS. Second, the authors recommend the 'tidymodels' packages, which are well documented in <a href="https://www.tmwr.org" role="highlight" target="_blank">Tidy Modeling with R</a> and which should fill this gap.
 
-While 'tidymodels' is a strong framework with definite advantages when working with various algorithms and model engines, it comes with considerable conceptual and syntactic overhead. For this reason, I believe there is still a lot of room (and use cases) for the "classic" tidyverse many models approach, which is based on 'dplyr' syntax but utilizes base R, or alternatively package-specific, models.
+While 'tidymodels' is a strong framework with definite advantages when working with various algorithms and model engines, it comes with considerable conceptual and syntactic overhead. For this reason, I believe there is still a lot room for the "classic" tidyverse Many Models Approach, which is based on 'dplyr' syntax but uses base R or alternatively package-specific models.
 
 But before we delve into the use cases, let's begin with the setup.
 
 ## Setup
 
-Unlike the name suggests, we don't need all of the 'tidyverse' packages for the tidyverse many models approach. The heavy lifting is done by 'dplyr' and 'tidyr'. Additionally, we use 'rlang' and 'purrr' for some extra functionality. In this post we'll be using the `csat` and `csatraw` data from my own package 'dplyover'.
+Unlike the name suggests, we don't need all of the 'tidyverse' packages for the tidyverse Many Models Approach. The heavy lifting is done by 'dplyr' and 'tidyr'. Additionally, we use 'rlang' and 'purrr' for some extra functionality. In this post we'll be using the `csat` and `csatraw` data from my own package 'dplyover'. It is important to note, that this post was written using 'dplyr' version 1.1.0. Readers who want to reproduce the code below should use at least 'dplyr' version version 1.0 or greater.
 
 <div class="highlight">
 
@@ -63,7 +66,7 @@ Unlike the name suggests, we don't need all of the 'tidyverse' packages for the 
 <span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://tidyr.tidyverse.org'>tidyr</a></span><span class='o'>)</span>        <span class='c'># &lt;- necessary</span></span>
 <span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='o'>)</span>        <span class='c'># &lt;- necessary</span></span>
 <span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://rlang.r-lib.org'>rlang</a></span><span class='o'>)</span>        <span class='c'># &lt;- nice to have</span></span>
-<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://vincentarelbundock.github.io/modelsummary/'>modelsummary</a></span><span class='o'>)</span> <span class='c'># &lt;- for output</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://vincentarelbundock.github.io/modelsummary/'>modelsummary</a></span><span class='o'>)</span> <span class='c'># &lt;- for saving output</span></span>
 <span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://purrr.tidyverse.org/'>purrr</a></span><span class='o'>)</span>        <span class='c'># &lt;- not really needed</span></span>
 <span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://github.com/TimTeaFan/dplyover'>dplyover</a></span><span class='o'>)</span>     <span class='c'># &lt;- only for the data</span></span></code></pre>
 
@@ -102,18 +105,22 @@ Every row is the response of a customer, `cust_id`, who owns a contract-base `pr
 
 ## Fundamentals
 
-Let's start with the basic approach as it was introduced in R4DS. Keep in mind that syntax and functions have evolved over the past five years, so we'll be refining the original ideas into a more canonical form. There are four essential components we'll be discussing:
+Let's start with the basic approach as it was introduced in R4DS. Keep in mind that syntax and functions have evolved over the past five years, so we'll be refining the original ideas into a more canonical form.
+
+Before we dive into the details let's look at the whole workflow from a computational perspective. We start by breaking down our original data into small grouped subsets, where each data set is stored in a row of a so called "nested" `data.frame`. The model fitting function is applied iteratively to each row. The model fits are appended to a new column of the nested data frame, again, one summary per row. We further process and tidy the results by turning the original model output into a list of small `data.frame`s which can also be appended to a new column. Finally, we concatenate the small `data.frame`s in each row and turn them into one big unified `data.frame` holding the results of all subgroups.
+
+There are four essential components in the workflow above that we'll be discussing in detail below:
 
 1.  nested data
 2.  rowwise operations
 3.  tidy results
-4.  unesting results
+4.  unnesting results
 
 If you're already familiar with these concepts, feel free to skip this section.
 
 #### Nested data
 
-The central idea of the many-models approach is to streamline the process of running models on various subsets of data. Let's say we want to perform a linear regression on each product type. In a traditional base R approach, we might have used a `for` loop to populate a list object with the results of each run. However, the tidyverse method begins with a nested `data.frame`.
+The central idea of the Many Models Approach is to streamline the process of running models on various subsets of data. Let's say we want to perform a linear regression on each product type. In a traditional base R approach, we might have used a `for` loop to populate a list object with the results of each run. However, the tidyverse method begins with a nested `data.frame`.
 
 So, what is a nested data.frame? We can use `dplyr::nest_by(product)` to create a `data.frame` containing three rows, one for each product. The second column, `data`, is a 'list-column' that holds a list of `data.frame`'s---one for each row. These `data.frame`s contain data for all customers within the corresponding product category. If you're unfamiliar with list-columns, I highly recommend reading <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">chapter 25 of R4DS</a>. Although some parts may be outdated, it remains an excellent resource for understanding the essential components of this approach.
 
@@ -162,26 +169,30 @@ Looking at the first element (row) of the `data` column shows a `data.frame` wit
 
 Applying [`nest_by()`](https://dplyr.tidyverse.org/reference/nest_by.html) also groups our data [`rowwise()`](https://dplyr.tidyverse.org/reference/rowwise.html). This means that subsequent dplyr operations will be applied "one row at a time." This is particularly helpful when vectorized functions aren't available, such as the [`lm()`](https://rdrr.io/r/stats/lm.html) function in our case, which we want to apply to the data in each row.
 
-First, let's define the relationship between our dependent and independent variables using a formula object, `my_formula`.
+First, let's define the relationship between our dependent and independent variables using a formula object, `base_formula`.
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>my_formula</span> <span class='o'>&lt;-</span> <span class='nv'>csat</span> <span class='o'>~</span> <span class='nv'>postal_rating</span> <span class='o'>+</span> <span class='nv'>phone_rating</span> <span class='o'>+</span> <span class='nv'>email_rating</span> <span class='o'>+</span></span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>base_formula</span> <span class='o'>&lt;-</span> <span class='nv'>csat</span> <span class='o'>~</span> <span class='nv'>postal_rating</span> <span class='o'>+</span> <span class='nv'>phone_rating</span> <span class='o'>+</span> <span class='nv'>email_rating</span> <span class='o'>+</span></span>
 <span>  <span class='nv'>website_rating</span> <span class='o'>+</span> <span class='nv'>shop_rating</span></span>
 <span></span>
-<span><span class='nv'>my_formula</span></span>
+<span><span class='nv'>base_formula</span></span>
 <span><span class='c'>#&gt; csat ~ postal_rating + phone_rating + email_rating + website_rating + </span></span>
 <span><span class='c'>#&gt;     shop_rating</span></span>
 <span></span></code></pre>
 
 </div>
 
-Next, we use `mutate` to create new columns. We'll start by creating a column called `mod` containing our model. We'll apply the [`lm()`](https://rdrr.io/r/stats/lm.html) function with the previously defined formula and supply the `data` column to it. Since we are working with a `rowwise` `data.frame`, the [`lm()`](https://rdrr.io/r/stats/lm.html) function is executed three times, one time for each row, each time using a different `data.frame` of the list-column `data`. As the result of each call is not an atomic vector but an `lm` object of type `list`, we need to wrap the function call in [`list()`](https://rdrr.io/r/base/list.html). This results in a new list-column, `mod`, which holds an `lm` object in each row.
+Note, that this is a basic "model formula" which holds the dependent variable, `csat`, on the left-hand side (of the tilde `~`) and all independent variables on the right-hand side.
+
+Next, we use `mutate` to create new columns. We'll start by creating a column called `mod` containing our model. We'll apply the [`lm()`](https://rdrr.io/r/stats/lm.html) function with the previously defined formula and supply the `data` column to it. Note, that when supplying arguments within [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) we can use both: (i) objects from the `data.frame` we are working on, here the `data` column of our `csat_prod_nested` dataset, and (ii) objects from the enclosing environment, here the global environment, where our formula object `base_formula` resides.
+
+Since we are working with a `rowwise` `data.frame`, the [`lm()`](https://rdrr.io/r/stats/lm.html) function is executed three times, one time for each row, each time using a different `data.frame` in the list-column `data`. As the result of each call is not an atomic vector, but an `lm` object of type `list`, we need to wrap the function call in [`list()`](https://rdrr.io/r/base/list.html). This results in a new list-column, `mod`, which holds an `lm` object in each row.
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>csat_prod_nested</span> <span class='o'>|&gt;</span></span>
-<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>my_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>base_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 3 × 3</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'># Rowwise:  product</span></span></span>
 <span><span class='c'>#&gt;   product                data mod   </span></span>
@@ -192,6 +203,12 @@ Next, we use `mutate` to create new columns. We'll start by creating a column ca
 <span></span></code></pre>
 
 </div>
+
+Two notes of caution when using [`dplyr::rowwise()`](https://dplyr.tidyverse.org/reference/rowwise.html):
+
+First, keep in mind that we need the wrapping [`list()`](https://rdrr.io/r/base/list.html) call whenever the result is not an atomic vector. Since this is fairly often the case, it's good practice to resonate about the return type of a function when using [`dplyr::rowwise()`](https://dplyr.tidyverse.org/reference/rowwise.html).
+
+Second, once we call [`rowwise()`](https://dplyr.tidyverse.org/reference/rowwise.html) on a [`data.frame()`](https://rdrr.io/r/base/data.frame.html), all following operations will be applied row-by-row. We can revoke this by calling [`ungroup()`](https://dplyr.tidyverse.org/reference/group_by.html) on a rowwise `data.frame`. Sometimes we might forget to [`ungroup()`](https://dplyr.tidyverse.org/reference/group_by.html). In most cases this will not lead to an error. However, it will lead to a degraded performance, since vectorized functions, which are supposed to work on whole columns, are now unnecessarily applied row-by-row.
 
 #### Tidy results with broom
 
@@ -206,7 +223,7 @@ Again, we'll wrap both functions in [`list()`](https://rdrr.io/r/base/list.html)
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>csat_prod_nested_res</span> <span class='o'>&lt;-</span> <span class='nv'>csat_prod_nested</span> <span class='o'>|&gt;</span></span>
-<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod     <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>my_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span>,</span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod     <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>base_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         modstat <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         res <span class='o'>=</span>     <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
 <span></span>
@@ -222,7 +239,7 @@ Again, we'll wrap both functions in [`list()`](https://rdrr.io/r/base/list.html)
 
 </div>
 
-#### Nesting results
+#### Unnesting results
 
 With the groundwork laid, it is now easy to access the results. To do this, we'll use [`tidyr::unnest()`](https://tidyr.tidyverse.org/reference/nest.html) to convert a list of `data.frame`s back into a regular `data.frame`. First, lets look at the model statistics. We'll select the `product` and `modstat` columns and `unnest` the latter. This produces a `data.frame` with different model statistics for the three product subgroups. In this case, we're interested in the r-squared, the p-value and the number of observations of each model:
 
@@ -295,7 +312,7 @@ While this difference seems negligible, it at has implications on how operations
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='o'>(</span><span class='nv'>product</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/nest.html'>nest</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
-<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod     <span class='o'>=</span> <span class='nf'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='o'>(</span><span class='nv'>data</span>, <span class='o'>~</span> <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>my_formula</span>, data <span class='o'>=</span> <span class='nv'>.x</span><span class='o'>)</span><span class='o'>)</span>,</span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod     <span class='o'>=</span> <span class='nf'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='o'>(</span><span class='nv'>data</span>, <span class='o'>~</span> <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>base_formula</span>, data <span class='o'>=</span> <span class='nv'>.x</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         res     <span class='o'>=</span> <span class='nf'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='o'>(</span><span class='nv'>mod</span>, <span class='nf'>broom</span><span class='nf'>::</span><span class='nv'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='o'>)</span>,</span>
 <span>         modstat <span class='o'>=</span> <span class='nf'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='o'>(</span><span class='nv'>mod</span>, <span class='nf'>broom</span><span class='nf'>::</span><span class='nv'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='o'>)</span><span class='o'>)</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 3 × 5</span></span></span>
@@ -353,7 +370,7 @@ Now we can apply the same analysis as above:
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>csat_all</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/nest_by.html'>nest_by</a></span><span class='o'>(</span><span class='nv'>product</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
-<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod     <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>my_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span>,</span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod     <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>base_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         res     <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         modstat <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span></code></pre>
 
@@ -430,7 +447,9 @@ To achieve this, we'll follow three steps:
 
     </div>
 
-    We use[`tidyr::expand_grid()`](https://tidyr.tidyverse.org/reference/expand_grid.html) to expand our nested data for each category in our list of filter expressions: `filter_ls`. We also add a new column, `type`, which shows the name of each element in `filter_ls`. Looking at the output reveals that our original nested `data.frame` contained four rows, while our data now holds eight rows - one for each combination of `product` and `type`.
+    We use[`tidyr::expand_grid()`](https://tidyr.tidyverse.org/reference/expand_grid.html) to expand our nested data for each category in our list of filter expressions: `filter_ls`. [`expand_grid()`](https://tidyr.tidyverse.org/reference/expand_grid.html) creates a `tibble` from all combinations of the supplied objects---this can be any mix of atomic vectors, lists or `data.frame`s. Note that in the case of the latter, all groupings are ignored. Looking at the output reveals that our original nested `data.frame` contained four rows, while our data now holds eight rows - one for each combination of `product` and `type`.
+
+    We also use [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) to add a new column, `type`, to actually show which row refers to which type. The [`names()`](https://rdrr.io/r/base/names.html) of our list column `filter_ls` contain this information. To show the `type` next to the `product` column we use the argument `.after` in [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html). Without specifying this, the `type` column would have been added as the last column in our nested `data.frame`.
 
 3.  We apply each filter to our data `rowwise` using `dplyr::filter(eval(filter_ls))`.
 
@@ -471,7 +490,7 @@ From this point, we could continue applying our model and then calculating and e
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>csat_all_grps_grid</span> <span class='o'>&lt;-</span> <span class='nv'>csat_all_grps</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
-<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>my_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span>,</span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>base_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         res <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         modstat <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
 <span></span>
@@ -536,15 +555,15 @@ A common issue when inspecting the results is that these list-columns are often 
 
 The result prints nicely, but it's unclear which subset of the data it belongs to.
 
-Here [`rlang::list2()`](https://rlang.r-lib.org/reference/list2.html) comes to the rescue. Although it resembles [`list()`](https://rdrr.io/r/base/list.html), it provides some extra functionality. Specifically, it allows us to unquote names on the right-hand side of the walrus operator. To better grasp this idea, let's look at an example.
+Here [`rlang::list2()`](https://rlang.r-lib.org/reference/list2.html) comes to the rescue. Although it resembles [`list()`](https://rdrr.io/r/base/list.html), it provides some extra functionality. Specifically, it allows us to unquote names on the left-hand side of the walrus operator. To better grasp this idea, let's look at an example.
 
-We wrap our calls to [`lm()`](https://rdrr.io/r/stats/lm.html), [`tidy()`](https://generics.r-lib.org/reference/tidy.html) and [`glance()`](https://generics.r-lib.org/reference/glance.html) in [`list2()`](https://rlang.r-lib.org/reference/list2.html) and name each element using the walrus operator `:=`. On the right-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in the `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
+We wrap our calls to [`lm()`](https://rdrr.io/r/stats/lm.html), [`tidy()`](https://generics.r-lib.org/reference/tidy.html) and [`glance()`](https://generics.r-lib.org/reference/glance.html) in [`list2()`](https://rlang.r-lib.org/reference/list2.html) and name each element using the walrus operator `:=`. On the left-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in the `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>csat_all_grps_grid</span> <span class='o'>&lt;-</span> <span class='nv'>csat_all_grps</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
-<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod     <span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span><span class='s'>"&#123;product&#125;_&#123;type&#125;"</span> <span class='o'>:=</span> <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>my_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span>,</span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod     <span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span><span class='s'>"&#123;product&#125;_&#123;type&#125;"</span> <span class='o'>:=</span> <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>base_formula</span>, data <span class='o'>=</span> <span class='nv'>data</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         res     <span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span><span class='s'>"&#123;product&#125;_&#123;type&#125;"</span> <span class='o'>:=</span> <span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span>,</span>
 <span>         modstat <span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span><span class='s'>"&#123;product&#125;_&#123;type&#125;"</span> <span class='o'>:=</span> <span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
 <span></span>
@@ -562,7 +581,7 @@ We wrap our calls to [`lm()`](https://rdrr.io/r/stats/lm.html), [`tidy()`](https
 
 #### Data-less grids
 
-Using the methods described above, we can easily construct nested `data.frame`s with several dozen subgroups. However, this approach can be inefficient in terms of memory usage, as we create a copy of our data for every single subgroup. To make this approach more memory-efficient, we can use what I call a "data-less grid", which is similar to our original nested `data.frame`, but without the data column.
+Using the methods described above, we can easily construct nested `data.frame`s with several dozens of subgroups. However, this approach can be inefficient in terms of memory usage, as we create a copy of our data for every single subgroup. To make this approach more memory-efficient, we can use what I call a "data-less grid", which is similar to our original nested `data.frame`, but without the data column.
 
 Instead of nesting our data with [`nest_by()`](https://dplyr.tidyverse.org/reference/nest_by.html), we manually create the combinations of subgroups to which we want to apply our model. We start with a vector of all unique values in the `product` column and add an overall category "All" to it. Then, we supply this vector along with our list of filter expressions `filter_ls` to [`expand_grid()`](https://tidyr.tidyverse.org/reference/expand_grid.html). Finally, we place the names of the elements in `filter_ls` in a separate column: `type`.
 
@@ -576,11 +595,25 @@ This results in an initial grid `all_grps_grid` of combinations between `product
 <span></span>
 <span><span class='nv'>all_grps_grid</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://tidyr.tidyverse.org/reference/expand_grid.html'>expand_grid</a></span><span class='o'>(</span><span class='nv'>product</span>, <span class='nv'>filter_ls</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>type <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>filter_ls</span><span class='o'>)</span>,</span>
-<span>         .after <span class='o'>=</span> <span class='nv'>product</span><span class='o'>)</span></span></code></pre>
+<span>         .after <span class='o'>=</span> <span class='nv'>product</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='nv'>all_grps_grid</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 8 × 3</span></span></span>
+<span><span class='c'>#&gt;   product  type          filter_ls   </span></span>
+<span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> All      All           <span style='color: #555555;'>&lt;lgl [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>2</span> All      no_reactivate <span style='color: #555555;'>&lt;language&gt;</span>  </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>3</span> advanced All           <span style='color: #555555;'>&lt;lgl [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>4</span> advanced no_reactivate <span style='color: #555555;'>&lt;language&gt;</span>  </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>5</span> premium  All           <span style='color: #555555;'>&lt;lgl [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>6</span> premium  no_reactivate <span style='color: #555555;'>&lt;language&gt;</span>  </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>7</span> basic    All           <span style='color: #555555;'>&lt;lgl [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>8</span> basic    no_reactivate <span style='color: #555555;'>&lt;language&gt;</span></span></span>
+<span></span></code></pre>
 
 </div>
 
-The challenging aspect here is generating each data subset on the fly in the call to [`lm()`](https://rdrr.io/r/stats/lm.html). To accomplish this, we [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) our initial data `csat_named` on two conditions:
+The challenging aspect here is to generate each data subset on the fly in the call to [`lm()`](https://rdrr.io/r/stats/lm.html). To accomplish this, we [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) our initial data `csat_named` on two conditions:
 
 1.  Firstly, we filter for different `product` types using an advanced filter expression:
 
@@ -592,14 +625,14 @@ The challenging aspect here is generating each data subset on the fly in the cal
 
     So, the filter expression above essentially states: If the product category in our grid `.env$product` is "All", then select all rows. This works because when the left side of the or-condition `.env$product == "All"` evaluates to `TRUE`, `filter` selects all rows. If the first part of our condition is not true, then the `product` column in `csat_named` should match the value of the `product` column of our data-less grid `.env$product`.
 
-2.  Next, we filter the different `type`s of customers. Here, we use the filter expressions stored in `filter_ls` and evaluate them.
+2.  Next, we filter the different `type`s of customers. Here, we use the filter expressions stored in `filter_ls` and evaluate them. Since we don't need the `filter_ls` column after we've used it to create the `data` column, we just drop it with `select(! filter_ls)`:
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>all_grps_grid_mod</span> <span class='o'>&lt;-</span> <span class='nv'>all_grps_grid</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mod <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span></span>
-<span>    <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>my_formula</span>,</span>
+<span>    <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>base_formula</span>,</span>
 <span>       data <span class='o'>=</span> <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='o'>(</span><span class='nv'>csat_named</span>,</span>
 <span>                     <span class='c'># 1. filter product categories</span></span>
 <span>                     <span class='nv'>.env</span><span class='o'>$</span><span class='nv'>product</span> <span class='o'>==</span> <span class='s'>"All"</span> <span class='o'>|</span> <span class='nv'>.env</span><span class='o'>$</span><span class='nv'>product</span> <span class='o'>==</span> <span class='nv'>product</span>,</span>
@@ -664,15 +697,15 @@ The remaining steps do not significantly differ from our initial approach, so we
 
 #### Build formulas programmatically with 'reformulate'
 
-One final building block that essentially completes the many models approach is actually a base R function: [`reformulate()`](https://rdrr.io/r/stats/delete.response.html).
+One last major building block that essentially completes the Many Models Approach is actually a base R function: [`reformulate()`](https://rdrr.io/r/stats/delete.response.html).
 
 I recently posted an #RStats meme on Twitter highlighting that [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) is one of the lesser-known base R functions, even among advanced users. The reactions to my post largely confirmed my impression.
 
 <e-frame src="https://twitter.com/timteafan/status/1636839375672602624"></e-frame>
 
-Before applying it in the many models context, let's have a look at what [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) does. Instead of manually creating a formula object by typing `y ~ x1 + x2`, we can use [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) to generate a formula object based on character vectors.
+Before applying [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) in the many models context, let's have a look at what it does. Instead of manually creating a formula object by typing `y ~ x1 + x2`, we can use [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) to generate a formula object based on character vectors.
 
-Important is the order of the first two arguments. While we start writing a formula from the left-hand side `y`, [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) takes as first argument the right-hand side.
+Important is the order of the first two arguments. While we start writing a formula from the left-hand side `y`, [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) takes as first argument the right-hand side. We could, of course, change the order and call the arguments by name instead of position, but I wouldn't recommend this, because it might confuse readers. Nevertheless, calling the arguments by name, `termlabels` and `response`, and their correct position is a good idea to make clear which is which and to remind readers that the argument order is different to what they might expect.
 
 <div class="highlight">
 
@@ -691,9 +724,11 @@ Important is the order of the first two arguments. While we start writing a form
 
 </div>
 
-How can we make use of [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) in the many models approach?
+How can we make use of [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) in the Many Models Approach?
 
-Let's begin with a simple case and assume we want to construct a separate model for each independent variable, containing only our response variable and one independent variable at a time: `csat ~ indepedent_variable`. And of course, we want to do this for all of our subgroups of the previous approach.
+In the following we'll look at two use cases. The first use case covers a situation where we need to fit multiple models to the data in each row of a nested data frame. All of these models share the same response variable and we use [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) to supply different predictor variables in each iteration. The second use case covers a situation where we also need to fit multiple models to the data in each row of a nested data frame. However, this time we define a base model in advance and add different variables on top of it in each iteration.
+
+Let's begin with the first use case outline above in which we want to construct a separate model for each independent variable, containing only our response variable and one independent variable at a time: `csat ~ indepedent_variable`. And of course, we want to do this for all of our subgroups of the previous approach.
 
 First, we need a character vector holding the names of our independent variables. With this vector, we can now expand our data-less grid from above. This results in a new grid with 40 rows (eight subgroups times five independent variables).
 
@@ -727,7 +762,7 @@ First, we need a character vector holding the names of our independent variables
 
 </div>
 
-We can now apply a similar approach as before, creating data subgroups on the fly. The only change is that we use `reformulate(indep_vars, "csat")` instead of our formula object `my_formula`. This adds forty different linear models to our grid:
+We can now apply a similar approach as before, creating data subgroups on the fly. The only change is that we use `reformulate(indep_vars, "csat")` instead of our formula object `base_formula`. This adds forty different linear models to our grid:
 
 <div class="highlight">
 
@@ -766,47 +801,59 @@ We can now apply a similar approach as before, creating data subgroups on the fl
 
 </div>
 
-Although the example above is instructive, it isn't particularly useful. In most cases, we don't want to create a separate model for each independent variable. A much more powerful way to use [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) is to [`update()`](https://rdrr.io/r/stats/update.html) a baseline model with additional variables.
+Note, that we again drop the `filter_ls` column after we used it to create out `data`.
 
-Let's say we have the following base-line model:
+Although the example above is instructive, it isn't particularly useful. In most cases, we don't want to create a separate model for each independent variable. A much more powerful way to use [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) is to [`update()`](https://rdrr.io/r/stats/update.html) a baseline model with additional variables. So let's look at our second use case.
+
+Assume we have the following minimal version of our base-line model:
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>my_formula2</span> <span class='o'>&lt;-</span> <span class='nv'>csat</span> <span class='o'>~</span> <span class='nv'>postal_rating</span> <span class='o'>+</span> <span class='nv'>phone_rating</span> <span class='o'>+</span> <span class='nv'>shop_rating</span></span>
-<span><span class='nv'>my_formula2</span></span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>min_formula</span> <span class='o'>&lt;-</span> <span class='nv'>csat</span> <span class='o'>~</span> <span class='nv'>postal_rating</span> <span class='o'>+</span> <span class='nv'>phone_rating</span> <span class='o'>+</span> <span class='nv'>shop_rating</span></span>
+<span><span class='nv'>min_formula</span></span>
 <span><span class='c'>#&gt; csat ~ postal_rating + phone_rating + shop_rating</span></span>
 <span></span></code></pre>
 
 </div>
 
-For our many subgroups from above, we want to check if adding `email_rating` or `website_rating` improves our model. Let's create a list of terms that we want to add to our model: `update_vars`. Note that we need to include `NULL`, as this will represent our baseline model. Again, we expand our grid from above with this list and put the names of each variable ("base", "email", and "website") in a separate column to keep track of which model we are examining.
+For our many subgroups from above, we want to check if adding (i) `email_rating` or (ii) `website_rating` or (iii) both variables at once, or (iv) both variables and their interaction effect, improve our model. Let's create a list of terms that we want to add to our model: `update_vars`.
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>update_vars</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span>base <span class='o'>=</span> <span class='kc'>NULL</span>,</span>
 <span>                    email <span class='o'>=</span> <span class='s'>"email_rating"</span>,</span>
-<span>                    website <span class='o'>=</span> <span class='s'>"website_rating"</span><span class='o'>)</span></span>
-<span></span>
-<span><span class='nv'>all_grid_upd_vars</span> <span class='o'>&lt;-</span> <span class='nv'>all_grps_grid</span> <span class='o'>|&gt;</span></span>
+<span>                    website <span class='o'>=</span> <span class='s'>"website_rating"</span>,</span>
+<span>                    both <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"email_rating"</span>, <span class='s'>"website_rating"</span><span class='o'>)</span>,</span>
+<span>                    both_plus_interaction <span class='o'>=</span> <span class='s'>"email_rating*website_rating"</span><span class='o'>)</span></span></code></pre>
+
+</div>
+
+There are two noteworthy aspects here. First, we need to include `NULL`, as this will represent our baseline model without any additional variables. Second, we are not limited to plain variable names as strings. We can even include interaction effects using the same notation that the tilde operator supports, that is by adding an asterisk `*` between two variable names.
+
+Now we expand our grid from above with this list and put the names of each variable ("base", "email", "website" etc.) in a separate column to keep track of which model we are examining.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>all_grid_upd_vars</span> <span class='o'>&lt;-</span> <span class='nv'>all_grps_grid</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/expand_grid.html'>expand_grid</a></span><span class='o'>(</span><span class='nv'>update_vars</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>model_spec <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='o'>(</span><span class='nv'>update_vars</span><span class='o'>)</span>,</span>
 <span>         .after <span class='o'>=</span> <span class='nv'>type</span><span class='o'>)</span></span>
 <span></span>
 <span><span class='nv'>all_grid_upd_vars</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 24 × 5</span></span></span>
-<span><span class='c'>#&gt;    product  type          model_spec filter_ls    update_vars </span></span>
-<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span></span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> All      All           base       <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;NULL&gt;</span>      </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> All      All           email      <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> All      All           website    <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> All      no_reactivate base       <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;NULL&gt;</span>      </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> All      no_reactivate email      <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> All      no_reactivate website    <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> advanced All           base       <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;NULL&gt;</span>      </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> advanced All           email      <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> advanced All           website    <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> advanced no_reactivate base       <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;NULL&gt;</span>      </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># … with 14 more rows</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 40 × 5</span></span></span>
+<span><span class='c'>#&gt;    product type          model_spec            filter_ls    update_vars </span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>                 <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> All     All           base                  <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;NULL&gt;</span>      </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> All     All           email                 <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> All     All           website               <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> All     All           both                  <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [2]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> All     All           both_plus_interaction <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> All     no_reactivate base                  <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;NULL&gt;</span>      </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> All     no_reactivate email                 <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> All     no_reactivate website               <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> All     no_reactivate both                  <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;chr [2]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> All     no_reactivate both_plus_interaction <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;chr [1]&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># … with 30 more rows</span></span></span>
 <span></span></code></pre>
 
 </div>
@@ -819,12 +866,15 @@ We could use [`update()`](https://rdrr.io/r/stats/update.html) directly in our c
 <span></span>
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span></span>
-<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>form <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span></span>
-<span>    <span class='nf'><a href='https://rdrr.io/r/stats/update.html'>update</a></span><span class='o'>(</span><span class='nv'>my_formula2</span>, <span class='c'># old formula</span></span>
-<span>           <span class='nf'><a href='https://rdrr.io/r/stats/delete.response.html'>reformulate</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"."</span>, <span class='nv'>update_vars</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span> <span class='c'># changes to formula</span></span>
-<span>    <span class='o'>)</span>,</span>
-<span>    </span>
-<span>    mod<span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span> <span class='s'>"&#123;product&#125;_&#123;type&#125;_&#123;model_spec&#125;"</span> <span class='o'>:=</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span></span>
+<span>    form <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span></span>
+<span>      <span class='nf'><a href='https://rdrr.io/r/stats/update.html'>update</a></span><span class='o'>(</span></span>
+<span>        <span class='nv'>min_formula</span>, <span class='c'># old formula</span></span>
+<span>        <span class='nf'><a href='https://rdrr.io/r/stats/delete.response.html'>reformulate</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"."</span>, <span class='nv'>update_vars</span><span class='o'>)</span><span class='o'>)</span> <span class='c'># changes to formula</span></span>
+<span>        <span class='o'>)</span></span>
+<span>      <span class='o'>)</span>,</span>
+<span></span>
+<span>    mod <span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span> <span class='s'>"&#123;product&#125;_&#123;type&#125;_&#123;model_spec&#125;"</span> <span class='o'>:=</span></span>
 <span>    <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>form</span>,</span>
 <span>       data <span class='o'>=</span> <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='o'>(</span><span class='nv'>csat_named</span>,</span>
 <span>                     <span class='nv'>.env</span><span class='o'>$</span><span class='nv'>product</span> <span class='o'>==</span> <span class='s'>"All"</span> <span class='o'>|</span> <span class='nv'>.env</span><span class='o'>$</span><span class='nv'>product</span> <span class='o'>==</span> <span class='nv'>product</span>,</span>
@@ -836,13 +886,13 @@ We could use [`update()`](https://rdrr.io/r/stats/update.html) directly in our c
 
 </div>
 
-[`update()`](https://rdrr.io/r/stats/update.html) takes two arguments, the formula we want to update, in this case `my_formula2`, and the formula we use to update the former. In our case, this is a call to [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) which says: "take all the original term labels `"."`, and add [`c()`](https://rdrr.io/r/base/c.html) to them the variable in `update_vars`. Now its probably clear why we included `NULL` in `update_vars`. In cases where it is `NULL` the original formula won't be updated, which corresponds to our baseline model.
+[`update()`](https://rdrr.io/r/stats/update.html) takes two arguments, the formula we want to update, in this case `min_formula`, and the formula we use to update the former. In our case, this is a call to [`reformulate()`](https://rdrr.io/r/stats/delete.response.html) which says: "take all the original term labels `"."`, and add [`c()`](https://rdrr.io/r/base/c.html) to them the variable in `update_vars`. Now its probably clear why we included `NULL` in `update_vars`. In cases where it is `NULL` the original formula won't be updated, which corresponds to our baseline model.
 
-Checking the first three rows of our list-column containing the model shows that the approach works as intended:
+Checking the first five rows of our list-column containing the model shows that the approach works as intended:
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='o'>(</span><span class='nv'>all_grid_upd_vars_form</span><span class='o'>$</span><span class='nv'>mod</span>, <span class='m'>3</span><span class='o'>)</span></span></code></pre>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='o'>(</span><span class='nv'>all_grid_upd_vars_form</span><span class='o'>$</span><span class='nv'>mod</span>, <span class='m'>5</span><span class='o'>)</span></span></code></pre>
 
 </div>
 
@@ -880,7 +930,37 @@ Checking the first three rows of our list-column containing the model shows that
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; Coefficients:</span></span>
 <span><span class='c'>#&gt;    (Intercept)   postal_rating    phone_rating     shop_rating  website_rating  </span></span>
-<span><span class='c'>#&gt;        3.59965        -0.03583        -0.22622        -0.04578         0.13008</span></span>
+<span><span class='c'>#&gt;        3.59965        -0.03583        -0.22622        -0.04578         0.13008  </span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; $All_All_both</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Call:</span></span>
+<span><span class='c'>#&gt; lm(formula = form, data = filter(csat_named, .env$product == </span></span>
+<span><span class='c'>#&gt;     "All" | .env$product == product, eval(filter_ls)))</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Coefficients:</span></span>
+<span><span class='c'>#&gt;    (Intercept)   postal_rating    phone_rating     shop_rating    email_rating  </span></span>
+<span><span class='c'>#&gt;        3.72401        -0.05946        -0.36126         0.05673         0.10789  </span></span>
+<span><span class='c'>#&gt; website_rating  </span></span>
+<span><span class='c'>#&gt;        0.07286  </span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; $All_All_both_plus_interaction</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Call:</span></span>
+<span><span class='c'>#&gt; lm(formula = form, data = filter(csat_named, .env$product == </span></span>
+<span><span class='c'>#&gt;     "All" | .env$product == product, eval(filter_ls)))</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Coefficients:</span></span>
+<span><span class='c'>#&gt;                 (Intercept)                postal_rating  </span></span>
+<span><span class='c'>#&gt;                     3.46609                     -0.05549  </span></span>
+<span><span class='c'>#&gt;                phone_rating                  shop_rating  </span></span>
+<span><span class='c'>#&gt;                    -0.36445                      0.05816  </span></span>
+<span><span class='c'>#&gt;                email_rating               website_rating  </span></span>
+<span><span class='c'>#&gt;                     0.18616                      0.15469  </span></span>
+<span><span class='c'>#&gt; email_rating:website_rating  </span></span>
+<span><span class='c'>#&gt;                    -0.02658</span></span>
 <span></span></code></pre>
 
 </div>
@@ -893,7 +973,7 @@ Although we previously used the 'broom' package to create tidy `data.frame`s con
 
 In this case, the [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html) function from the package of the same name proves extremely helpful. It creates an Excel file that includes both model statistics and estimator results, which is convenient when reporting our model findings to a non-R-user audience.
 
-The great feature of [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html) is that it accepts list-columns of model objects, such as our `mod` column containing many `lm` objects, as input. We can specify various output formats - below we choose `".xlsx"`. Numerous other arguments allow us to trim the results for a more compact table. Here, we opt to omit the AIC, BIC, RMSE and log likelihood model statistics, as well as the coefficient size of the intercept. Setting the `stars` argument to `TRUE` adds the typical p-value stars to the estimators.
+The great feature of [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html) is that it accepts list-columns of model objects, such as our `mod` column containing many `lm` objects, as input. We can specify various output formats---below we choose `".xlsx"`. Numerous other arguments allow us to trim the results for a more compact table. Here, we opt to omit the AIC, BIC, RMSE and log likelihood model statistics, as well as the coefficient size of the intercept. Setting the `stars` argument to `TRUE` adds the typical p-value stars to the estimators.
 
 <div class="highlight">
 
@@ -960,25 +1040,25 @@ Again, we create a character vector holding the names of our dependent variables
 <span>  <span class='nf'><a href='https://tidyr.tidyverse.org/reference/expand_grid.html'>expand_grid</a></span><span class='o'>(</span><span class='nv'>dep_vars</span><span class='o'>)</span></span>
 <span></span>
 <span><span class='nv'>all_grps_grid_final</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 48 × 6</span></span></span>
-<span><span class='c'>#&gt;    product type          model_spec filter_ls    update_vars  dep_vars</span></span>
-<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>   </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> All     All           base       <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;NULL&gt;</span>       csat    </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> All     All           base       <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;NULL&gt;</span>       csat_top</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> All     All           email      <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat    </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> All     All           email      <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat_top</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> All     All           website    <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat    </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> All     All           website    <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat_top</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> All     no_reactivate base       <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;NULL&gt;</span>       csat    </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> All     no_reactivate base       <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;NULL&gt;</span>       csat_top</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> All     no_reactivate email      <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat    </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> All     no_reactivate email      <span style='color: #555555;'>&lt;language&gt;</span>   <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat_top</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># … with 38 more rows</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 80 × 6</span></span></span>
+<span><span class='c'>#&gt;    product type  model_spec            filter_ls    update_vars  dep_vars</span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>                 <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;named list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>   </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> All     All   base                  <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;NULL&gt;</span>       csat    </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> All     All   base                  <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;NULL&gt;</span>       csat_top</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> All     All   email                 <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat    </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> All     All   email                 <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat_top</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> All     All   website               <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat    </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> All     All   website               <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat_top</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> All     All   both                  <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [2]&gt;</span>    csat    </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> All     All   both                  <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [2]&gt;</span>    csat_top</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> All     All   both_plus_interaction <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat    </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> All     All   both_plus_interaction <span style='color: #555555;'>&lt;lgl [1]&gt;</span>    <span style='color: #555555;'>&lt;chr [1]&gt;</span>    csat_top</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># … with 70 more rows</span></span></span>
 <span></span></code></pre>
 
 </div>
 
-Next, we update the formula, generate the data on the fly, calculate our model and prepare the results using 'broom'. Finally, we drop columns that we don't need anymore.
+Next, we update the formula, generate the data on the fly, calculate our model and prepare the results using 'broom'. Note that we do all of this within just one call to [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html), since it allows us to define multiple columns and append them to our nested `data.frame`. Finally, we drop columns that we don't need anymore.
 
 <div class="highlight">
 
@@ -991,7 +1071,7 @@ Next, we update the formula, generate the data on the fly, calculate our model a
 <span>  <span class='c'># dynamically name list</span></span>
 <span>  form <span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span> <span class='s'>"&#123;product&#125;_&#123;type&#125;_&#123;model_spec&#125;_&#123;dep_vars&#125;"</span> <span class='o'>:=</span></span>
 <span>  <span class='c'># update formula</span></span>
-<span>    <span class='nf'><a href='https://rdrr.io/r/stats/update.html'>update</a></span><span class='o'>(</span><span class='nv'>my_formula2</span>, <span class='c'># old formula</span></span>
+<span>    <span class='nf'><a href='https://rdrr.io/r/stats/update.html'>update</a></span><span class='o'>(</span><span class='nv'>min_formula</span>, <span class='c'># old formula</span></span>
 <span>           <span class='nf'><a href='https://rdrr.io/r/stats/delete.response.html'>reformulate</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"."</span>, <span class='nv'>update_vars</span><span class='o'>)</span>, <span class='nv'>dep_vars</span><span class='o'>)</span><span class='o'>)</span> <span class='c'># changes to formula</span></span>
 <span>  <span class='o'>)</span>,</span>
 <span>    </span>
@@ -1013,22 +1093,90 @@ Next, we update the formula, generate the data on the fly, calculate our model a
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='o'>(</span><span class='nv'>product</span><span class='o'>:</span><span class='nv'>model_spec</span>, <span class='nv'>dep_vars</span>, <span class='nv'>mod</span><span class='o'>:</span><span class='nv'>modstat</span><span class='o'>)</span></span>
 <span></span>
 <span><span class='nv'>all_grps_grid_final_res</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 48 × 7</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 80 × 7</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'># Rowwise: </span></span></span>
-<span><span class='c'>#&gt;    product type          model_spec dep_vars mod    res              modstat </span></span>
-<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span>           <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span>  </span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> All     All           base       csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [4 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> All     All           base       csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [4 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> All     All           email      csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> All     All           email      csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> All     All           website    csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> All     All           website    csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> All     no_reactivate base       csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [4 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> All     no_reactivate base       csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [4 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> All     no_reactivate email      csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> All     no_reactivate email      csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># … with 38 more rows</span></span></span>
+<span><span class='c'>#&gt;    product type  model_spec            dep_vars mod    res              modstat </span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>                 <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span>           <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span>  </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> All     All   base                  csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [4 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> All     All   base                  csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [4 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> All     All   email                 csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> All     All   email                 csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> All     All   website               csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> All     All   website               csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> All     All   both                  csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [6 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> All     All   both                  csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [6 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> All     All   both_plus_interaction csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [7 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> All     All   both_plus_interaction csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [7 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># … with 70 more rows</span></span></span>
 <span></span></code></pre>
+
+</div>
+
+As we add more complex functions to our workflow, we can see that the code gets pretty messy, and hard to debug. To keep the code clean and to allow for easier debugging we can tuck away the more complex parts of our code in customs functions. More details on this can be found in the info box below.
+
+<div class="info-box" title="Expand: Use custom functions for cleaner code">
+
+In the code above our `mutate` call was spanning more than twenty lines of code. This makes it not only hard to see what's actually going on, it also makes debugging much more difficult.
+
+In this case it is helpful to tuck the more complex parts of our code away in custom function. Taking our last example, we could create two functions `update_min_form()`, that updates the model formula, and `lineaer_mod()`, that calculates a linear model and creates the data on th fly.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># define custom functions</span></span>
+<span><span class='nv'>update_min_form</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>upvars</span>, <span class='nv'>dpvars</span><span class='o'>)</span> <span class='o'>&#123;</span> <span class='c'># update_vars, dep_vars</span></span>
+<span>    <span class='nf'><a href='https://rdrr.io/r/stats/update.html'>update</a></span><span class='o'>(</span><span class='nv'>min_formula</span>, <span class='c'># old formula</span></span>
+<span>           <span class='nf'><a href='https://rdrr.io/r/stats/delete.response.html'>reformulate</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"."</span>, <span class='nv'>upvars</span><span class='o'>)</span>, <span class='nv'>dpvars</span><span class='o'>)</span> <span class='c'># changes to formula </span></span>
+<span>           <span class='o'>)</span> </span>
+<span><span class='o'>&#125;</span></span>
+<span></span>
+<span><span class='nv'>linear_mod</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>form</span>, <span class='nv'>prodvar</span>, <span class='nv'>filter_inp</span><span class='o'>)</span> <span class='o'>&#123;</span></span>
+<span>      <span class='nf'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='o'>(</span><span class='nv'>form</span>,</span>
+<span>  <span class='c'># create data on the fly</span></span>
+<span>       data <span class='o'>=</span> <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='o'>(</span><span class='nv'>csat_named_top</span>,</span>
+<span>                     <span class='nv'>prodvar</span> <span class='o'>==</span> <span class='s'>"All"</span> <span class='o'>|</span> <span class='nv'>.data</span><span class='o'>$</span><span class='nv'>product</span> <span class='o'>==</span> <span class='nv'>prodvar</span>,</span>
+<span>                     <span class='nf'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='o'>(</span><span class='nv'>filter_inp</span><span class='o'>)</span></span>
+<span>       <span class='o'>)</span></span>
+<span>    <span class='o'>)</span></span>
+<span><span class='o'>&#125;</span></span></code></pre>
+
+</div>
+
+With both functions predefined, our original code becomes much clearer to read and easier to debug:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>all_grps_grid_final_res2</span> <span class='o'>&lt;-</span> <span class='nv'>all_grps_grid_final</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span></span>
+<span>    form <span class='o'>=</span> <span class='nf'><a href='https://rlang.r-lib.org/reference/list2.html'>list2</a></span><span class='o'>(</span><span class='s'>"&#123;product&#125;_&#123;type&#125;_&#123;model_spec&#125;_&#123;dep_vars&#125;"</span> <span class='o'>:=</span> </span>
+<span>                    <span class='nf'>update_min_form</span><span class='o'>(</span><span class='nv'>update_vars</span>, <span class='nv'>dep_vars</span><span class='o'>)</span></span>
+<span>  </span>
+<span>    <span class='o'>)</span>,</span>
+<span>    mod <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>linear_mod</span><span class='o'>(</span><span class='nv'>form</span>, <span class='nv'>product</span>, <span class='nv'>filter_ls</span><span class='o'>)</span><span class='o'>)</span>,</span>
+<span>    res <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span>,</span>
+<span>    modstat <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='nf'>broom</span><span class='nf'>::</span><span class='nf'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='o'>(</span><span class='nv'>mod</span><span class='o'>)</span><span class='o'>)</span></span>
+<span>  <span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='o'>(</span><span class='nv'>product</span><span class='o'>:</span><span class='nv'>model_spec</span>, <span class='nv'>dep_vars</span>, <span class='nv'>mod</span><span class='o'>:</span><span class='nv'>modstat</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='nv'>all_grps_grid_final_res2</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 80 × 7</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># Rowwise: </span></span></span>
+<span><span class='c'>#&gt;    product type  model_spec            dep_vars mod    res              modstat </span></span>
+<span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>                 <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span>           <span style='color: #555555; font-style: italic;'>&lt;list&gt;</span>  </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> All     All   base                  csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [4 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 2</span> All     All   base                  csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [4 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 3</span> All     All   email                 csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 4</span> All     All   email                 csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 5</span> All     All   website               csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 6</span> All     All   website               csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [5 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 7</span> All     All   both                  csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [6 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> All     All   both                  csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [6 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> All     All   both_plus_interaction csat     <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [7 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>10</span> All     All   both_plus_interaction csat_top <span style='color: #555555;'>&lt;lm&gt;</span>   <span style='color: #555555;'>&lt;tibble [7 × 5]&gt;</span> &lt;tibble&gt;</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># … with 70 more rows</span></span></span>
+<span></span></code></pre>
+
+</div>
 
 </div>
 
@@ -1056,7 +1204,11 @@ Although we are not specifically interested in the results, below is one way to 
 
 ## Wrap-up
 
-That's it. This post started out easy and got quite complex in the end. There's certainly room to refine this approach by encapsulating parts of those lengthy pipes in custom functions, but that's a story for another time. For now, I hope you enjoyed this post. If you use other helper functions or have a better approach for calculating many models, I'd love to hear your feedback. Feel free to share your thoughts in the comments below or via Twitter, Mastodon, or GitHub.
+That's it! This post started out easy and got quite complex in the end. I hope to have shown how the original Many Models Approach can be refined from running the same model on various distinct subsets of data to running different variations of a model on many partly overlapping subsets. I hope you enjoyed this post. If you use other helper functions or have a better approach for calculating many models, I'd love to hear your feedback. Feel free to share your thoughts in the comments below or via Twitter, Mastodon, or GitHub.
+
+## Acknowledgements
+
+I'm thankful for the many comments I have received for the initial version of this blog post. Isabelle Ghement was so kind to provide <a href="https://github.com/TimTeaFan/tt_website/issues/4" target="_blank" role="highlight">in-depth feedback</a> which helped me to, hopefully, explain some of the concepts more concisely. Many thanks for that!
 
 <div class="session" markdown="1">
 
@@ -1077,7 +1229,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-04-03</span></span>
+<span><span class='c'>#&gt;  date     2023-07-12</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
