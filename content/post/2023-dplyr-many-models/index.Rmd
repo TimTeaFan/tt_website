@@ -7,12 +7,12 @@ output:
 
 title: "Mastering the Many Models Approach"
 subtitle: "A Comprehensive Guide to the Tidyverse Many Models Approach and its Extensions"
-summary: "This blog post reviews the original many models approach, updates it using the current tidyverse syntax, and expands upon the original approach by introducing new building blocks and helper functions."
+summary: "This blog post reviews the original Many Models Approach, updates it using the current tidyverse syntax, and expands upon the original approach by introducing new building blocks and helper functions."
 authors: []
 tags: ["R", "dplyr", "base R"]
 categories: ["R", "dplyr", "base R"]
 date: 2023-03-31
-lastmod: 2023-03-31
+lastmod: 2023-07-12
 featured: false
 draft: false
 
@@ -44,24 +44,21 @@ eframe <- function (..., .noWS = NULL, .renderHook = NULL) {
 
 ## Intro
 
-The tidyverse "many models" approach was formally introduced in the first edition of <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">R for Data Science</a> (R4DS) in 2017. The central idea of this approach is to streamline the process of running the same model on
-various subsets of data.
+The tidyverse "many models" approach was formally introduced in the first edition of <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">R for Data Science</a> (R4DS) in 2017. The central idea of this approach is to streamline the process of running the same model on various distinct subsets of data.
 
-Since 2017, the tidyverse has evolved significantly, and along with it, the way we can harness the many models approach. In this blog post we'll first review the basic approach and update it using the latest tidyverse syntax. We'll then explore a range of use cases with increasing complexity while introducing new building blocks and helper functions. This leads us finally up to the case where we not only run the same
-model on various subsets of our data, but where we also run slightly different models on various
-subsets simultaneously. 
+Since 2017, the tidyverse has evolved significantly, and along with it, the way we can harness the Many Models Approach. In this blog post we'll first review the basic approach and update it using the latest tidyverse syntax. We'll then explore a range of use cases with increasing complexity while introducing new building blocks and helper functions. This leads us finally up to the case where we not only run the same model on various, partly overlapping, subsets of our data, but where we also run slightly different models on those subsets simultaneously. 
 
 The structure of this blog post also reflects my motivation for writing it. I think that this is a powerful approach that should be more widely known. Those who are actually using it, often rely on an older syntax, which makes things more complicated than necessary. In addition to the original building blocks, there are several lesser-known functions that help apply this approach to more complex use cases.
 
-Lately, the tidyverse many models approach hasn't received much attention. One might expect this to change with the coming release of the <a href="http://r4ds.hadley.nz" role="highlight" target="_blank">second edition of R4DS</a>. However, the entire section on modeling has been omitted from this release. According to the authors, the reasons for this are twofold: First, there was never ample room to address the whole topic of modeling within R4DS. Second, the authors recommend the 'tidymodels' packages, which are well documented in <a href="https://www.tmwr.org" role="highlight" target="_blank">Tidy Modeling with R</a> which is filling the gap.
+Lately, the tidyverse Many Models Approach hasn't received much attention. One might expect this to change with the release of the <a href="https://r4ds.hadley.nz" role="highlight" target="_blank">second edition of R4DS</a>. However, the entire section on modeling has been omitted from this release. According to the authors, the reasons for this are twofold: First, there was never ample room to address the whole topic of modeling within R4DS. Second, the authors recommend the 'tidymodels' packages, which are well documented in <a href="https://www.tmwr.org" role="highlight" target="_blank">Tidy Modeling with R</a> and which should fill this gap.
 
-While 'tidymodels' is a strong framework with definite advantages when working with various algorithms and model engines, it comes with considerable conceptual and syntactic overhead. For this reason, I believe there is still a lot of room (and use cases) for the "classic" tidyverse many models approach, which is based on 'dplyr' syntax but utilizes base R, or alternatively package-specific, models.
+While 'tidymodels' is a strong framework with definite advantages when working with various algorithms and model engines, it comes with considerable conceptual and syntactic overhead. For this reason, I believe there is still a lot room for the "classic" tidyverse Many Models Approach, which is based on 'dplyr' syntax but uses base R or alternatively package-specific models.
 
 But before we delve into the use cases, let's begin with the setup.
 
 ## Setup
 
-Unlike the name suggests, we don't need all of the 'tidyverse' packages for the tidyverse many models approach. The heavy lifting is done by 'dplyr' and 'tidyr'. Additionally, we use 'rlang' and 'purrr' for some extra functionality. In this post we'll be using the `csat` and `csatraw` data from my own package 'dplyover'. It is important to note, that this post was written using 'dplyr' version 1.1.0. Readers who
+Unlike the name suggests, we don't need all of the 'tidyverse' packages for the tidyverse Many Models Approach. The heavy lifting is done by 'dplyr' and 'tidyr'. Additionally, we use 'rlang' and 'purrr' for some extra functionality. In this post we'll be using the `csat` and `csatraw` data from my own package 'dplyover'. It is important to note, that this post was written using 'dplyr' version 1.1.0. Readers who
 want to reproduce the code below should use at least 'dplyr' version version 1.0 or greater.
 
 ```{r, warning=FALSE, message=FALSE}
@@ -95,7 +92,7 @@ Every row is the response of a customer, `cust_id`, who owns a contract-base `pr
 
 Let's start with the basic approach as it was introduced in R4DS. Keep in mind that syntax and functions have evolved over the past five years, so we'll be refining the original ideas into a more canonical form. 
 
-Before we dive into the details let's look at the whole workflow from a computational perspective.We start by breaking down our original data into small grouped subsets, where each data set is stored in a row of a so called "nested" `data.frame`. The model fitting function is applied iteratively to each row. The model fits are appended to a new column of the nested data frame, again, one summary per row. We further process and tidy the results by turning the original model output into a list of small `data.frame`s which can also be appended to a new column. Finally, we concatenate the small `data.frame`s in each row and turn them into one big unified `data.frame` holding the results of all subgroups.
+Before we dive into the details let's look at the whole workflow from a computational perspective. We start by breaking down our original data into small grouped subsets, where each data set is stored in a row of a so called "nested" `data.frame`. The model fitting function is applied iteratively to each row. The model fits are appended to a new column of the nested data frame, again, one summary per row. We further process and tidy the results by turning the original model output into a list of small `data.frame`s which can also be appended to a new column. Finally, we concatenate the small `data.frame`s in each row and turn them into one big unified `data.frame` holding the results of all subgroups.
 
 There are four essential components in the workflow above that we'll be discussing in detail below:
 
@@ -108,7 +105,7 @@ If you're already familiar with these concepts, feel free to skip this section.
 
 #### Nested data
 
-The central idea of the many-models approach is to streamline the process of running models on various subsets of data. Let's say we want to perform a linear regression on each product type. In a traditional base R approach, we might have used a `for` loop to populate a list object with the results of each run. However, the tidyverse method begins with a nested `data.frame`.
+The central idea of the Many Models Approach is to streamline the process of running models on various subsets of data. Let's say we want to perform a linear regression on each product type. In a traditional base R approach, we might have used a `for` loop to populate a list object with the results of each run. However, the tidyverse method begins with a nested `data.frame`.
 
 So, what is a nested data.frame? We can use `dplyr::nest_by(product)` to create a `data.frame` containing three rows, one for each product. The second column, `data`, is a 'list-column' that holds a list of `data.frame`'s—one for each row. These `data.frame`s contain data for all customers within the corresponding product category. If you're unfamiliar with list-columns, I highly recommend reading <a href="https://r4ds.had.co.nz/many-models.html" role="highlight" target="_blank">chapter 25 of R4DS</a>. Although some parts may be outdated, it remains an excellent resource for understanding the essential components of this approach.
 
@@ -129,36 +126,31 @@ csat_prod_nested$data[[1]]
 
 Applying `nest_by()` also groups our data `rowwise()`. This means that subsequent dplyr operations will be applied "one row at a time." This is particularly helpful when vectorized functions aren't available, such as the `lm()` function in our case, which we want to apply to the data in each row.
 
-First, let's define the relationship between our dependent and independent variables using a formula object, `my_formula`.
+First, let's define the relationship between our dependent and independent variables using a formula object, `base_formula`.
 
 ```{r}
-my_formula <- csat ~ postal_rating + phone_rating + email_rating +
+base_formula <- csat ~ postal_rating + phone_rating + email_rating +
   website_rating + shop_rating
 
-my_formula
+base_formula
 ```
 
-Next, we use `mutate` to create new columns.  We'll start by creating a column called `mod` containing our model. We'll apply the `lm()` function with the previously defined formula and supply the `data` column to it. Since we are working with a `rowwise` `data.frame`, the `lm()` function is executed three times, one time for each row, each time using a different `data.frame` of the list-column `data`. As the result of each call is not an atomic vector, but an `lm` object of type `list`, we need to wrap the function call in `list()`. This results in a new list-column, `mod`, which holds an `lm` object in each row.
+Note, that this is a basic "model formula" which holds the dependent variable, `csat`, on the left-hand side (of the tilde `~`) and all independent variables on the right-hand side.
+
+Next, we use `mutate` to create new columns.  We'll start by creating a column called `mod` containing our model. We'll apply the `lm()` function with the previously defined formula and supply the `data` column to it. Note, that when supplying arguments within `dplyr::mutate()` we can use both: (i) objects from the `data.frame` we are working on, here the `data` column of our `csat_prod_nested` dataset, and (ii) objects from the enclosing environment, here the global environment, where our formula object `base_formula` resides. 
+
+Since we are working with a `rowwise` `data.frame`, the `lm()` function is executed three times, one time for each row, each time using a different `data.frame` in the list-column `data`. As the result of each call is not an atomic vector, but an `lm` object of type `list`, we need to wrap the function call in `list()`. This results in a new list-column, `mod`, which holds an `lm` object in each row.
 
 ```{r}
 csat_prod_nested |>
-  mutate(mod = list(lm(my_formula, data = data)))
+  mutate(mod = list(lm(base_formula, data = data)))
 ```
-
-...
 
 Two notes of caution when using `dplyr::rowwise()`:
 
-First, keep in mind that we need the wrapping `list()` call whenever the result is not an atomic vector.
-Since this is fairly often the case, it's good practice to resonate about the return type of a function
-when using `dplyr::rowwise()`.
+First, keep in mind that we need the wrapping `list()` call whenever the result is not an atomic vector. Since this is fairly often the case, it's good practice to resonate about the return type of a function when using `dplyr::rowwise()`.
 
-Second, once we call `rowwise()` on a `data.frame()`, all following operations will be applied row-by-row.
-We can revoke this by calling `ungroup()` on a rowwise `data.frame`. Sometimes we might forget to `ungroup()`.
-In most cases this will not lead to an error. However, it will lead to a degraded performance, since
-vectorized functions, which are supposed to work on whole columns, are now unnessarily applied row-by-row.
-
-
+Second, once we call `rowwise()` on a `data.frame()`, all following operations will be applied row-by-row. We can revoke this by calling `ungroup()` on a rowwise `data.frame`. Sometimes we might forget to `ungroup()`. In most cases this will not lead to an error. However, it will lead to a degraded performance, since vectorized functions, which are supposed to work on whole columns, are now unnecessarily applied row-by-row.
 
 
 #### Tidy results with broom
@@ -173,7 +165,7 @@ Again, we'll wrap both functions in `list()` and call them on the model in the n
 
 ```{r}
 csat_prod_nested_res <- csat_prod_nested |>
-  mutate(mod     = list(lm(my_formula, data = data)),
+  mutate(mod     = list(lm(base_formula, data = data)),
          modstat = list(broom::glance(mod)),
          res =     list(broom::tidy(mod)))
 
@@ -241,7 +233,7 @@ Now we can apply the same analysis as above:
 ```{r, eval = FALSE}
 csat_all |>
   nest_by(product) |>
-  mutate(mod     = list(lm(my_formula, data = data)),
+  mutate(mod     = list(lm(base_formula, data = data)),
          res     = list(broom::tidy(mod)),
          modstat = list(broom::glance(mod)))
 ```
@@ -250,7 +242,7 @@ csat_all |>
 ```{r, echo = FALSE}
 csat_all |>
   nest_by(product) |>
-  mutate(mod     = list(lm(my_formula, data = data)),
+  mutate(mod     = list(lm(base_formula, data = data)),
          res     = list(broom::tidy(mod)),
          modstat = list(broom::glance(mod)))
 ```
@@ -287,7 +279,9 @@ To achieve this, we'll follow three steps:
     csat_all_grps
     ```
 
-    We use`tidyr::expand_grid()` to expand our nested data for each category in our list of filter expressions: `filter_ls`. We also add a new column, `type`, which shows the name of each element in `filter_ls`. Looking at the output reveals that our original nested `data.frame` contained four rows, while our data now holds eight rows - one for each combination of `product` and `type`.
+    We use`tidyr::expand_grid()` to expand our nested data for each category in our list of filter expressions: `filter_ls`. `expand_grid()` creates a `tibble` from all combinations of the supplied objects—this can be any mix of atomic vectors, lists or `data.frame`s. Note that in the case of the latter, all groupings are ignored. Looking at the output reveals that our original nested `data.frame` contained four rows, while our data now holds eight rows - one for each combination of `product` and `type`.
+    
+    We also use `dplyr::mutate()` to add a new column, `type`, to actually show which row refers to which type. The `names()` of our list column `filter_ls` contain this information. To show the `type` next to the `product` column we use the argument `.after` in  `mutate()`. Without specifying this, the `type` column would have been added as the last column in our nested `data.frame`.
 
 3.  We apply each filter to our data `rowwise` using `dplyr::filter(eval(filter_ls))`.
 
@@ -311,7 +305,7 @@ From this point, we could continue applying our model and then calculating and e
 ```{r}
 csat_all_grps_grid <- csat_all_grps |>
   rowwise() |>
-  mutate(mod = list(lm(my_formula, data = data)),
+  mutate(mod = list(lm(base_formula, data = data)),
          res = list(broom::tidy(mod)),
          modstat = list(broom::glance(mod)))
 
@@ -341,14 +335,14 @@ csat_all_grps_grid$modstat[4]
 
 The result prints nicely, but it's unclear which subset of the data it belongs to.
 
-Here `rlang::list2()` comes to the rescue. Although it resembles `list()`, it provides some extra functionality. Specifically, it allows us to unquote names on the right-hand side of the walrus operator. To better grasp this idea, let's look at an example.
+Here `rlang::list2()` comes to the rescue. Although it resembles `list()`, it provides some extra functionality. Specifically, it allows us to unquote names on the left-hand side of the walrus operator. To better grasp this idea, let's look at an example.
 
-We wrap our calls to `lm()`, `tidy()` and `glance()` in `list2()` and name each element using the walrus operator `:=`. On the right-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in the `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
+We wrap our calls to `lm()`, `tidy()` and `glance()` in `list2()` and name each element using the walrus operator `:=`. On the left-hand side of the walrus operator, we use the <a href="https://rlang.r-lib.org/reference/glue-operators.html" role="highlight" target="_blank">glue operator</a> `{` within a string to dynamically name each element according to the values in the `product` and `type` columns in each row. When we inspect the fourth element of the `modstat` column, we can quickly see that these model statistics belong to the subset of customers with an "advanced" product and who are not of type "reactivate".
 
 ```{r}
 csat_all_grps_grid <- csat_all_grps |>
   rowwise() |>
-  mutate(mod     = list2("{product}_{type}" := lm(my_formula, data = data)),
+  mutate(mod     = list2("{product}_{type}" := lm(base_formula, data = data)),
          res     = list2("{product}_{type}" := broom::tidy(mod)),
          modstat = list2("{product}_{type}" := broom::glance(mod)))
 
@@ -358,7 +352,7 @@ csat_all_grps_grid$modstat[4]
 
 #### Data-less grids
 
-Using the methods described above, we can easily construct nested `data.frame`s with several dozen subgroups. However, this approach can be inefficient in terms of memory usage, as we create a copy of our data for every single subgroup. To make this approach more memory-efficient, we can use what I call a "data-less grid", which is similar to our original nested `data.frame`, but without the data column.
+Using the methods described above, we can easily construct nested `data.frame`s with several dozens of subgroups. However, this approach can be inefficient in terms of memory usage, as we create a copy of our data for every single subgroup. To make this approach more memory-efficient, we can use what I call a "data-less grid", which is similar to our original nested `data.frame`, but without the data column.
 
 Instead of nesting our data with `nest_by()`, we manually create the combinations of subgroups to which we want to apply our model. We start with a vector of all unique values in the `product` column and add an overall category "All" to it. Then, we supply this vector along with our list of filter expressions `filter_ls` to `expand_grid()`. Finally, we place the names of the elements in `filter_ls` in a separate column: `type`.
 
@@ -373,9 +367,11 @@ product <- c(
 all_grps_grid <- expand_grid(product, filter_ls) |>
   mutate(type = names(filter_ls),
          .after = product)
+
+all_grps_grid
 ```
 
-The challenging aspect here is generating each data subset on the fly in the call to `lm()`. To accomplish this, we `filter()` our initial data `csat_named` on two conditions: 
+The challenging aspect here is to generate each data subset on the fly in the call to `lm()`. To accomplish this, we `filter()` our initial data `csat_named` on two conditions: 
 
 1. Firstly, we filter for different `product` types using an advanced filter expression:
 
@@ -387,13 +383,13 @@ The challenging aspect here is generating each data subset on the fly in the cal
 
     So, the filter expression above essentially states: If the product category in our grid  `.env$product` is "All", then select all rows.  This works because when the left side of the or-condition `.env$product == "All"` evaluates to `TRUE`, `filter` selects all rows. If the first part of our condition is not true, then the `product` column in `csat_named` should match the value of the `product` column of our data-less grid `.env$product`.
 
-1. Next, we filter the different `type`s of customers. Here, we use the filter expressions stored in `filter_ls` and evaluate them.
+1. Next, we filter the different `type`s of customers. Here, we use the filter expressions stored in `filter_ls` and evaluate them. Since we don't need the `filter_ls` column after we've used it to create the `data` column, we just drop it with `select(! filter_ls)`:
 
 ```{r}
 all_grps_grid_mod <- all_grps_grid |>
   rowwise() |>
   mutate(mod = list(
-    lm(my_formula,
+    lm(base_formula,
        data = filter(csat_named,
                      # 1. filter product categories
                      .env$product == "All" | .env$product == product,
@@ -429,15 +425,15 @@ all_grps_grid_res |>
 
 #### Build formulas programmatically with 'reformulate'
 
-One final building block that essentially completes the many models approach is actually a base R function: `reformulate()`.
+One last major building block that essentially completes the Many Models Approach is actually a base R function: `reformulate()`.
 
 I recently posted an #RStats meme on Twitter highlighting that `reformulate()` is one of the lesser-known base R functions, even among advanced users. The reactions to my post largely confirmed my impression.
 
 `r eframe(src="https://twitter.com/timteafan/status/1636839375672602624")`
 
-Before applying it in the many models context, let's have a look at what `reformulate()` does. Instead of manually creating a formula object by typing `y ~ x1 + x2`, we can use `reformulate()` to generate a formula object based on character vectors.
+Before applying `reformulate()` in the many models context, let's have a look at what it does. Instead of manually creating a formula object by typing `y ~ x1 + x2`, we can use `reformulate()` to generate a formula object based on character vectors.
 
-Important is the order of the first two arguments. While we start writing a formula from the left-hand side `y`, `reformulate()` takes as first argument the right-hand side.
+Important is the order of the first two arguments. While we start writing a formula from the left-hand side `y`, `reformulate()` takes as first argument the right-hand side. We could, of course, change the order and call the arguments by name instead of position, but I wouldn't recommend this, because it might confuse readers. Nevertheless, calling the arguments by name, `termlabels` and `response`, and their correct position is a good idea to make clear which is which and to remind readers that the argument order is different to what they might expect.
 
 ```{r}
 form1 <- y ~ x1 + x2
@@ -450,9 +446,11 @@ form2
 identical(form1, form2)
 ```
 
-How can we make use of `reformulate()` in the many models approach?
+How can we make use of `reformulate()` in the Many Models Approach?
 
-Let's begin with a simple case and assume we want to construct a separate model for each independent variable, containing only our response variable and one independent variable at a time: `csat ~ indepedent_variable`. And of course, we want to do this for all of our subgroups of the previous approach.
+In the following we'll look at two use cases. The first use case covers a situation where we need to fit multiple models to the data in each row of a nested data frame. All of these models share the same response variable and we use `reformulate()` to supply different predictor variables in each iteration. The second use case covers a situation where we also need to fit multiple models to the data in each row of a nested data frame. However, this time we define a base model in advance and add different variables on top of it in each iteration.
+
+Let's begin with the first use case outline above in which we want to construct a separate model for each independent variable, containing only our response variable and one independent variable at a time: `csat ~ indepedent_variable`. And of course, we want to do this for all of our subgroups of the previous approach.
 
 First, we need a character vector holding the names of our independent variables. With this vector, we can now expand our data-less grid from above. This results in a new grid with 40 rows (eight subgroups times five independent variables).
 
@@ -469,7 +467,7 @@ all_grps_grid_vars <- all_grps_grid |>
 all_grps_grid_vars
 ```
 
-We can now apply a similar approach as before, creating data subgroups on the fly. The only change is that we use `reformulate(indep_vars, "csat")` instead of our formula object `my_formula`. This adds forty different linear models to our grid:
+We can now apply a similar approach as before, creating data subgroups on the fly. The only change is that we use `reformulate(indep_vars, "csat")` instead of our formula object `base_formula`. This adds forty different linear models to our grid:
 
 ```{r}
 all_grps_grid_vars_mod <- all_grps_grid_vars |>
@@ -490,22 +488,32 @@ all_grps_grid_vars_mod <- all_grps_grid_vars |>
 all_grps_grid_vars_mod
 ```
 
-Although the example above is instructive, it isn't particularly useful. In most cases, we don't want to create a separate model for each independent variable. A much more powerful way to use `reformulate()` is to `update()` a baseline model with additional variables.
+Note, that we again drop the `filter_ls` column after we used it to create out `data`.
 
-Let's say we have the following base-line model:
+Although the example above is instructive, it isn't particularly useful. In most cases, we don't want to create a separate model for each independent variable. A much more powerful way to use `reformulate()` is to `update()` a baseline model with additional variables. So let's look at our second use case.
+
+Assume we have the following minimal version of our base-line model:
 
 ```{r}
-my_formula2 <- csat ~ postal_rating + phone_rating + shop_rating
-my_formula2
+min_formula <- csat ~ postal_rating + phone_rating + shop_rating
+min_formula
 ```
 
-For our many subgroups from above, we want to check if adding `email_rating` or `website_rating` improves our model. Let's create a list of terms that we want to add to our model: `update_vars`. Note that we need to include `NULL`, as this will represent our baseline model. Again, we expand our grid from above with this list and put the names of each variable ("base", "email", and "website") in a separate column to keep track of which model we are examining.
+For our many subgroups from above, we want to check if adding (i) `email_rating` or (ii) `website_rating` or (iii) both variables at once, or (iv) both variables and their interaction effect, improve our model. Let's create a list of terms that we want to add to our model: `update_vars`. 
 
 ```{r}
 update_vars <- list(base = NULL,
                     email = "email_rating",
-                    website = "website_rating")
+                    website = "website_rating",
+                    both = c("email_rating", "website_rating"),
+                    both_plus_interaction = "email_rating*website_rating")
+```
 
+There are two noteworthy aspects here. First, we need to include `NULL`, as this will represent our baseline model without any additional variables. Second, we are not limited to plain variable names as strings. We can even include interaction effects using the same notation that the tilde operator supports, that is by adding an asterisk `*` between two variable names.
+
+Now we expand our grid from above with this list and put the names of each variable ("base", "email", "website" etc.) in a separate column to keep track of which model we are examining.
+
+```{r}
 all_grid_upd_vars <- all_grps_grid |>
   expand_grid(update_vars) |>
   mutate(model_spec = names(update_vars),
@@ -521,12 +529,15 @@ all_grid_upd_vars_form <- all_grid_upd_vars |>
 
   rowwise() |>
 
-  mutate(form = list(
-    update(my_formula2, # old formula
-           reformulate(c(".", update_vars))) # changes to formula
-    ),
-    
-    mod= list2( "{product}_{type}_{model_spec}" :=
+  mutate(
+    form = list(
+      update(
+        min_formula, # old formula
+        reformulate(c(".", update_vars)) # changes to formula
+        )
+      ),
+
+    mod = list2( "{product}_{type}_{model_spec}" :=
     lm(form,
        data = filter(csat_named,
                      .env$product == "All" | .env$product == product,
@@ -537,17 +548,17 @@ all_grid_upd_vars_form <- all_grid_upd_vars |>
   )
 ```
 
-`update()` takes two arguments, the formula we want to update, in this case `my_formula2`, and the formula we use to update the former. In our case, this is a call to `reformulate()` which says: "take all the original term labels `"."`, and add `c()` to them the variable in `update_vars`. Now its probably clear why we included `NULL` in `update_vars`. In cases where it is `NULL` the original formula won't be updated, which corresponds to our baseline model.
+`update()` takes two arguments, the formula we want to update, in this case `min_formula`, and the formula we use to update the former. In our case, this is a call to `reformulate()` which says: "take all the original term labels `"."`, and add `c()` to them the variable in `update_vars`. Now its probably clear why we included `NULL` in `update_vars`. In cases where it is `NULL` the original formula won't be updated, which corresponds to our baseline model.
 
-Checking the first three rows of our list-column containing the model shows that the approach works as intended: 
+Checking the first five rows of our list-column containing the model shows that the approach works as intended: 
 
 ```{r, eval=FALSE}
-head(all_grid_upd_vars_form$mod, 3)
+head(all_grid_upd_vars_form$mod, 5)
 ```
 
 ::: {.output-box title="Expand to show code"}
 ```{r, echo=FALSE}
-head(all_grid_upd_vars_form$mod, 3)
+head(all_grid_upd_vars_form$mod, 5)
 ```
 :::
 
@@ -557,7 +568,7 @@ Although we previously used the 'broom' package to create tidy `data.frame`s con
 
 In this case, the `modelsummary()` function from the package of the same name proves extremely helpful. It creates an Excel file that includes both model statistics and estimator results, which is convenient when reporting our model findings to a non-R-user audience.
 
-The great feature of `modelsummary()` is that it accepts list-columns of model objects, such as our `mod` column containing many `lm` objects, as input. We can specify various output formats - below we choose `".xlsx"`. Numerous other arguments allow us to trim the results for a more compact table. Here, we opt to omit the AIC, BIC, RMSE and log likelihood model statistics, as well as the coefficient size of the intercept. Setting the `stars` argument to `TRUE` adds the typical p-value stars to the estimators.
+The great feature of `modelsummary()` is that it accepts list-columns of model objects, such as our `mod` column containing many `lm` objects, as input. We can specify various output formats—below we choose `".xlsx"`. Numerous other arguments allow us to trim the results for a more compact table. Here, we opt to omit the AIC, BIC, RMSE and log likelihood model statistics, as well as the coefficient size of the intercept. Setting the `stars` argument to `TRUE` adds the typical p-value stars to the estimators.
 
 ```{r, eval=FALSE}
 # this saves the results to a `data.frame` in `out` and ...
@@ -616,7 +627,7 @@ all_grps_grid_final <- all_grid_upd_vars |>
 all_grps_grid_final
 ```
 
-Next, we update the formula, generate the data on the fly, calculate our model and prepare the results using 'broom'. Finally, we drop columns that we don't need anymore.
+Next, we update the formula, generate the data on the fly, calculate our model and prepare the results using 'broom'. Note that we do all of this within just one call to `dplyr::mutate()`, since it allows us to define multiple columns and append them to our nested `data.frame`. Finally, we drop columns that we don't need anymore.
 
 ```{r}
 all_grps_grid_final_res <- all_grps_grid_final |>
@@ -628,7 +639,7 @@ all_grps_grid_final_res <- all_grps_grid_final |>
   # dynamically name list
   form = list2( "{product}_{type}_{model_spec}_{dep_vars}" :=
   # update formula
-    update(my_formula2, # old formula
+    update(min_formula, # old formula
            reformulate(c(".", update_vars), dep_vars)) # changes to formula
   ),
     
@@ -652,6 +663,13 @@ all_grps_grid_final_res <- all_grps_grid_final |>
 all_grps_grid_final_res
 ```
 
+As we add more complex functions to our workflow, we can see that the code gets pretty messy, and hard to debug. To keep the code clean and to allow for easier debugging we can tuck away the more complex parts of our code in customs functions. More details on this can be found in the info box below.
+
+::: {.info-box title="Expand: Use custom functions for cleaner code"}
+```{r, child="custom_functions.Rmd"}
+```
+:::
+
 Although we are not specifically interested in the results, below is one way to filter out those models that are statistically significant at the 10% level arranged by adjusted r-squared in descending order:
 
 ```{r}
@@ -662,9 +680,14 @@ all_grps_grid_final_res |>
   arrange(desc(adj.r.squared))
 ```
 
+
 ## Wrap-up
 
-That's it. This post started out easy and got quite complex in the end. There's certainly room to refine this approach by encapsulating parts of those lengthy pipes in custom functions, but that's a story for another time. For now, I hope you enjoyed this post. If you use other helper functions or have a better approach for calculating many models, I'd love to hear your feedback. Feel free to share your thoughts in the comments below or via Twitter, Mastodon, or GitHub.
+That's it! This post started out easy and got quite complex in the end. I hope to have shown how the original Many Models Approach can be refined from running the same model on various distinct subsets of data to running different variations of a model on many partly overlapping subsets. I hope you enjoyed this post. If you use other helper functions or have a better approach for calculating many models, I'd love to hear your feedback. Feel free to share your thoughts in the comments below or via Twitter, Mastodon, or GitHub.
+
+## Acknowledgements
+
+I'm thankful for the many comments I have received for the initial version of this blog post. Isabelle Ghement was so kind to provide <a href="https://github.com/TimTeaFan/tt_website/issues/4" target="_blank" role="highlight">in-depth feedback</a> which helped me to, hopefully, explain some of the concepts more concisely. Many thanks for that!
 
 `r hugodownplus::child_session_info()`
 
