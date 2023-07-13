@@ -518,8 +518,8 @@ out <- modelsummary(models = all_grid_upd_vars_form$mod,
   mutate(statistic = ifelse(statistic == "", "estimate", statistic)) |>
   select(-part) |>
   pivot_wider(names_from = statistic,
-              values_from = -c(term, statistic),
-              values_fn = as.numeric)
+              values_from = -c(term, statistic)) |>
+  mutate(across(ends_with("_estimate"), as.numeric))
 
 openxlsx::write.xlsx(out, "model_results2.xlsx")
 ```
