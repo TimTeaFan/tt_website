@@ -1,0 +1,630 @@
+---
+output: html_document
+title: "Mastering the Many Models Approach"
+---
+
+## Intro
+
+* Tidyverse's "Many Models Approach" from R4DS simplifies running same model on different data subsets.
+
+* This talk:
+  (i) Update Many Models Approach with recent tidyverse syntax and
+  (ii) introduce more helper functions for advanced use cases.
+
+* Official Many Models Approach has been omitted from 2nd ed R4DS and is replaced by tidymodels.
+
+* 'tidymodels' strong framework with definite advantages, but comes with conceptual and syntactic overhead.
+
+* There is definitely room for an advanced Many Models Approach
+
+Links:
+
+R for Data Science (R4DS) first edition:
+https://r4ds.had.co.nz
+
+R for Data Science (R4DS) second edition:
+https://r4ds.hadley.nz
+
+
+## Setup
+
+* We don't need all tidyverse packages: heavy lifting done by dplyr, tidyr and broom.
+
+* dplyr version >= 1.0
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)        # <- necessary
+library(tidyr)        # <- necessary
+library(broom)        # <- necessary
+library(rlang)        # <- nice to have
+library(modelsummary) # <- for saving output
+library(purrr)        # <- not really needed
+library(dplyover)     # <- only for the data
+```
+
+* Customer Satsifaction mock-up data from dplyover package
+
+* Create clean data taking raw values from `csatraw` and recoded column names from `csat`:
+
+```{r}
+# create a look-up vector of old and new names
+lookup_vec <- set_names(names(csatraw), names(csat))
+
+# rename the columns
+csat_named <- csatraw |>
+  rename(any_of(lookup_vec)) |>
+  select(cust_id, type, product, csat,
+         ends_with("rating"))
+
+glimpse(csat_named)
+```
+
+* Each row in the cleaned dataset csat_named represents a customer's response, with data on customer type, product type, and ratings on various touchpoints.
+
+
+## Fundamentals
+
+* The basic approach introduced in R4DS involves breaking down data into grouped subsets stored in a "nested" `data.frame`.
+
+* The model fitting function is applied iteratively to each row and the results are appended to a new column.
+
+* Results are processed and tidied, turning the model output into a list of small `data.frame`s and concatenating them into one large `data.frame`.
+
+There are four essential components in the workflow above that we'll be discussing in detail below:
+
+1.  nested data
+2.  rowwise operations
+3.  tidy results
+4.  unnesting results
+
+
+#### Nested data
+
+* The Many Models Approach streamlines running models on data subsets, using a nested `data.frame` instead of a traditional base R for loop.
+
+* `dplyr::nest_by(product)` creates a `data.frame` with one row for each product type
+
+```{r}
+csat_prod_nested <- csat_named |>
+  nest_by(product) 
+
+csat_prod_nested
+```
+
+* each row contains a `data.frame` for customers of the corresponding product type.
+
+```{r}
+csat_prod_nested$data[[1]]
+```
+
+#### Rowwise operations
+
+* `nest_by()` groups data `rowwise()`, allowing dplyr operations to be applied on each row, useful when vectorized functions aren't available.
+
+* A formula object, `base_formula`, defines the relationship between dependent and independent variables.
+
+
+```{r}
+base_formula <- csat ~ postal_rating + phone_rating + email_rating +
+  website_rating + shop_rating
+
+base_formula
+```
+
+* `mutate()` creates new columns, here, `mod` which contains our model
+
+* `lm()` function is executed per row, creating a list-column, mod, with an `lm` object in each row.
+
+```{r}
+csat_prod_nested |>
+  mutate(mod = list(lm(base_formula, data = data)))
+```
+
+* Caution when using `rowwise()`: wrapping in `list()` is necessary when the result is not an atomic vector and `ungroup()` is needed to revoke the row-by-row operation and avoid performance degradation.
+
+#### Tidy results with broom
+
+* Two functions from the 'broom' package, `broom::glance()` and `broom::tidy()`, are used to extract model statistics and regression terms respectively, yielding a nested data.frame.
+
+```{r}
+csat_prod_nested_res <- csat_prod_nested |>
+  mutate(mod     = list(lm(base_formula, data = data)),
+         modstat = list(broom::glance(mod)),
+         res =     list(broom::tidy(mod)))
+
+csat_prod_nested_res
+```
+
+#### Unnesting results
+
+* `tidyr::unnest()` is used to convert list of `data.frame`s back into a regular `data.frame` for easy access to results.
+
+* Model statistics for product subgroups, such as r-squared, p-value, and number of observations, are obtained by selecting product and `modstat` columns and unnesting the latter.
+
+```{r}
+csat_prod_nested_res |>
+  select(product, modstat) |>
+  unnest(modstat) |>
+  select(r.squared, p.value, nobs)
+```
+
+* Coefficients, their size, and p-values are explored by selecting `product` and `res` columns and unnesting `res`, filtering out the intercepts.
+
+```{r}
+csat_prod_nested_res |>
+  select(product, res) |>
+  unnest(res) |>
+  filter(term != "(Intercept)")
+```
+
+* The resulting data can be further manipulated, such as filtering non-significant coefficients or plotting results.
+
+* Compare with the original 2017 syntax:
+
+```{r}
+csat_named |>
+  group_by(product) |>
+  nest() |>
+  ungroup() |>
+  mutate(mod     = map(data, ~ lm(base_formula, data = .x)),
+         res     = map(mod, broom::tidy),
+         modstat = map(mod, broom::glance))
+```
+
+* `map()` is used instead of `rowwise()` and `list()`, code clutters, when many variables are used with `pmap()`
+
+
+## Extensions
+
+* six advanced building blocks that help to tackle more complex use cases:
+
+1.  create an overall category with `bind_rows()`
+2.  add subgroups through filters with `expand_grid()`
+3.  dynamically name list elements with `rlang::list2()`
+4.  use data-less grids
+5.  build formulas programmatically with `reformulate()`
+6.  save model output to Excel with `modelsummary()`
+
+#### Create an overall category with 'bind_rows()'
+
+* To run an analysis on the entire dataset and different subsets simultaneously, `mutate()` and `bind_rows()` are used to create an additional overall product category.
+
+```{r}
+csat_all <- csat_named |>
+  mutate(product = "All") |>
+  bind_rows(csat_named) 
+
+csat_all |> count(product)
+```
+
+* Now same workflow as above can be applied:
+
+```{r}
+csat_all |>
+  nest_by(product) |>
+  mutate(mod     = list(lm(base_formula, data = data)),
+         res     = list(broom::tidy(mod)),
+         modstat = list(broom::glance(mod)))
+```
+
+
+#### Add subgroups through filters with 'expand_grid()'
+
+* Additional subgroups that meet specific filter criteria can be created using `expand_grid()`.
+
+* To achieve this, we'll follow three steps:
+
+1. A list of filter expressions, `filter_ls`, is created with elements that are either `TRUE` or unevaluated expressions for use later in `filter()`.
+
+    ```{r}
+    filter_ls <- list(
+      All = TRUE,
+      no_reactivate = expr(type != "reactivate")
+    )
+
+    filter_ls
+    ```
+
+* we use `expr()` to prevent evaluation
+
+2. The nested `data.frame` is expanded for each filter category using `expand_grid()`, creating a tibble from all combinations of objects.
+
+```{r}
+csat_all_grps <- csat_all |>
+  nest_by(product) |>
+  expand_grid(filter_ls) |>
+  mutate(type = names(filter_ls),
+         .after = product)
+
+csat_all_grps
+```
+
+* A new column, type, is added using `mutate()` to indicate the type of each row.
+
+3.  We apply each filter to our data `rowwise` using `dplyr::filter(eval(filter_ls))`.
+
+```{r}
+csat_all_grps_grid <- csat_all_grps |>
+  rowwise() |>
+  mutate(data = list(
+    filter(data, eval(filter_ls))
+    ),
+    .keep = "unused"
+  )
+
+csat_all_grps_grid
+```
+
+* Each filter in `filter_ls` is applied to the data rowwise using `dplyr::filter(eval(filter_ls))` within a `mutate()` call.
+
+* From here the original workflow can be applied:
+
+```{r}
+csat_all_grps_grid <- csat_all_grps |>
+  rowwise() |>
+  mutate(mod = list(lm(base_formula, data = data)),
+         res = list(broom::tidy(mod)),
+         modstat = list(broom::glance(mod)))
+
+csat_all_grps_grid |>
+  select(product, type, modstat) |>
+  unnest(modstat) |>
+  select(-c(sigma, statistic, df:df.residual))
+
+csat_all_grps_grid |>
+  select(product, type, res) |>
+  unnest(res) |>
+  filter(term == "website_rating")
+```
+
+* Simple example, but can be scaled well.
+
+#### Dynamically name list elements with 'rlang::list2()'
+
+So far, we've wrapped the results of our `rowwise` operations in `list()` when they produced non-atomic vectors.
+
+* A common issue when inspecting the results: elements are unnamed.
+
+```{r}
+csat_all_grps_grid$modstat[4]
+```
+
+* Enter `rlang::list2()`: dynamic unquoting of names helps name list-column elements for better tracking
+
+* elements are named dynamically according to values in the product and type columns.
+
+```{r}
+csat_all_grps_grid <- csat_all_grps |>
+  rowwise() |>
+  mutate(mod     = list2("{product}_{type}" := lm(base_formula, data = data)),
+         res     = list2("{product}_{type}" := broom::tidy(mod)),
+         modstat = list2("{product}_{type}" := broom::glance(mod)))
+
+csat_all_grps_grid$modstat[4]
+```
+
+
+#### Data-less grids
+
+* A "data-less grid" is a more memory-efficient approach
+
+* it's a nested `data.frame` *without* the data column, with combinations of subgroups created manually.
+
+* Create an initial grid `all_grps_grid` of combinations between product and type, with an additional column of filter expressions.
+
+
+```{r}
+product <- c(
+  "All", unique(csat_named$product)
+)
+
+all_grps_grid <- expand_grid(product, filter_ls) |>
+  mutate(type = names(filter_ls),
+         .after = product)
+
+all_grps_grid
+```
+
+* Data subsets are generated on the fly in the `lm()` call by filtering the initial data `csat_named` based on product types and customer types.
+
+1. Advanced filter expressions are used to handle cases where both the original data and the grid contain a column with the same name.
+
+  `.env$product == "All" | .env$product == product`
+  
+  * `.env` is used to point to objects in enclosing environments
+  
+  * If the product in the grid (`.env$product`) is "All", all rows are selected
+  
+  * If the product is not "All", the `product` column in `csat_named` should match the value in the product column of the data-less grid.
+
+2. Different customer types are filtered using the expressions stored in `filter_ls`:
+
+```{r}
+all_grps_grid_mod <- all_grps_grid |>
+  rowwise() |>
+  mutate(mod = list(
+    lm(base_formula,
+       data = filter(csat_named,
+                     # 1. filter product categories
+                     .env$product == "All" | .env$product == product,
+                     
+                     # 2. filter customer types
+                     eval(filter_ls) 
+                     )
+       )
+    )
+    ) |>
+  select(! filter_ls)
+
+all_grps_grid_mod
+```
+
+* From here on the original workflow can be applied:
+
+```{r}
+all_grps_grid_res <- all_grps_grid_mod |>
+  mutate(res     = list(broom::tidy(mod)),
+         modstat = list(broom::glance(mod))) 
+
+all_grps_grid_res |>
+  select(product, type, modstat) |>
+  unnest(modstat) |>
+  select(-c(sigma, statistic, df:df.residual))
+```
+
+
+#### Build formulas programmatically with 'reformulate'
+
+* `reformulate()` is a lesser-known base R function that generates formula objects based on character vectors, useful in the Many Models Approach.
+
+```{r}
+form1 <- y ~ x1 + x2
+form1 
+
+form2 <- reformulate(termlabels = c("x1", "x2"),
+                     response = "y")
+form2
+
+identical(form1, form2)
+```
+
+* Two use cases for `reformulate()`: (1) Fitting multiple models to data in each row of a nested data frame with different predictor variables, and (2) Defining a base model in advance and adding different variables to it in each iteration.
+
+1. A separate model for each independent variable is created by expanding the data-less grid with a character vector of independent variable names `indep_vars`, and using `reformulate(indep_vars, "csat")` instead of a formula object.
+
+```{r}
+indep_vars <- c("postal_rating",
+                "phone_rating",
+                "email_rating",
+                "website_rating",
+                "shop_rating")
+
+all_grps_grid_vars <- all_grps_grid |>
+   expand_grid(indep_vars)
+
+all_grps_grid_vars
+```
+
+```{r}
+all_grps_grid_vars_mod <- all_grps_grid_vars |>
+
+  rowwise() |>
+
+  mutate(mod = list(
+    lm(reformulate(indep_vars, "csat"), # <- this part is new
+       data = filter(csat_named,
+                     .env$product == "All" | .env$product == product,
+                     eval(filter_ls)
+       )
+    )
+  )
+  ) %>%
+  select(! filter_ls)
+
+all_grps_grid_vars_mod
+```
+
+2. A more powerful use case for `reformulate()` is to `update()` and add additional variables to a baseline model
+
+* Create minimal model
+
+```{r}
+min_formula <- csat ~ postal_rating + phone_rating + shop_rating
+min_formula
+```
+
+* The additional variables include `NULL` for the baseline model, one or more variable names and an interaction effect:
+
+```{r}
+update_vars <- list(base = NULL,
+                    email = "email_rating",
+                    website = "website_rating",
+                    both = c("email_rating", "website_rating"),
+                    both_plus_interaction = "email_rating*website_rating")
+```
+
+* Expand original grid with variables to update:
+
+```{r}
+all_grid_upd_vars <- all_grps_grid |>
+  expand_grid(update_vars) |>
+  mutate(model_spec = names(update_vars),
+         .after = type)
+
+all_grid_upd_vars
+```
+
+* An updated formula column, `form`, is created before applying `lm()`
+
+```{r}
+all_grid_upd_vars_form <- all_grid_upd_vars |>
+
+  rowwise() |>
+
+  mutate(
+    form = list(
+      update(
+        min_formula, # old formula
+        reformulate(c(".", update_vars)) # changes to formula
+        )
+      ),
+
+    mod = list2( "{product}_{type}_{model_spec}" :=
+    lm(form,
+       data = filter(csat_named,
+                     .env$product == "All" | .env$product == product,
+                     eval(filter_ls)
+                     )
+       )
+    )
+  )
+```
+
+* Checking results:
+
+```{r}
+head(all_grid_upd_vars_form$mod, 5)
+```
+
+#### Save model output to Excel with 'modelsummary()'
+
+* The `modelsummary()` function from the 'modelsummary' package is used to create an Excel file combining model statistics and estimator results, beneficial for reporting to non-R-users.
+
+* `modelsummary()` accepts list-columns of model objects as input and supports various output formats.
+
+* Additional arguments are used to trim results for a compact table, including omission of specific model statistics and the coefficient size of the intercept.
+
+```{r, eval=FALSE}
+# this saves the results to a `data.frame` in `out` and ...
+# at the same time creates an .xlsx file
+out <- modelsummary(models = all_grid_upd_vars_form$mod,
+                    output = "model_results.xlsx",
+                    gof_omit = "AIC|BIC|Log.Lik|RMSE",
+                    coef_omit = "(Intercept)",
+                    stars = TRUE,
+                    statistic = NULL)
+```
+
+* The output includes model names indicating the subgroups of each `lm()` call.
+
+* Position of p-value stars is suboptimal, workaround output as `data.frame`, `pivot_wider()` and then save to Excel:
+
+```{r}
+out <- modelsummary(models = all_grid_upd_vars_form$mod,
+                    output = "data.frame",
+                    gof_omit = "AIC|BIC|Log.Lik|RMSE",
+                    coef_omit = "(Intercept)",
+                    statistic = "stars") |>
+  mutate(statistic = ifelse(statistic == "", "estimate", statistic)) |>
+  select(-part) |>
+  pivot_wider(names_from = statistic,
+              values_from = -c(term, statistic),
+              values_fn = as.numeric)
+
+openxlsx::write.xlsx(out, "model_results2.xlsx")
+```
+
+
+## Endgame
+
+* We can even compare two versions of the dependent variable by creating a character vector, `dep_vars`, holding the names of the dependent variables.
+
+```{r}
+csat_named_top <- csat_named |>
+  mutate(csat_top = ifelse(csat == 5, 1, 0))
+
+dep_vars <- c("csat", "csat_top")
+
+all_grps_grid_final <- all_grid_upd_vars |>
+  expand_grid(dep_vars)
+
+all_grps_grid_final
+```
+
+* Next steps: the formula is updated, data is generated, the model is calculated, and results are prepared using 'broom'.
+
+```{r}
+all_grps_grid_final_res <- all_grps_grid_final |>
+
+  rowwise() |>
+
+  mutate(
+    
+  # dynamically name list
+  form = list2( "{product}_{type}_{model_spec}_{dep_vars}" :=
+  # update formula
+    update(min_formula, # old formula
+           reformulate(c(".", update_vars), dep_vars)) # changes to formula
+  ),
+    
+  mod = list(
+    lm(form,
+  # create data on the fly
+       data = filter(csat_named_top,
+                     .env$product == "All" | .env$product == product,
+                     eval(filter_ls)
+       )
+    )
+  ),
+
+  res = list(broom::tidy(mod)),
+
+  modstat = list(broom::glance(mod))
+
+  ) |>
+  select(product:model_spec, dep_vars, mod:modstat)
+
+all_grps_grid_final_res
+```
+
+* To keep code clean and facilitate debugging, complex parts can be tucked away in custom functions.
+
+```{r}
+# define custom functions
+update_min_form <- function(upvars, dpvars) { # update_vars, dep_vars
+    update(min_formula, # old formula
+           reformulate(c(".", upvars), dpvars) # changes to formula 
+           ) 
+}
+
+linear_mod <- function(form, prodvar, filter_inp) {
+      lm(form,
+  # create data on the fly
+       data = filter(csat_named_top,
+                     prodvar == "All" | .data$product == prodvar,
+                     eval(filter_inp)
+       )
+    )
+}
+
+all_grps_grid_final_res2 <- all_grps_grid_final |>
+  rowwise() |>
+  mutate(
+    form = list2("{product}_{type}_{model_spec}_{dep_vars}" := 
+                    update_min_form(update_vars, dep_vars)
+  
+    ),
+    mod = list(linear_mod(form, product, filter_ls)),
+    res = list(broom::tidy(mod)),
+    modstat = list(broom::glance(mod))
+  ) |>
+  select(product:model_spec, dep_vars, mod:modstat)
+
+all_grps_grid_final_res2
+```
+
+* One possible way to refine results: filter models significant at the 10% level and arrange by adjusted r-squared in descending order:
+
+```{r}
+all_grps_grid_final_res |>
+  unnest(modstat) |>
+  select(-c(sigma, statistic, df:df.residual)) |>
+  filter(p.value < 0.1) |>
+  arrange(desc(adj.r.squared))
+```
+
+## FIN 
+
+Link to full blog post::
+https://tim-tiefenbach.de/post/2023-dplyr-many-models/
+
