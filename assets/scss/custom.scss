@@ -899,6 +899,10 @@ code a {
 
 /* syntax highlighting */
 
+span.c > span {
+  text-decoration: none !important;
+}
+
 .hljs,.hljs-subst {
   color: #ffffff !important;
 }
