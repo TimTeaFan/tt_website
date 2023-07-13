@@ -6,7 +6,7 @@ output:
 
 title: "Static and Dynamic Web Scraping with R"
 subtitle: ""
-summary: "This blog provides an instructive guide to web scraping in R, starting with basic techniques and advancing to complex tasks. It covers scraping static and dynamic websites, string manipulation and recursive functions."
+summary: "This blog post provides an instructive guide to web scraping in R, starting with basic techniques and advancing to complex tasks. It covers scraping static and dynamic websites, string manipulation and recursive functions."
 authors: []
 tags: ["R", "rvest", "RSelenium", "web scraping"]
 categories: ["R", "rvest", "RSelenium", "web scraping"]
@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-rmd_hash: 70f6698aa0c49df7
+rmd_hash: 0addbe8e8f666ff6
 
 ---
 
@@ -76,7 +76,7 @@ Next, we call `html_element("table")` to select the `<table>` tag which contains
 <span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>link <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='o'>(</span><span class='s'>"https://cran.r-project.org/web/packages/"</span>, <span class='nv'>name</span>, <span class='s'>"/index.html"</span><span class='o'>)</span><span class='o'>)</span></span>
 <span></span>
 <span><span class='nv'>pkg_tbl</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 19,595 × 3</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 19,823 × 3</span></span></span>
 <span><span class='c'>#&gt;    name          description                                               link </span></span>
 <span><span class='c'>#&gt;    <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span>                                                     <span style='color: #555555; font-style: italic;'>&lt;chr&gt;</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'> 1</span> A3            <span style='color: #555555;'>"</span>Accurate, Adaptable, and Accessible Error Metrics for P… http…</span></span>
@@ -89,7 +89,7 @@ Next, we call `html_element("table")` to select the `<table>` tag which contains
 <span><span class='c'>#&gt; <span style='color: #555555;'> 8</span> abc.data      <span style='color: #555555;'>"</span>Data Only: Tools for Approximate Bayesian Computation (… http…</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'> 9</span> ABC.RAP       <span style='color: #555555;'>"</span>Array Based CpG Region Analysis Pipeline<span style='color: #555555;'>"</span>                http…</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'>10</span> ABCanalysis   <span style='color: #555555;'>"</span>Computed ABC Analysis<span style='color: #555555;'>"</span>                                   http…</span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'># … with 19,585 more rows</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># … with 19,813 more rows</span></span></span>
 <span></span></code></pre>
 
 </div>
@@ -292,18 +292,18 @@ Then we'll use [`html_nodes()`](https://rvest.tidyverse.org/reference/rename.htm
 <span><span class='nv'>webpage</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://rvest.tidyverse.org/reference/rename.html'>html_nodes</a></span><span class='o'>(</span><span class='s'>".product-link"</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'><a href='https://rvest.tidyverse.org/reference/html_attr.html'>html_attr</a></span><span class='o'>(</span><span class='s'>"href"</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt;  [1] "/en-de/niacinamide-10-zinc-1-serum-100436.html"            </span></span>
-<span><span class='c'>#&gt;  [2] "/en-de/hyaluronic-acid-2-b5-serum-100425.html"             </span></span>
-<span><span class='c'>#&gt;  [3] "/en-de/matrixyl-10-ha-serum-100431.html"                   </span></span>
-<span><span class='c'>#&gt;  [4] "/en-de/multi-peptide-ha-serum-100613.html"                 </span></span>
-<span><span class='c'>#&gt;  [5] "/en-de/buffet-copper-peptides-1-serum-100411.html"         </span></span>
-<span><span class='c'>#&gt;  [6] "/en-de/argireline-solution-10-serum-100403.html"           </span></span>
-<span><span class='c'>#&gt;  [7] "/en-de/multi-peptide-lash-brow-serum-100111.html"          </span></span>
-<span><span class='c'>#&gt;  [8] "/en-de/granactive-retinoid-5-in-squalane-serum-100421.html"</span></span>
-<span><span class='c'>#&gt;  [9] "/en-de/marine-hyaluronics-serum-100430.html"               </span></span>
-<span><span class='c'>#&gt; [10] "/en-de/azelaic-acid-suspension-10-exfoliator-100407.html"  </span></span>
-<span><span class='c'>#&gt; [11] "/en-de/granactive-retinoid-2-emulsion-serum-100419.html"   </span></span>
-<span><span class='c'>#&gt; [12] "/en-de/amino-acids-b5-serum-100402.html"</span></span>
+<span><span class='c'>#&gt;  [1] "/en-de/hyaluronic-acid-2-b5-serum-rdn%2Dhyaluronic%2Dacid%2D2pct%2Db5%2D60ml.html"     </span></span>
+<span><span class='c'>#&gt;  [2] "/en-de/niacinamide-10-zinc-1-serum-rdn%2Dniacinamide%2D10pct%2Dzinc%2D1pct%2D60ml.html"</span></span>
+<span><span class='c'>#&gt;  [3] "/en-de/multi-peptide-ha-serum-100613.html"                                             </span></span>
+<span><span class='c'>#&gt;  [4] "/en-de/niacinamide-10-zinc-1-serum-rdn%2Dniacinamide%2D10pct%2Dzinc%2D1pct%2D30ml.html"</span></span>
+<span><span class='c'>#&gt;  [5] "/en-de/hyaluronic-acid-2-b5-serum-rdn%2Dhyaluronic%2Dacid%2D2pct%2Db5%2D30ml.html"     </span></span>
+<span><span class='c'>#&gt;  [6] "/en-de/azelaic-acid-suspension-10-exfoliator-100407.html"                              </span></span>
+<span><span class='c'>#&gt;  [7] "/en-de/multi-peptide-lash-brow-serum-100111.html"                                      </span></span>
+<span><span class='c'>#&gt;  [8] "/en-de/argireline-solution-10-serum-100403.html"                                       </span></span>
+<span><span class='c'>#&gt;  [9] "/en-de/retinol-1-in-squalane-serum-100441.html"                                        </span></span>
+<span><span class='c'>#&gt; [10] "/en-de/matrixyl-10-ha-serum-100431.html"                                               </span></span>
+<span><span class='c'>#&gt; [11] "/en-de/alpha-arbutin-2-ha-serum-100401.html"                                           </span></span>
+<span><span class='c'>#&gt; [12] "/en-de/buffet-copper-peptides-1-serum-100411.html"</span></span>
 <span></span></code></pre>
 
 </div>
@@ -421,7 +421,7 @@ Now the source code of the product overview page should feature all 31 serums. W
 <span></span>
 <span><span class='nv'>full_product_links</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='o'>(</span><span class='s'>"https://theordinary.com"</span>, <span class='nv'>product_links</span><span class='o'>)</span></span>
 <span><span class='nf'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='o'>(</span><span class='nv'>full_product_links</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt;  chr [1:31] "https://theordinary.com/en-de/niacinamide-10-zinc-1-serum-100436.html" ...</span></span>
+<span><span class='c'>#&gt;  chr [1:35] "https://theordinary.com/en-de/hyaluronic-acid-2-b5-serum-rdn%2Dhyaluronic%2Dacid%2D2pct%2Db5%2D60ml.html" ...</span></span>
 <span></span></code></pre>
 
 </div>
@@ -537,7 +537,7 @@ Session Info <i class="fas fa-tools"></i>
 <span><span class='c'>#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class='c'>#&gt;  tz       Europe/Berlin</span></span>
-<span><span class='c'>#&gt;  date     2023-06-01</span></span>
+<span><span class='c'>#&gt;  date     2023-07-13</span></span>
 <span><span class='c'>#&gt;  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class='c'>#&gt; </span></span>
 <span><span class='c'>#&gt; <span style='color: #00BBBB; font-weight: bold;'>─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>

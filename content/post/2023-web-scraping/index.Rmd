@@ -6,7 +6,7 @@ output:
 
 title: "Static and Dynamic Web Scraping with R"
 subtitle: ""
-summary: "This blog provides an instructive guide to web scraping in R, starting with basic techniques and advancing to complex tasks. It covers scraping static and dynamic websites, string manipulation and recursive functions."
+summary: "This blog post provides an instructive guide to web scraping in R, starting with basic techniques and advancing to complex tasks. It covers scraping static and dynamic websites, string manipulation and recursive functions."
 authors: []
 tags: ["R", "rvest", "RSelenium", "web scraping"]
 categories: ["R", "rvest", "RSelenium", "web scraping"]
