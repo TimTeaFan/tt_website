@@ -46,7 +46,7 @@
         {{ range $person.social }}
         {{ $pack := or .icon_pack "fas" }}
         {{ $pack_prefix := $pack }}
-        {{ if in (slice "fab" "fas" "far" "fal") $pack }}
+        {{ if in (slice "fab" "fas" "far" "fal" "brands") $pack }}
           {{ $pack_prefix = "fa" }}
         {{ end }}
         {{ $link := .link }}
@@ -59,7 +59,7 @@
         {{ end }}
         <li>
           <a href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }}>
-            <i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }} big-icon"></i>
+            <i class="{{ $pack_prefix }}-{{ $pack }} {{ $pack_prefix }}-{{ .icon }} big-icon"></i>
           </a>
         </li>
         {{ end }}

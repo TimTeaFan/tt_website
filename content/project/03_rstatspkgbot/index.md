@@ -1,6 +1,6 @@
 ---
 title: rstatspkgbot
-summary: An automated Twitter bot that tweets about random R packages.
+summary: An automated Twitter and Mastodon bot that tweets about random R packages.
 tags:
 - bot
 date: "2022-12-17T00:00:00Z"

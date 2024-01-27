@@ -55,23 +55,23 @@ social:
 # - icon: envelope
 #  icon_pack: fas
 #  link: '#contact'  # For a direct email link, use "mailto:test@example.org".
-- icon: twitter
-  icon_pack: fab
+- icon: x-twitter
+  icon_pack: brands
   link: https://twitter.com/timteafan
 - icon: mastodon
-  icon_pack: fab
+  icon_pack: brands
   link: https://fosstodon.org/@TimTeaFan
 - icon: github
-  icon_pack: fab
+  icon_pack: brands
   link: https://github.com/timteafan
 - icon: linkedin
-  icon_pack: fab
+  icon_pack: brands
   link: https://www.linkedin.com/in/timtiefenbach
-- icon: google-scholar
-  icon_pack: ai
-  link: https://scholar.google.com/citations?user=SZvmiGgAAAAJ&hl=en&oi=ao
+# - icon: google-scholar
+#  icon_pack: ai
+#  link: https://scholar.google.com/citations?user=SZvmiGgAAAAJ&hl=en&oi=ao
 - icon: stack-overflow
-  icon_pack: fab
+  icon_pack: brands
   link: https://stackoverflow.com/users/9349302/timteafan
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.

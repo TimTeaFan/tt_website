@@ -31,10 +31,10 @@ This websites contains a bunch of add-ons and tweaks which did cost me
 some time to figure out. Feel free to browse through the code and
 settings to see what I have changed. If you are interested in specific
 features you like about this website, feel free to reach out to me on
-[Twitter](https://twitter.com/timteafan) or
+[X](https://twitter.com/timteafan) or
 [Mastodon](https://fosstodon.org/@TimTeaFan).
 
-Here is a non exhaustive list of features which set this website apart
+Here is a non-exhaustive list of features which set this website apart
 from the basic academic theme:
 
 1.  Mastadon integration<br>- in the social links of the “About” page
@@ -51,3 +51,5 @@ from the basic academic theme:
     post](https://www.chrislockard.net/posts/using-local-fonts-hugo-academic-theme/)
 7.  Adding favicons (hopefully displayed on most devices)
 8.  Adding a social preview (for most apps & services)
+9.  Changing Twitter Icons to X and updating to the latest Fontawesome
+    verison.

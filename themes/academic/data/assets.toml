@@ -71,10 +71,12 @@
   url = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/%s/cookieconsent.min.js"
 
 # CSS
+# version = "5.12.0-1"
 
 [css.fontAwesome]
-  version = "5.12.0-1"
-  sri = "sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU="
+  version = "6.5.1" # "5.12.0-1"
+  # sri = "sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU="
+  sri = "sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac="
   url = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/%s/css/all.min.css"
 [css.academicons]
   version = "1.8.6"

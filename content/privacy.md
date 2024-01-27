@@ -260,15 +260,15 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
 
 <div class="row">
   <div class="col-12 col-lg-6 legal">
-    <h5 class="jet-listing-dynamic-field__content">Twitter</h5>
-    <p>Twitter Inc., 795 Folsom St., Suite 600, San Francisco, CA 94107, United States.</p>
-    <p>Privacy Policy: <a href="https://twitter.com/privacy" target="_blank" rel="noopener nofollow">https://twitter.com/privacy</a></p>
+    <h5 class="jet-listing-dynamic-field__content"> X (former Twitter)</h5>
+    <p>X Corp., 1355 Market Street, Suite 900, San Francisco, CA 94103 U.S.A.</p>
+    <p>Privacy Policy: <a href="https://twitter.com/en/privacy" target="_blank" rel="noopener nofollow">https://twitter.com/en/privacy</a></p>
   </div>
 
   <div class="col-12 col-lg-6 legal">
-    <h5 class="jet-listing-dynamic-field__content">Twitter</h5>
-    <p>Twitter Inc., 795 Folsom St., Suite 600, San Francisco, CA 94107, USA.</p>
-    <p>Datenschutzerklärung: <a href="https://twitter.com/privacy" target="_blank" rel="noopener nofollow">https://twitter.com/privacy</a></p>
+    <h5 class="jet-listing-dynamic-field__content">X (former Twitter)</h5>
+    <p>Twitter International Unlimited Company, One Cumberland Place, Fenian Street, Dublin 2, D02 AX07 IRELAND</p>
+    <p>Datenschutzerklärung: <a href="https://twitter.com/de/privacy" target="_blank" rel="noopener nofollow">https://twitter.com/de/privacy</a></p>
   </div>
 </div>
 
@@ -335,7 +335,19 @@ E-Mail: contact[at]tim-tiefenbach.de</p>
   </div>
 </div>
 
+<div class="row">
+  <div class="col-12 col-lg-6 legal">
+    <h5>Research Gate</h5>
+    <p>Research Gate is a web service maintained by ResearchGate GmbH, Chausseestraße 20, 10115 Berlin, Germany</p>
+    <p>Privacy Policy: <a href="https://www.researchgate.net/privacy-policy">https://www.researchgate.net/privacy-policy</a></p>
+  </div>
 
+  <div class="col-12 col-lg-6 legal">
+    <h5>Research Gate</h5>
+    <p>Research Gate ist ein Webdienst, der von ResearchGate GmbH, Chausseestraße 20, 10115 Berlin, Germany, betrieben wird.</p>
+    <p>Datenschutzerklärung: <a href="https://www.researchgate.net/privacy-policy">https://www.researchgate.net/privacy-policy</a></p>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-12 col-lg-6 legal">
